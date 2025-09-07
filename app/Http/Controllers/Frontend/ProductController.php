@@ -121,5 +121,8 @@ class ProductController extends Controller
 			
 			return view('frontend.partials.products-reviews-grid', compact('pro_reviews'))->render();
 		}
-	}	
+	}
+	
+	
+	
 }

@@ -169,51 +169,9 @@ $tax_rate = $gtax['percentage'];
 						<div class="row">
 							<div class="col-md-12">
 								<span class="text-danger error-text payment_method_error"></span>
-								@if($gtext['stripe_isenable'] == 1)
-								<div class="payment_card">
-									<div class="checkboxlist">
-										<label class="checkbox-title">
-											<input id="payment_method_stripe" name="payment_method" type="radio" value="3"><img src="{{ asset('public/frontend/images/stripe.png') }}" alt="Stripe" />
-										</label>
-									</div>
-									<div id="pay_stripe" class="row hideclass">
-										<div class="col-md-12">
-											<div class="row">
-												<div class="col-md-12">
-													<div class="mb-3">
-														<div class="form-control" id="card-element"></div>
-														<span class="card-errors" id="card-errors"></span>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								@endif
+							
 
-								@if($gtext['isenable_paypal'] == 1)
-								<div class="payment_card">
-									<div class="checkboxlist">
-										<label class="checkbox-title">
-											<input id="payment_method_paypal" name="payment_method" type="radio" value="4"><img src="{{ asset('public/frontend/images/paypal.png') }}" alt="Paypal" />
-										</label>
-									</div>
-									<p id="pay_paypal" class="hideclass">{{ __('Pay online via Paypal') }}</p>
-								</div>
-								@endif
-
-								@if($gtext['isenable_razorpay'] == 1)
-								<div class="payment_card">
-									<div class="checkboxlist">
-										<label class="checkbox-title">
-											<input id="payment_method_razorpay" name="payment_method" type="radio" value="5"><img src="{{ asset('public/frontend/images/razorpay.png') }}" alt="Razorpay" />
-										</label>
-									</div>
-									<p id="pay_razorpay" class="hideclass">{{ __('Pay online via Razorpay') }}</p>
-								</div>
-								@endif
-
-								@if($gtext['isenable_mollie'] == 1)
+								@if($gtext['isenable_mollie'] == '1')
 								<div class="payment_card">
 									<div class="checkboxlist">
 										<label class="checkbox-title">
@@ -224,7 +182,7 @@ $tax_rate = $gtax['percentage'];
 								</div>
 								@endif
 
-								@if($gtext['cod_isenable'] == 1)
+								@if($gtext['cod_isenable'] == '1')
 								<div class="payment_card">
 									<div class="checkboxlist">
 										<label class="checkbox-title">
