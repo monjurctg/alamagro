@@ -77,9 +77,9 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="section-heading text-center">
-							@if($section2->desc != '')
+							<!-- @if($section2->desc != '')
 								<h5>{{ $section2->desc }}</h5>
-							@endif
+							@endif -->
 
 							@if($section2->title != '')
 								<h2>{{ $section2->title }}</h2>
