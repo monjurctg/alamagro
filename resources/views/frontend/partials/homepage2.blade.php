@@ -84,7 +84,7 @@
 				@endif
 			</div>
 			
-			<a href="{{ route('frontend.all-categories') }}" class="view-all-btn">
+			<a href="#" class="view-all-btn">
 				View All
 			</a>
 		</div>
