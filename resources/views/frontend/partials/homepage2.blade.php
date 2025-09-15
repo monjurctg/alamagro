@@ -69,7 +69,8 @@
 		</section>
 	@endif
 	<!-- /Home Slider/ -->
-<!-- Featured Categories -->
+
+	<!-- Featured Categories -->
 	@if($section2->is_publish == 1)
 		<section class="section d-none d-md-block">
 			<div class="container">
@@ -475,6 +476,12 @@
 			</style>
 	@endif
 	<!-- /Featured Categories/ -->
+
+
+	<!-- /Offer Section/ -->
+
+	<!-- New Products -->
+@if($section4->is_publish == 1)
 
 
 <section class="section product-section py-4">
