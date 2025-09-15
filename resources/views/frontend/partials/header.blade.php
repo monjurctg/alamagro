@@ -1,7 +1,7 @@
 
 	<header class="header">
 		<!--Top Header-->
-		<div class="top-header">
+		<!-- <div class="top-header">
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-6">
@@ -55,7 +55,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div> -->
 
 		<!--/Top Header/-->
 
