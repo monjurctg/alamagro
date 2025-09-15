@@ -71,7 +71,7 @@
 	<!-- /Home Slider/ -->
 
 	<!-- Featured Categories -->
-	@if($section2->is_publish == 1)
+	<!-- @if($section2->is_publish == 1)
 		<section class="section d-none d-md-block">
 			<div class="container">
 				<div class="row">
@@ -106,7 +106,7 @@
 				</div>
 			</div>
 		</section>
-	@endif
+	@endif -->
 	<!-- for mobile section -->
 	@if($section2->is_publish == 1)
 			<section class="category-section">
