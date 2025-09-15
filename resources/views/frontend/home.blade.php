@@ -38,13 +38,13 @@ $gtext = gtext();
 @section('content')
 
 @if($PageVariation['home_variation'] == 'home_1')
-@include('frontend.partials.homepage1')
+@include('frontend.partials.homepage2')
 @elseif($PageVariation['home_variation'] == 'home_2')
 @include('frontend.partials.homepage2')
 @elseif($PageVariation['home_variation'] == 'home_3')
-@include('frontend.partials.homepage3')
+@include('frontend.partials.homepage2')
 @elseif($PageVariation['home_variation'] == 'home_4')
-@include('frontend.partials.homepage4')
+@include('frontend.partials.homepage2')
 @endif
 
 <!-- Start of Modal -->
