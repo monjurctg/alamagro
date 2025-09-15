@@ -114,8 +114,8 @@
 		
 		<!-- Section Header -->
 		<div class="d-flex justify-content-between align-items-center mb-3">
-			<h5 class="mb-0">{{ $section2->title ?? 'Featured Categories' }}</h5>
-			<a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+			<h6 class="mb-0">{{ $section2->title ?? 'Featured Categories' }}</h6>
+			<a href="#" class="btn btn-sm vs fs-10">View All</a>
 		</div>
 
 		<!-- Horizontal Scroll Categories -->
@@ -127,7 +127,7 @@
 							<img src="{{ asset('public/media/' . $row->thumbnail) }}" alt="{{ $row->name }}" class="category-img" loading="lazy">
 						</div>
 						<div class="category-content">
-							<h3 class="category-title">{{ $row->name }}</h3>
+							<h6 class="category-title">{{ $row->name }}</h6>
 						</div>
 					</a>
 				</div>
@@ -191,7 +191,7 @@
 		}
 
 		.category-img {
-			width: 70%;
+			width: 80%;
 			height: auto;
 			object-fit: contain;
 			transition: transform 0.3s ease;
@@ -207,7 +207,7 @@
 		}
 
 		.category-title {
-			font-size: 0.85rem;
+			font-size: 0.75rem;
 			font-weight: 600;
 			color: #1f2937;
 			margin: 0;
