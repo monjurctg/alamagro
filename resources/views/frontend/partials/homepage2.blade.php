@@ -139,7 +139,7 @@
 		<!-- Section Header -->
 		<div class="d-flex justify-content-between align-items-center mb-3">
 			<h5 class="mb-0">{{ $section2->title ?? 'Featured Categories' }}</h5>
-			<a href="{{ route('frontend.all-categories') }}" class="btn btn-sm btn-outline-primary">View All</a>
+			<a href="#" class="btn btn-sm btn-outline-primary">View All</a>
 		</div>
 
 		<!-- Horizontal Scroll Categories -->
