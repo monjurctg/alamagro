@@ -111,7 +111,7 @@
 	@if($section2->is_publish == 1)
 			<section class="category-section">
 				<div class="container">
-					<div class="section-heading text-center">
+					<!-- <div class="section-heading text-center">
 						@if($section2->desc != '')
 							<h5 class="section-subtitle">{{ $section2->desc }}</h5>
 						@endif
@@ -119,7 +119,18 @@
 						@if($section2->title != '')
 							<h2 class="section-title">{{ $section2->title }}</h2>
 						@endif
-					</div>
+					</div> -->
+
+                  <div class="container my-3">
+    <div class="d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Featured Categories</h5>
+        <a href="{{ route('frontend.all-categories') }}" class="btn btn-sm btn-outline-primary">
+            View All
+        </a>
+    </div>
+</div>
+
+                    </div>
 
 					<!-- Mobile/Tablet Grid -->
 					<div class="categories-grid">
