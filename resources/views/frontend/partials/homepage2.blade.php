@@ -124,7 +124,7 @@
                   <div class="container my-3">
     <div class="d-flex justify-content-between align-items-center">
         <h5 class="mb-0">Featured Categories</h5>
-        <a href="{{ route('frontend.all-categories') }}" class="btn btn-sm btn-outline-primary">
+        <a href="#" class="btn btn-sm btn-outline-primary">
             View All
         </a>
     </div>
