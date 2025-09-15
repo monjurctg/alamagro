@@ -69,171 +69,413 @@
 		</section>
 	@endif
 	<!-- /Home Slider/ -->
-@if($section2->is_publish == 1)
-<section class="category-section">
-	<div class="container">
-		
-		<!-- Section Header -->
-		<div class="section-header">
-			<div class="section-header-left">
-				@if($section2->title != '')
-					<h2 class="section-title">{{ $section2->title }}</h2>
-				@endif
-				@if($section2->desc != '')
-					<p class="section-subtitle">{{ $section2->desc }}</p>
-				@endif
-			</div>
-			
-			<a href="#" class="view-all-btn">
-				View All
-			</a>
-		</div>
 
-		<!-- Category Cards -->
-		<div class="categories-grid">
-			@foreach ($pro_category as $row)
-				<div class="category-card">
-					<a href="{{ route('frontend.product-category', [$row->id, $row->slug]) }}" class="category-link">
-						<div class="category-img-container">
-							<img src="{{ asset('public/media/' . $row->thumbnail) }}" alt="{{ $row->name }}" class="category-img" loading="lazy">
+	<!-- Featured Categories -->
+	@if($section2->is_publish == 1)
+		<section class="section d-none d-md-block">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="section-heading text-center">
+							@if($section2->desc != '')
+								<h5>{{ $section2->desc }}</h5>
+							@endif
+
+							@if($section2->title != '')
+								<h2>{{ $section2->title }}</h2>
+							@endif
 						</div>
-						<div class="category-content">
-							<h3 class="category-title">{{ $row->name }}</h3>
-						</div>
-					</a>
+					</div>
 				</div>
-			@endforeach
-		</div>
-	</div>
+				<div class="row owl-carousel caro-common featured-categories">
+					@foreach ($pro_category as $row)
+						<div class="col-lg-12">
+							<div class="featured-card">
+								<div class="featured-image">
+									<a href="{{ route('frontend.product-category', [$row->id, $row->slug]) }}">
+										<img src="{{ asset('public/media/' . $row->thumbnail) }}" alt="{{ $row->name }}" />
+									</a>
+								</div>
+								<div class="featured-title">
+									<a
+										href="{{ route('frontend.product-category', [$row->id, $row->slug]) }}">{{ $row->name }}</a>
+								</div>
+							</div>
+						</div>
+					@endforeach
+				</div>
+			</div>
+		</section>
+	@endif
+	<!-- for mobile section -->
+	@if($section2->is_publish == 1)
+			<section class="category-section">
+				<div class="container">
+					<div class="section-heading text-center">
+						@if($section2->desc != '')
+							<h5 class="section-subtitle">{{ $section2->desc }}</h5>
+						@endif
 
-	<style>
-		/* ===============================
-		   Featured Categories Section
-		================================= */
-		.category-section {
-			padding: 2.5rem 0;
-			background: linear-gradient(180deg, #f9fafb 0%, #ffffff 100%);
-		}
+						@if($section2->title != '')
+							<h2 class="section-title">{{ $section2->title }}</h2>
+						@endif
+					</div>
 
-		/* Section Header */
-		.section-header {
-			display: flex;
-			justify-content: space-between;
-			align-items: flex-end;
-			margin-bottom: 2rem;
-			flex-wrap: wrap;
-			gap: 0.5rem;
-		}
+					<!-- Mobile/Tablet Grid -->
+					<div class="categories-grid">
+						@foreach ($pro_category as $row)
+							<div class="category-card">
+								<a href="{{ route('frontend.product-category', [$row->id, $row->slug]) }}" class="category-link">
+									<div class="category-img-container">
+										<div class="category-img-wrapper">
+											<img src="{{ asset('public/media/' . $row->thumbnail) }}" alt="{{ $row->name }}"
+												class="category-img" loading="lazy">
+										</div>
+										<div class="category-overlay"></div>
+									</div>
+									<div class="category-content">
+										<h3 class="category-title">{{ $row->name }}</h3>
 
-		.section-header-left {
-			max-width: 70%;
-		}
+									</div>
+								</a>
+							</div>
+						@endforeach
+					</div>
+				</div>
+			</section>
 
-		.section-title {
-			font-size: 1.5rem;
-			font-weight: 700;
-			color: #111827;
-			margin: 0;
-			line-height: 1.3;
-		}
+			<style>
+				/* ======================
+		   Enhanced Professional Category Grid
+		   ====================== */
+				.category-section {
+					padding: 2.5rem 0;
+					background: linear-gradient(180deg, #f9fafb 0%, #ffffff 100%);
+				}
 
-		.section-subtitle {
-			font-size: 0.9rem;
-			color: #6b7280;
-			margin: 0.3rem 0 0;
-		}
+				.section-heading {
+					margin-bottom: 2.5rem;
+					padding: 0 1rem;
+				}
 
-		/* View All Button */
-		.view-all-btn {
-			font-size: 0.9rem;
-			font-weight: 600;
-			color: var(--theme-color);
-			text-decoration: none;
-			padding: 0.4rem 0.9rem;
-			border: 1px solid var(--theme-color);
-			border-radius: 6px;
-			transition: all 0.3s ease;
-			white-space: nowrap;
-		}
+				.section-subtitle {
+					color: var(--theme-color);
+					font-size: 0.875rem;
+					font-weight: 600;
+					letter-spacing: 1px;
+					text-transform: uppercase;
+					margin-bottom: 0.75rem;
+					display: block;
+				}
 
-		.view-all-btn:hover {
-			background: var(--theme-color);
-			color: #fff;
-		}
+				.section-title {
+					color: #1f2937;
+					font-size: 1.123rem;
+					font-weight: 700;
+					position: relative;
+					padding-bottom: 0.888rem;
+					margin-bottom: 0;
+					line-height: 1.3;
+				}
 
-		/* Category Grid */
-		.categories-grid {
-			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-			gap: 1rem;
-		}
+				.section-title:after {
+					content: '';
+					position: absolute;
+					bottom: 0;
+					left: 50%;
+					transform: translateX(-50%);
+					width: 60px;
+					height: 3px;
+					background: var(--theme-color);
+					border-radius: 2px;
+				}
 
-		/* Category Card */
-		.category-card {
-			background: #fff;
-			border-radius: 12px;
-			overflow: hidden;
-			box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-			transition: all 0.3s ease;
-		}
+				/* Grid Layout - 3 columns for mobile */
+				.categories-grid {
+					display: grid;
+					grid-template-columns: repeat(3, 1fr);
+					gap: 0.8rem;
+					padding: 0 0.8rem;
+					max-width: 1200px;
+					margin: 0 auto;
+				}
 
-		.category-card:hover {
-			transform: translateY(-3px);
-			box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-		}
+				.category-card {
+					background: #fff;
+					border-radius: 12px;
+					overflow: hidden;
+					box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+					transition: all 0.3s ease;
+					position: relative;
+				}
 
-		.category-img-container {
-			width: 100%;
-			aspect-ratio: 1/1;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			background: #f9fafb;
-		}
+				.category-card:hover {
+					transform: translateY(-3px);
+					box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+				}
 
-		.category-img {
-			width: 70%;
-			height: auto;
-			object-fit: contain;
-			transition: transform 0.3s ease;
-		}
+				.category-link {
+					display: flex;
+					flex-direction: column;
+					height: 100%;
+					text-decoration: none;
+					color: inherit;
+				}
 
-		.category-card:hover .category-img {
-			transform: scale(1.05);
-		}
+				.category-img-container {
+					/* background: #f8fafc; */
+					overflow: hidden;
+					width: 100%;
+					aspect-ratio: 1 / 1;
+					/* square container */
+					position: relative;
+				}
 
-		.category-content {
-			padding: 0.8rem;
-			text-align: center;
-		}
+				.category-img-wrapper {
+					position: absolute;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					padding: 1rem;
+					z-index: 2;
+				}
 
-		.category-title {
-			font-size: 0.9rem;
-			font-weight: 600;
-			color: #1f2937;
-			margin: 0;
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
-		}
+				.category-overlay {
+					position: absolute;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					background: linear-gradient(0deg, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0) 100%);
+					z-index: 1;
+					transition: all 0.3s ease;
+				}
 
-		/* Responsive Tweaks */
-		@media (max-width: 480px) {
-			.section-title {
-				font-size: 1.25rem;
-			}
-			.section-header {
-				flex-direction: column;
-				align-items: flex-start;
-			}
-			.view-all-btn {
-				align-self: flex-end;
-			}
-		}
-	</style>
-</section>
-@endif
+				.category-card:hover .category-overlay {
+					background: linear-gradient(0deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0) 100%);
+				}
 
+				.category-img {
+					width: 100%;
+					height: 100%;
+					object-fit: contain;
+					transition: all 0.3s ease;
+				}
+
+				.category-card:hover .category-img {
+					transform: scale(1.06);
+				}
+
+				.category-content {
+					padding: 0.9rem 0.5rem 1rem;
+					text-align: center;
+					flex-grow: 1;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+				}
+
+				.category-title {
+					font-size: 0.7525rem;
+					font-weight: 600;
+					color: #1f2937;
+					margin: 0 0 0.5rem;
+					display: -webkit-box;
+					-webkit-line-clamp: 2;
+					-webkit-box-orient: vertical;
+					overflow: hidden;
+					text-overflow: ellipsis;
+
+				}
+
+				.category-cta {
+					font-size: 0.75rem;
+					color: var(--theme-color);
+					font-weight: 600;
+					display: inline-flex;
+					align-items: center;
+					justify-content: center;
+					gap: 0.2rem;
+					transition: all 0.3s ease;
+					margin-top: auto;
+				}
+
+				.category-cta i {
+					transition: transform 0.3s ease;
+				}
+
+				.category-card:hover .category-cta i {
+					transform: translateX(2px);
+				}
+
+				/* Very small mobile devices */
+				@media (max-width: 340px) {
+					.categories-grid {
+						grid-template-columns: repeat(2, 1fr);
+						gap: 0.7rem;
+						padding: 0 0.7rem;
+					}
+
+					.category-title {
+						font-size: 0.75rem;
+					}
+				}
+
+				/* Small mobile devices */
+				@media (min-width: 341px) and (max-width: 380px) {
+					.categories-grid {
+						grid-template-columns: repeat(3, 1fr);
+						gap: 0.6rem;
+						padding: 0 0.6rem;
+					}
+
+					.category-title {
+						font-size: 0.75rem;
+					}
+
+					.category-content {
+						padding: 0.7rem 0.4rem 0.8rem;
+					}
+				}
+
+				/* Standard mobile devices */
+				@media (min-width: 381px) and (max-width: 480px) {
+					.categories-grid {
+						grid-template-columns: repeat(3, 1fr);
+						gap: 0.8rem;
+						padding: 0 0.8rem;
+					}
+				}
+
+				/* Larger mobile devices */
+				@media (min-width: 481px) and (max-width: 575px) {
+					.categories-grid {
+						grid-template-columns: repeat(4, 1fr);
+						gap: 0.9rem;
+						padding: 0 0.9rem;
+					}
+
+					.category-title {
+						font-size: 0.7525rem;
+					}
+				}
+
+				/* Tablet View */
+				@media (min-width: 576px) and (max-width: 767px) {
+					.categories-grid {
+						grid-template-columns: repeat(4, 1fr);
+						gap: 1rem;
+						padding: 0 1rem;
+					}
+
+					.section-title {
+						font-size: 1.75rem;
+					}
+
+					.category-content {
+						padding: 1rem 0.5rem 1.1rem;
+					}
+
+					.category-title {
+						font-size: 0.7525rem;
+					}
+				}
+
+				/* Small Desktop View */
+				@media (min-width: 768px) and (max-width: 991px) {
+					.categories-grid {
+						grid-template-columns: repeat(5, 1fr);
+						gap: 1.1rem;
+					}
+				}
+
+				/* Desktop View - Hide completely */
+				@media (min-width: 992px) {
+					.category-section {
+						display: none;
+					}
+				}
+
+				/* Animation Enhancements */
+				@keyframes fadeInUp {
+					from {
+						opacity: 0;
+						transform: translateY(10px);
+					}
+
+					to {
+						opacity: 1;
+						transform: translateY(0);
+					}
+				}
+
+				.category-card {
+					animation: fadeInUp 0.4s ease forwards;
+					opacity: 0;
+				}
+
+				/* Manual staggered animation delays */
+				.category-card:nth-child(1) {
+					animation-delay: 0.05s;
+				}
+
+				.category-card:nth-child(2) {
+					animation-delay: 0.1s;
+				}
+
+				.category-card:nth-child(3) {
+					animation-delay: 0.15s;
+				}
+
+				.category-card:nth-child(4) {
+					animation-delay: 0.2s;
+				}
+
+				.category-card:nth-child(5) {
+					animation-delay: 0.25s;
+				}
+
+				.category-card:nth-child(6) {
+					animation-delay: 0.3s;
+				}
+
+				.category-card:nth-child(7) {
+					animation-delay: 0.35s;
+				}
+
+				.category-card:nth-child(8) {
+					animation-delay: 0.4s;
+				}
+
+				.category-card:nth-child(9) {
+					animation-delay: 0.45s;
+				}
+
+				.category-card:nth-child(10) {
+					animation-delay: 0.5s;
+				}
+
+				.category-card:nth-child(11) {
+					animation-delay: 0.55s;
+				}
+
+				.category-card:nth-child(12) {
+					animation-delay: 0.6s;
+				}
+
+				/* Focus states for accessibility */
+				.category-link:focus {
+					outline: 2px solid var(--theme-color);
+					outline-offset: 2px;
+					border-radius: 12px;
+				}
+			</style>
+	@endif
+	<!-- /Featured Categories/ -->
 
 
 	<!-- /Offer Section/ -->
