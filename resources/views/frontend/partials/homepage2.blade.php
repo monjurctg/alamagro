@@ -3,7 +3,7 @@
 	<!-- @if($section1->is_publish == 1)
 	<section class="slider-section">
 		<div class="home-slider owl-carousel">
-		
+
 			@foreach ($slider as $row)
 			@php $aRow = json_decode($row->desc); @endphp
 			<div class="single-slider">
@@ -27,7 +27,7 @@
 				</div>
 			</div>
 			@endforeach
-	
+
 		</div>
 	</section>
 	@endif -->
@@ -109,9 +109,9 @@
 	@endif
 	<!-- for mobile section -->
 	@if($section2->is_publish == 1)
-<section class="category-section">
+<section class="category-section d-block d-md-none">
 	<div class="container">
-		
+
 		<!-- Section Header -->
 		<div class="d-flex justify-content-between align-items-center mb-3">
 			<h6 class="mb-0">{{ $section2->title ?? 'Featured Categories' }}</h6>
@@ -188,6 +188,7 @@
 			align-items: center;
 			justify-content: center;
 			background: #f9fafb;
+
 		}
 
 		.category-img {
