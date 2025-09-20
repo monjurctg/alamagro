@@ -144,8 +144,8 @@
 			/* Scrollable Container */
 			.categories-scroll {
 				display: flex;
-				/* gap: 0.8rem; */
-				justify-content: space-around;
+				gap: 0.5rem;
+				justify-content: center;
 				flex-wrap: wrap;
 				align-self: center;
 				/* padding: 0.5rem 0.2rem; */
@@ -167,12 +167,11 @@
 				/* Fixed card width */
 				background: #fff;
 				/* border-radius: 12px; */
-				/* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); */
-				border: 1px solid #ddd;
+				box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 				overflow: hidden;
 				scroll-snap-align: start;
 				transition: transform 0.3s ease;
-				/* margin-top:  */
+
 			}
 
 			.category-card:hover {
