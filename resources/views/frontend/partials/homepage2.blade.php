@@ -171,6 +171,7 @@
 				overflow: hidden;
 				scroll-snap-align: start;
 				transition: transform 0.3s ease;
+				margin-top: 5
 			}
 
 			.category-card:hover {
