@@ -163,7 +163,7 @@
 			.category-card {
 				flex: 0 0 auto;
 				/* Don’t shrink */
-				width: 120px;
+				width: "33.33%";
 				/* Fixed card width */
 				background: #fff;
 				/* border-radius: 12px; */
