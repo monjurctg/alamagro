@@ -167,11 +167,12 @@
 				/* Fixed card width */
 				background: #fff;
 				/* border-radius: 12px; */
-				box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+				/* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); */
+				border: 1px solid #ddd;
 				overflow: hidden;
 				scroll-snap-align: start;
 				transition: transform 0.3s ease;
-				margin-top: 5
+				/* margin-top:  */
 			}
 
 			.category-card:hover {
