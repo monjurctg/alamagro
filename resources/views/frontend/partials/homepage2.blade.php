@@ -145,6 +145,7 @@
 			.categories-scroll {
 				display: flex;
 				/* gap: 0.2rem; */
+				gap: 5px;
 				justify-content: center;
 				flex-wrap: wrap;
 				align-self: center;
@@ -163,7 +164,8 @@
 			.category-card {
 				flex: 0 0 auto;
 				/* Don’t shrink */
-				width: 33.33%;
+				width: 32.33%;
+				/* margin-top: 10, */
 				/* Fixed card width */
 				background: #fff;
 				/* border-radius: 12px; */
