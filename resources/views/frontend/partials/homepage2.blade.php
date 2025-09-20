@@ -144,7 +144,7 @@
 			/* Scrollable Container */
 			.categories-scroll {
 				display: flex;
-				gap: 0.5rem;
+				gap: 0.2rem;
 				justify-content: center;
 				flex-wrap: wrap;
 				align-self: center;
