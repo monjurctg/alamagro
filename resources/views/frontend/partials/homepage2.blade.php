@@ -166,7 +166,7 @@
 				width: 120px;
 				/* Fixed card width */
 				background: #fff;
-				border-radius: 12px;
+				/* border-radius: 12px; */
 				box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 				overflow: hidden;
 				scroll-snap-align: start;
