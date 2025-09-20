@@ -144,7 +144,7 @@
 			/* Scrollable Container */
 			.categories-scroll {
 				display: flex;
-				gap: 0.2rem;
+				/* gap: 0.2rem; */
 				justify-content: center;
 				flex-wrap: wrap;
 				align-self: center;
@@ -163,7 +163,7 @@
 			.category-card {
 				flex: 0 0 auto;
 				/* Don’t shrink */
-				width: "33.33%";
+				width: 33.33%;
 				/* Fixed card width */
 				background: #fff;
 				/* border-radius: 12px; */
