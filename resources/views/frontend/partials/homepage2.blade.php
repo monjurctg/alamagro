@@ -144,11 +144,11 @@
 			/* Scrollable Container */
 			.categories-scroll {
 				display: flex;
-				gap: 0.8rem;
+				/* gap: 0.8rem; */
 				justify-content: space-around;
 				flex-wrap: wrap;
 				align-self: center;
-				padding: 0.5rem 0.2rem;
+				/* padding: 0.5rem 0.2rem; */
 				/* overflow-x: auto;
 					scroll-snap-type: x mandatory;
 					-webkit-overflow-scrolling: touch; */
