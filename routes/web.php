@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\PackageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -635,12 +636,11 @@ Route::prefix('seller')->group(function () {
 	Route::post('/getBrandList', [App\Http\Controllers\Backend\ComboController::class, 'getBrandList'])->name('seller.getBrandList')->middleware(['auth', 'is_seller']);
 
 
-	Route::middleware(['auth', 'is_seller'])->group(function () {
-		Route::get('/packages', [App\Http\Controllers\Backend\PackageController::class, 'index'])->name('seller.packages');
-		Route::post('/packages/store', [App\Http\Controllers\Backend\PackageController::class, 'store'])->name('seller.package.store');
-		Route::get('/packages/edit/{id}', [App\Http\Controllers\Backend\PackageController::class, 'edit'])->name('seller.package.edit');
-		Route::delete('/packages/delete/{id}', [App\Http\Controllers\Backend\PackageController::class, 'destroy'])->name('seller.package.delete');
-		Route::post('/packages/bulk-action', [App\Http\Controllers\Backend\PackageController::class, 'bulkAction'])->name('seller.package.bulk');
+	Route::prefix('admin')->middleware(['auth'])->group(function () {
+		Route::get('/services', [PackageController::class, 'index'])->name('backend.services');
+		Route::post('/services/store', [PackageController::class, 'store'])->name('backend.services.store');
+		Route::get('/services/edit/{id}', [PackageController::class, 'edit'])->name('backend.services.edit');
+		Route::delete('/services/delete/{id}', [PackageController::class, 'destroy'])->name('backend.services.delete');
 	});
 
 });
