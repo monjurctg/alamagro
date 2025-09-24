@@ -638,8 +638,8 @@ Route::prefix('seller')->group(function () {
 Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/packages', [PackageController::class, 'index'])->name('backend.packages');
     Route::post('/packages/store', [PackageController::class, 'store'])->name('backend.packages.store');
-    Route::get('/packages/edit/{id}', [PackageController::class, 'edit'])->name('backend.packages.edit');
-    Route::delete('/packages/delete/{id}', [PackageController::class, 'destroy'])->name('backend.packages.delete');
+    Route::get('/packages/edit/{id}', [PackageController::class, 'edit'])->name('admin.packages.edit');
+    Route::delete('/packages/delete/{id}', [PackageController::class, 'destroy'])->name('admin.packages.delete');
 });
 
 });
