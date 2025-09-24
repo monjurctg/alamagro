@@ -16,7 +16,7 @@ class PackageController extends Controller
 
         $datalist = Package::paginate(10);
 
-        return view('backend.packages', compact('datalist', 'AllCount', 'PublishedCount', 'DraftCount'));
+        return view('backend.services', compact('datalist', 'AllCount', 'PublishedCount', 'DraftCount'));
     }
 
     public function store(Request $request)
