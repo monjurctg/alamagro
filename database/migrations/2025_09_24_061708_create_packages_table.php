@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('frequency')->nullable(); // মাসে X বার
             $table->string('duration')->nullable(); // e.g. ১.৫ - ২ ঘন্টা
             $table->json('features'); // store features as JSON
+            $table->boolean('status')->default(1);
             $table->boolean('is_popular')->default(false);
             $table->timestamps();
         });
