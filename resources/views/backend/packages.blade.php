@@ -83,7 +83,7 @@
 
 							<!--Data Entry Form-->
 							<div id="form-panel" class="card-body dnone">
-								<form id="DataEntry_formId">
+								<form novalidate="" data-validate="parsley" id="DataEntry_formId">
 									@csrf
 									<input type="hidden" name="RecordId" id="RecordId">
 
