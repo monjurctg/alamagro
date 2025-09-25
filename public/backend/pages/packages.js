@@ -1,46 +1,73 @@
 var $ = jQuery.noConflict();
 
 $(function () {
-    "use strict";
+	"use strict";
 
-    // Setup CSRF
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+	$.ajaxSetup({
+		headers: {
+			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		}
+	});
 
-    // Submit form
-    $("#submit-form").on("click", function () {
+	$("#submit-form").on("click", function () {
         $("#DataEntry_formId").submit();
     });
 
-    // Initialize chosen selects
-    $("#lan, #status").chosen();
-    $("#lan").trigger("chosen:updated");
-    $("#status").trigger("chosen:updated");
+	$("#product_name").on("blur", function () {
+		onProductSlug();
+	});
 
-    // Parsley validation
-    jQuery('#DataEntry_formId').parsley({
-        listeners: {
-            onFieldValidate: function (elem) {
-                if (!$(elem).is(':visible')) {
-                    return true;
-                }
-                else {
-                    showPerslyError();
-                    return false;
-                }
-            },
-            onFormSubmit: function (isFormValid, event) {
-                if (isFormValid) {
-                    onConfirmWhenAddEdit();
-                    return false;
-                }
-            }
-        }
+	$("#media_select_file").on("click", function () {
+
+		var thumbnail = $("#thumbnail").val();
+		if(thumbnail !=''){
+			$("#f_thumbnail_thumbnail").val(thumbnail);
+			$("#view_thumbnail_image").html('<img src="'+public_path+'/media/'+thumbnail+'">');
+		}
+
+		$("#remove_f_thumbnail").show();
+		$('#global_media_modal_view').modal('hide');
     });
 
+	$("#brand_id").chosen();
+	$("#brand_id").trigger("chosen:updated");
+
+	$("#cat_id").chosen();
+	$("#cat_id").trigger("chosen:updated");
+
+	$("#tax_id").chosen();
+	$("#tax_id").trigger("chosen:updated");
+
+	$("#is_featured").chosen();
+	$("#is_featured").trigger("chosen:updated");
+
+	$("#lan").chosen();
+	$("#lan").trigger("chosen:updated");
+
+	$("#is_publish").chosen();
+	$("#is_publish").trigger("chosen:updated");
+
+	$("#lan").on("change", function () {
+		onCategoryList();
+		onBrandList();
+	});
+
+	//Summernote
+	$('#description').summernote({
+		codeviewFilter: true,
+		codeviewFilterRegex: /<\/*(?:applet|b(?:ase|gsound|link)|embed|frame(?:set)?|ilayer|l(?:ayer|ink)|meta|object|s(?:cript|tyle)|t(?:itle|extarea)|xml)[^>]*?>/gi,
+		codeviewIframeFilter: true,
+		codeviewIframeWhitelistSrc: [],
+		tabDisable: false,
+		height: 300,
+		toolbar: [
+		  ['style', ['style']],
+		  ['font', ['bold', 'italic', 'underline', 'clear']],
+		  ['para', ['ul', 'ol', 'paragraph']],
+		  ['table', ['table']],
+		  ['insert', ['link', 'unlink']],
+		]
+	});
 });
 
 // Add/Edit AJAX
