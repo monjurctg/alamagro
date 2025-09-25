@@ -636,7 +636,7 @@ Route::prefix('seller')->group(function () {
 	Route::post('/getBrandList', [App\Http\Controllers\Backend\ComboController::class, 'getBrandList'])->name('seller.getBrandList')->middleware(['auth', 'is_seller']);
 
 
-Route::prefix('admin')->middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/packages', [PackageController::class, 'index'])->name('backend.packages');
     Route::post('/packages/store', [PackageController::class, 'store'])->name('backend.packages.store');
     Route::get('/packages/edit/{id}', [PackageController::class, 'edit'])->name('admin.packages.edit');
