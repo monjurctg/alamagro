@@ -18,6 +18,7 @@ $(function () {
 
     // Save button click
     $("#submit-form").on("click", function () {
+        console.log("clicking")
         $("#DataEntry_formId").submit();
     });
 
