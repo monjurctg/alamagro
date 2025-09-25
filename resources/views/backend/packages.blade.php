@@ -205,4 +205,5 @@
 		TEXT['Please select record'] = "{{ __('Please select record') }}";
 	</script>
 	<script src="{{asset('public/backend/pages/packages.js')}}"></script>
+	<script src="{{asset('public/backend/pages/global-media.js')}}"></script>
 @endpush
