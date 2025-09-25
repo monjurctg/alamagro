@@ -41,7 +41,11 @@ $(function () {
         $("input:checkbox").not(this).prop("checked", this.checked);
     });
 });
-
+function resetForm(id) {
+    $('#' + id).each(function () {
+        this.reset();
+    });
+}
 
 // =============== Add/Edit AJAX ===============
 function onConfirmWhenAddEdit() {
