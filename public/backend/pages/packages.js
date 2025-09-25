@@ -27,6 +27,10 @@ $(function () {
                 if (!$(elem).is(':visible')) {
                     return true;
                 }
+                else {
+                    showPerslyError();
+                    return false;
+                }
             },
             onFormSubmit: function (isFormValid, event) {
                 if (isFormValid) {
@@ -36,6 +40,7 @@ $(function () {
             }
         }
     });
+
 });
 
 // Add/Edit AJAX
