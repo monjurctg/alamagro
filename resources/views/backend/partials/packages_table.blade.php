@@ -52,16 +52,16 @@
 						</td>
 
 						<!-- <td class="text-center">
-								<div class="btn-group action-group">
-									<a class="action-btn" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<i class="fa fa-ellipsis-v"></i>
-									</a>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="{{ route('admin.packages.edit', [$row->id]) }}">{{ __('Edit') }}</a>
-										<a onclick="onDelete({{ $row->id }})" class="dropdown-item" href="javascript:void(0);">{{ __('Delete') }}</a>
-									</div>
-								</div>
-							</td> -->
+										<div class="btn-group action-group">
+											<a class="action-btn" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												<i class="fa fa-ellipsis-v"></i>
+											</a>
+											<div class="dropdown-menu dropdown-menu-right">
+												<a class="dropdown-item" href="{{ route('admin.packages.edit', [$row->id]) }}">{{ __('Edit') }}</a>
+												<a onclick="onDelete({{ $row->id }})" class="dropdown-item" href="javascript:void(0);">{{ __('Delete') }}</a>
+											</div>
+										</div>
+									</td> -->
 					</tr>
 				@endforeach
 			@else
