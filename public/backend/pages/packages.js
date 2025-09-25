@@ -62,9 +62,14 @@ function onConfirmWhenAddEdit() {
 function onEdit(id) {
     $.get(base_url + '/admin/packages/edit/' + id, function (data) {
         $('#title').val(data.title);
+        $('#subtitle').val(data.subtitle);
         $('#price').val(data.price);
+        $('#frequency').val(data.frequency);
         $('#duration').val(data.duration);
-        $('#status').val(data.is_active);
+        $('#type').val(data.type);
+        $('#features').val(data.features ? data.features.join(", ") : "");
+        $('#is_popular').prop('checked', data.is_popular ? true : false);
+        $('#status').val(data.status);
         $('#RecordId').val(data.id);
 
         $('#lan').trigger("chosen:updated");
@@ -73,6 +78,7 @@ function onEdit(id) {
         onFormPanel();
     });
 }
+
 
 // Delete
 function onDelete(id) {
