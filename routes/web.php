@@ -545,6 +545,12 @@ Route::prefix('backend')->group(function () {
 	Route::get('/seller-settings', [App\Http\Controllers\Backend\SellerSettingsController::class, 'getSellerSettingsPageLoad'])->name('backend.seller-settings')->middleware(['auth', 'is_admin']);
 	Route::post('/SellerSettingsSave', [App\Http\Controllers\Backend\SellerSettingsController::class, 'SellerSettingsSave'])->name('backend.SellerSettingsSave')->middleware(['auth', 'is_admin']);
 
+
+	Route::get('/packages', [PackageController::class, 'index'])->name('backend.packages')->middleware(['auth', 'is_admin']);
+    Route::post('/packages/store', [PackageController::class, 'store'])->name('backend.packages.store')->middleware(['auth', 'is_admin']);
+    Route::get('/packages/edit/{id}', [PackageController::class, 'edit'])->name('backend.packages.edit')->middleware(['auth', 'is_admin']);
+    Route::delete('/packages/delete/{id}', [PackageController::class, 'destroy'])->name('backend.packages.delete')->middleware(['auth', 'is_admin']);
+
 });
 
 Route::prefix('seller')->group(function () {
@@ -636,11 +642,6 @@ Route::prefix('seller')->group(function () {
 	Route::post('/getBrandList', [App\Http\Controllers\Backend\ComboController::class, 'getBrandList'])->name('seller.getBrandList')->middleware(['auth', 'is_seller']);
 
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/packages', [PackageController::class, 'index'])->name('backend.packages');
-    Route::post('/packages/store', [PackageController::class, 'store'])->name('backend.packages.store');
-    Route::get('/packages/edit/{id}', [PackageController::class, 'edit'])->name('admin.packages.edit');
-    Route::delete('/packages/delete/{id}', [PackageController::class, 'destroy'])->name('admin.packages.delete');
-});
+
 
 });
