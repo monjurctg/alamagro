@@ -1,100 +1,48 @@
 var $ = jQuery.noConflict();
+var RecordId = '';
+var BulkAction = '';
+var ids = [];
+
 $(function () {
-	"use strict";
+    "use strict";
 
-	$.ajaxSetup({
-		headers: {
-			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		}
-	});
+    // CSRF setup
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
-	resetForm("DataEntry_formId");
+    // Reset form when loading
+    resetForm("DataEntry_formId");
 
-	$("#submit-form").on("click", function () {
+    // Save button click
+    $("#submit-form").on("click", function () {
         $("#DataEntry_formId").submit();
     });
 
-	$(document).on('click', '.ProductCategories nav ul.pagination a', function(event){
-		event.preventDefault();
-		var page = $(this).attr('href').split('page=')[1];
-		onPaginationDataLoad(page);
-	});
+    // Handle form submit
+    $("#DataEntry_formId").on("submit", function (e) {
+        e.preventDefault();
+        onConfirmWhenAddEdit();
+    });
 
-	$('input:checkbox').prop('checked',false);
+    // Pagination (if needed)
+    $(document).on('click', '.ProductCategories nav ul.pagination a', function (event) {
+        event.preventDefault();
+        var page = $(this).attr('href').split('page=')[1];
+        onPaginationDataLoad(page);
+    });
 
+    // Check all checkbox
+    $('input:checkbox').prop('checked', false);
     $(".checkAll").on("click", function () {
         $("input:checkbox").not(this).prop("checked", this.checked);
     });
-
-	$("#is_featured").chosen();
-	$("#is_featured").trigger("chosen:updated");
-
-	$("#is_publish").chosen();
-	$("#is_publish").trigger("chosen:updated");
-
-	$("#on_thumbnail").on("click", function () {
-		media_type = 'Product_Thumbnail';
-		onGlobalMediaModalView();
-    });
-
-	$("#on_subheader_image").on("click", function () {
-		media_type = 'Subheader';
-		onGlobalMediaModalView();
-    });
-
-	$("#on_og_image").on("click", function () {
-		media_type = 'SEO_Image';
-		onGlobalMediaModalView();
-    });
-
-	$("#media_select_file").on("click", function () {
-
-		var thumbnail = $("#thumbnail").val();
-
-		if(media_type == 'Product_Thumbnail'){
-
-			if(thumbnail !=''){
-				$("#category_thumbnail").val(thumbnail);
-				$("#view_category_thumbnail").html('<img src="'+public_path+'/media/'+thumbnail+'">');
-			}
-
-			$("#remove_category_thumbnail").show();
-
-		} else if (media_type == 'Subheader') {
-			if(thumbnail !=''){
-				$("#subheader_image").val(thumbnail);
-				$("#view_subheader_image").html('<img src="'+public_path+'/media/'+thumbnail+'">');
-			}
-
-			$("#remove_subheader_image").show();
-
-		} else if (media_type == 'SEO_Image') {
-
-			if(thumbnail !=''){
-				$("#og_image").val(thumbnail);
-				$("#view_og_image").html('<img src="'+public_path+'/media/'+thumbnail+'">');
-			}
-
-			$("#remove_og_image").show();
-		}
-
-		$('#global_media_modal_view').modal('hide');
-    });
-
-	$("#name").on("blur", function () {
-		if(RecordId ==''){
-			onCategorySlug();
-		}
-	});
-
-	$("#language_code").val(0).trigger("chosen:updated");
-
-	$("#language_code").on("change", function () {
-		onRefreshData();
-	});
-
 });
-// Add/Edit AJAX
+
+
+// =============== Add/Edit AJAX ===============
 function onConfirmWhenAddEdit() {
     $.ajax({
         type: 'POST',
@@ -114,7 +62,8 @@ function onConfirmWhenAddEdit() {
     });
 }
 
-// Edit
+
+// =============== Edit Package ===============
 function onEdit(id) {
     $.get(base_url + '/admin/packages/edit/' + id, function (data) {
         $('#title').val(data.title);
@@ -128,7 +77,6 @@ function onEdit(id) {
         $('#status').val(data.status);
         $('#RecordId').val(data.id);
 
-        $('#lan').trigger("chosen:updated");
         $('#status').trigger("chosen:updated");
 
         onFormPanel();
@@ -136,7 +84,7 @@ function onEdit(id) {
 }
 
 
-// Delete
+// =============== Delete Package ===============
 function onDelete(id) {
     if (confirm('Do you really want to delete this record?')) {
         $.ajax({
@@ -155,7 +103,8 @@ function onDelete(id) {
     }
 }
 
-// Bulk action
+
+// =============== Bulk Action ===============
 function onBulkAction() {
     var action = $('#bulk-action').val();
     var ids = [];
@@ -184,13 +133,15 @@ function onBulkAction() {
     }
 }
 
-// Search (optional)
+
+// =============== Search ===============
 function onSearch() {
     var search = $('#search').val();
     window.location.href = base_url + '/admin/packages?search=' + search;
 }
 
-// Toggle Form/List panels
+
+// =============== Panel Toggles ===============
 function onFormPanel() {
     $('#list-panel').hide();
     $('#form-panel').show();
