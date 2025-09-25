@@ -232,7 +232,10 @@
 <!-- /main Section -->
 
 <!--Global Media-->
+@include('backend.partials.global_media')
+<!--/Global Media/-->
 
+@endsection
 
 @push('scripts')
 <!-- css/js -->
