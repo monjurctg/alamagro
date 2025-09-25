@@ -51,7 +51,7 @@ function resetForm(id) {
 function onConfirmWhenAddEdit() {
     $.ajax({
         type: 'POST',
-        url: base_url + '/admin/packages/store',
+        url: base_url + '/backend/packages/store',
         data: $('#DataEntry_formId').serialize(),
         success: function (response) {
             if (response.success) {
@@ -70,7 +70,7 @@ function onConfirmWhenAddEdit() {
 
 // =============== Edit Package ===============
 function onEdit(id) {
-    $.get(base_url + '/admin/packages/edit/' + id, function (data) {
+    $.get(base_url + '/backend/packages/edit/' + id, function (data) {
         $('#title').val(data.title);
         $('#subtitle').val(data.subtitle);
         $('#price').val(data.price);
@@ -93,7 +93,7 @@ function onEdit(id) {
 function onDelete(id) {
     if (confirm('Do you really want to delete this record?')) {
         $.ajax({
-            url: base_url + '/admin/packages/delete/' + id,
+            url: base_url + '/backend/packages/delete/' + id,
             type: 'DELETE',
             data: { _token: $('meta[name="csrf-token"]').attr('content') },
             success: function (response) {
