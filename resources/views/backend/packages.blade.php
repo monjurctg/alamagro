@@ -190,26 +190,20 @@
 		</div>
 	</div>
 	<!-- /main Section -->
-
-<!--Global Media-->
-@include('backend.partials.global_media')
-<!--/Global Media/-->
-
 @endsection
 
 @push('scripts')
-<!-- css/js -->
-<script type="text/javascript">
-var media_type = 'Product_Thumbnail';
-var TEXT = [];
-	TEXT['Do you really want to edit this record'] = "{{ __('Do you really want to edit this record') }}";
-	TEXT['Do you really want to delete this record'] = "{{ __('Do you really want to delete this record') }}";
-	TEXT['Do you really want to publish this records'] = "{{ __('Do you really want to publish this records') }}";
-	TEXT['Do you really want to draft this records'] = "{{ __('Do you really want to draft this records') }}";
-	TEXT['Do you really want to delete this records'] = "{{ __('Do you really want to delete this records') }}";
-	TEXT['Please select action'] = "{{ __('Please select action') }}";
-	TEXT['Please select record'] = "{{ __('Please select record') }}";
-</script>
-<script src="{{asset('public/backend/pages/product-categories.js')}}"></script>
-<script src="{{asset('public/backend/pages/global-media.js')}}"></script>
+	<!-- js text constants -->
+	<script type="text/javascript">
+		var TEXT = [];
+		TEXT['Do you really want to edit this record'] = "{{ __('Do you really want to edit this record') }}";
+		TEXT['Do you really want to delete this record'] = "{{ __('Do you really want to delete this record') }}";
+		TEXT['Do you really want to publish this records'] = "{{ __('Do you really want to activate these records') }}";
+		TEXT['Do you really want to draft this records'] = "{{ __('Do you really want to deactivate these records') }}";
+		TEXT['Do you really want to delete this records'] = "{{ __('Do you really want to delete these records') }}";
+		TEXT['Please select action'] = "{{ __('Please select action') }}";
+		TEXT['Please select record'] = "{{ __('Please select record') }}";
+	</script>
+	<script src="{{asset('public/backend/pages/packages.js')}}"></script>
+	<script src="{{asset('public/backend/pages/global-media.js')}}"></script>
 @endpush
