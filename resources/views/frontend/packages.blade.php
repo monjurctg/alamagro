@@ -120,12 +120,12 @@
     <nav class="hero-gradient shadow-sm sticky top-0 z-40">
         <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
+                <a href="/" class="flex items-center space-x-3">
                     <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
                         <i class="fas fa-seedling text-white text-xl"></i>
                     </div>
                     <h1 class="text-2xl font-bold text-white">তরুলতা</h1>
-                </div>
+                </a>
                 <div class="hidden md:flex items-center space-x-6">
                     <a href="#packages" class="text-white hover:text-green-200 transition-colors">প্যাকেজ</a>
                     <a href="#services" class="text-white hover:text-green-200 transition-colors">সেবা</a>
