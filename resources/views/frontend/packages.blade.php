@@ -36,35 +36,47 @@ $gtext = gtext();
 @section('content')
 <body class="bg-gray-50">
     <!-- Navigation -->
-    <nav class="hero-gradient shadow-sm sticky top-0 z-40">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                        <i class="fas fa-seedling text-white text-xl"></i>
-                    </div>
-                    <h1 class="text-2xl font-bold text-white">তরুলতা</h1>
-                </div>
-                <div class="hidden md:flex items-center space-x-6">
-                    <a href="#packages" class="text-white hover:text-green-200 transition-colors">প্যাকেজ</a>
-                    <a href="#services" class="text-white hover:text-green-200 transition-colors">সেবা</a>
-                    <a href="#contact" class="text-white hover:text-green-200 transition-colors">যোগাযোগ</a>
-                    <div class="flex items-center space-x-3 ml-4">
-                        <a href="#" class="text-white hover:text-green-200 transition-colors">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="text-white hover:text-green-200 transition-colors">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                    </div>
-                </div>
-                <a href="tel:01886950681"
-                    class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-full transition-all">
-                    <i class="fas fa-phone mr-2"></i>কল করুন
-                </a>
-            </div>
-        </div>
-    </nav>
+   <nav class="navbar navbar-expand-md sticky-top shadow-sm" style="background: linear-gradient(90deg, #4caf50, #2e7d32); z-index: 1040;">
+  <div class="container py-3">
+    <!-- Logo & Title -->
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <div class="d-flex align-items-center justify-content-center rounded-circle bg-white bg-opacity-25" style="width: 40px; height: 40px;">
+        <i class="fas fa-seedling text-white fs-5"></i>
+      </div>
+      <h1 class="ms-2 mb-0 fw-bold text-white fs-4">তরুলতা</h1>
+    </a>
+
+    <!-- Toggler -->
+    <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Nav links -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#packages">প্যাকেজ</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#services">সেবা</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#contact">যোগাযোগ</a>
+        </li>
+        <li class="nav-item ms-3 d-flex align-items-center">
+          <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-white"><i class="fab fa-instagram"></i></a>
+        </li>
+        <li class="nav-item ms-3">
+          <a href="tel:01886950681" class="btn btn-outline-light rounded-pill px-3">
+            <i class="fas fa-phone me-2"></i>কল করুন
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
 
     <!-- Hero Section -->
     <section class="hero-gradient py-20">
