@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Package;
 
 
-class PackagesController extends Controller
+class HomePackagesController extends Controller
 {
     public function index()
     {

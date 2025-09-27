@@ -106,7 +106,7 @@ Route::post('/frontend/subscribePopupOff', [App\Http\Controllers\Backend\Newslet
 //Stores
 Route::get('/stores/{id}/{title}', [App\Http\Controllers\Frontend\StoresController::class, 'getStoresData'])->name('frontend.stores');
 Route::get('/frontend/getStoresGrid', [App\Http\Controllers\Frontend\StoresController::class, 'getStoresGrid'])->name('frontend.getStoresGrid');
-Route::get('/frontend/packages', [App\Http\Controllers\Frontend\PackagesController::class, 'index'])->name('frontend.index');
+Route::get('/frontend/packages', [App\Http\Controllers\Frontend\HomePackagesController::class, 'index'])->name('frontend.index');
 
 Route::prefix('backend')->group(function () {
 
