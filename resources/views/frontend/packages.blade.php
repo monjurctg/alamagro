@@ -1,5 +1,5 @@
 @extends('layouts.frontend')
-@section('title', __('Home'))
+@section('Services', __('Packages'))
 @php
 $PageVariation = PageVariation();
 $gtext = gtext();
