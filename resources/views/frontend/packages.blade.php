@@ -33,6 +33,7 @@ $gtext = gtext();
 @section('header')
 @include('frontend.partials.header')
 @endsection
+@section('content')
 <body class="bg-gray-50">
     <!-- Navigation -->
     <nav class="hero-gradient shadow-sm sticky top-0 z-40">
