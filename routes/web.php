@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\Backend\PackageController;
+
+use App\Http\Controllers\HomePackagesController;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -106,7 +108,8 @@ Route::post('/frontend/subscribePopupOff', [App\Http\Controllers\Backend\Newslet
 //Stores
 Route::get('/stores/{id}/{title}', [App\Http\Controllers\Frontend\StoresController::class, 'getStoresData'])->name('frontend.stores');
 Route::get('/frontend/getStoresGrid', [App\Http\Controllers\Frontend\StoresController::class, 'getStoresGrid'])->name('frontend.getStoresGrid');
-Route::get('/frontend/packages', [App\Http\Controllers\Frontend\HomePackagesController::class, 'index'])->name('frontend.index');
+Route::get('/frontend/packages', [HomePackagesController::class, 'index'])
+    ->name('frontend.index');
 
 Route::prefix('backend')->group(function () {
 
@@ -547,10 +550,10 @@ Route::prefix('backend')->group(function () {
 	Route::post('/SellerSettingsSave', [App\Http\Controllers\Backend\SellerSettingsController::class, 'SellerSettingsSave'])->name('backend.SellerSettingsSave')->middleware(['auth', 'is_admin']);
 
 
-	Route::get('/packages', [PackageController::class, 'index'])->name('backend.packages')->middleware(['auth', 'is_admin']);
-    Route::post('/packages/store', [PackageController::class, 'store'])->name('backend.packages.store')->middleware(['auth', 'is_admin']);
-    Route::get('/packages/edit/{id}', [PackageController::class, 'edit'])->name('backend.packages.edit')->middleware(['auth', 'is_admin']);
-    Route::delete('/packages/delete/{id}', [PackageController::class, 'destroy'])->name('backend.packages.delete')->middleware(['auth', 'is_admin']);
+	Route::get('/packages', [App\Http\Controllers\Backend\PackageController::class, 'index'])->name('backend.packages')->middleware(['auth', 'is_admin']);
+    Route::post('/packages/store', [App\Http\Controllers\Backend\PackageController::class, 'store'])->name('backend.packages.store')->middleware(['auth', 'is_admin']);
+    Route::get('/packages/edit/{id}', [App\Http\Controllers\Backend\PackageController::class, 'edit'])->name('backend.packages.edit')->middleware(['auth', 'is_admin']);
+    Route::delete('/packages/delete/{id}', [App\Http\Controllers\Backend\PackageController::class, 'destroy'])->name('backend.packages.delete')->middleware(['auth', 'is_admin']);
 
 });
 
