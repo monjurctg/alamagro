@@ -49,6 +49,8 @@ function resetForm(id) {
 
 // =============== Add/Edit AJAX ===============
 function onConfirmWhenAddEdit() {
+    console.log($('#DataEntry_formId').serialize());
+    return
     $.ajax({
         type: 'POST',
         url: base_url + '/backend/packages/store',
