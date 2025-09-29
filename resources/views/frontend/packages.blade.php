@@ -1,15 +1,50 @@
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>তরুলতা - বাগান পরিচর্যা সেবা | চট্টগ্রাম</title>
+
+@extends('layouts.frontend')
+
+@section('title', __('Packages'))
+@php
+$PageVariation = PageVariation();
+$gtext = gtext();
+@endphp
+
+@section('meta-content')
+	<meta name="keywords" content="{{ $gtext['og_keywords'] }}" />
+	<meta name="description" content="{{ $gtext['og_description'] }}" />
+	<meta property="og:title" content="{{ $gtext['og_title'] }}" />
+	<meta property="og:site_name" content="{{ $gtext['site_name'] }}" />
+	<meta property="og:description" content="{{ $gtext['og_description'] }}" />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="{{ url()->current() }}" />
+	<meta property="og:image" content="{{ asset('public/media/'.$gtext['og_image']) }}" />
+	<meta property="og:image:width" content="600" />
+	<meta property="og:image:height" content="315" />
+	@if($gtext['fb_publish'] == 1)
+	<meta name="fb:app_id" property="fb:app_id" content="{{ $gtext['fb_app_id'] }}" />
+	@endif
+	<meta name="twitter:card" content="summary_large_image">
+	@if($gtext['twitter_publish'] == 1)
+	<meta name="twitter:site" content="{{ $gtext['twitter_id'] }}">
+	<meta name="twitter:creator" content="{{ $gtext['twitter_id'] }}">
+	@endif
+	<meta name="twitter:url" content="{{ url()->current() }}">
+	<meta name="twitter:title" content="{{ $gtext['og_title'] }}">
+	<meta name="twitter:description" content="{{ $gtext['og_description'] }}">
+	<meta name="twitter:image" content="{{ asset('public/media/'.$gtext['og_image']) }}">
+        <title>তরুলতা - বাগান পরিচর্যা সেবা | চট্টগ্রাম</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+@endsection
+
+@section('header')
+@include('frontend.partials.header')
+@endsection
+
+@section('content')
+
     <style>
         :root {
             --primary-green: #10b981;
@@ -744,4 +779,4 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
+@endsection
