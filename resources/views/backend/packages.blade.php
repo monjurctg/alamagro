@@ -136,7 +136,7 @@
 												<label for="type">{{ __('Type') }}</label>
 												<select name="type" id="type" class="form-control">
 													<option value="monthly">Monthly</option>
-													<option value="yearly">Yearly</option>
+													<option value="fullday">Full Day</option>
 													<option value="custom">Custom</option>
 												</select>
 											</div>
