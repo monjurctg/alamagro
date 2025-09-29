@@ -181,141 +181,67 @@
         </div>
     </section>
 
-    <!-- Monthly Packages -->
-    <section id="packages" class="section-padding bg-white">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-                    মাসিক পরিচর্যার <span class="gradient-text">প্যাকেজ</span>
-                </h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    আপনার বাগানের জন্য উপযুক্ত প্যাকেজ বেছে নিন
-                </p>
-            </div>
+<!-- Monthly Packages -->
+<section id="packages" class="section-padding bg-white">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                মাসিক পরিচর্যার <span class="gradient-text">প্যাকেজ</span>
+            </h2>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                আপনার বাগানের জন্য উপযুক্ত প্যাকেজ বেছে নিন
+            </p>
+        </div>
 
-            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                <!-- Basic Package -->
-                <div class="price-card rounded-2xl p-8 hover-lift">
+        <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            @foreach($monthlyPackages as $package)
+                <div class="price-card rounded-2xl p-8 hover-lift {{ $package->is_popular ? 'featured relative' : '' }}">
+                    @if($package->is_popular)
+                        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                            <span class="bg-yellow-400 text-gray-800 px-4 py-2 rounded-full text-sm font-bold">
+                                <i class="fas fa-star mr-1"></i>সবচেয়ে জনপ্রিয়
+                            </span>
+                        </div>
+                    @endif
+
                     <div class="text-center">
                         <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                             <i class="fas fa-seedling text-green-600 text-2xl"></i>
                         </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-2">মৌলিক প্যাকেজ</h3>
-                        <div class="text-4xl font-bold text-green-600 mb-2">৬০০ টাকা</div>
-                        <p class="text-gray-600 mb-2">মাসে ২ বার</p>
-                        <p class="text-sm text-gray-500 mb-6">১.৫ - ২ ঘন্টার সেবা</p>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">{{ $package->title }}</h3>
+                        <div class="text-4xl font-bold text-green-600 mb-2">{{ $package->price }} টাকা</div>
+                        <p class="text-gray-600 mb-2">{{ $package->frequency }}</p>
+                        <p class="text-sm text-gray-500 mb-6">{{ $package->duration }}</p>
                     </div>
+
                     <ul class="space-y-3 mb-8">
-                        <li class="flex items-center text-gray-700">
-                            <i class="fas fa-check text-green-500 mr-3"></i>
-                            গাছ ছাঁটাই
-                        </li>
-                        <li class="flex items-center text-gray-700">
-                            <i class="fas fa-check text-green-500 mr-3"></i>
-                            আগাছা পরিষ্কার
-                        </li>
-                        <li class="flex items-center text-gray-700">
-                            <i class="fas fa-check text-green-500 mr-3"></i>
-                            সার-পানি দেওয়া
-                        </li>
+                        @foreach($package->features ?? [] as $feature)
+                            <li class="flex items-center text-gray-700">
+                                <i class="fas fa-check text-green-500 mr-3"></i>
+                                {{ $feature }}
+                            </li>
+                        @endforeach
                     </ul>
+
                     <a href="tel:01886950681"
                         class="w-full btn-primary py-3 rounded-xl font-semibold text-center block">
                         <i class="fas fa-phone mr-2"></i>বুক করুন
                     </a>
                 </div>
+            @endforeach
+        </div>
 
-                <!-- Standard Package -->
-                <div class="price-card featured rounded-2xl p-8 hover-lift relative">
-                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                        <span class="bg-yellow-400 text-gray-800 px-4 py-2 rounded-full text-sm font-bold">
-                            <i class="fas fa-star mr-1"></i>সবচেয়ে জনপ্রিয়
-                        </span>
-                    </div>
-                    <div class="text-center">
-                        <div
-                            class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <i class="fas fa-tree text-white text-2xl"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold mb-2">স্ট্যান্ডার্ড প্যাকেজ</h3>
-                        <div class="text-4xl font-bold mb-2">৯০০ টাকা</div>
-                        <p class="mb-2">মাসে ৩ বার</p>
-                        <p class="text-sm mb-6">১.৫ - ২ ঘন্টার সেবা</p>
-                    </div>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-300 mr-3"></i>
-                            গাছ ছাঁটাই
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-300 mr-3"></i>
-                            আগাছা পরিষ্কার
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-300 mr-3"></i>
-                            সার-পানি দেওয়া
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-green-300 mr-3"></i>
-                            মেডিসিন দেওয়া
-                        </li>
-                    </ul>
-                    <a href="tel:01886950681"
-                        class="w-full btn-secondary py-3 rounded-xl font-semibold text-center block">
-                        <i class="fas fa-phone mr-2"></i>বুক করুন
-                    </a>
-                </div>
-
-                <!-- Premium Package -->
-                <div class="price-card rounded-2xl p-8 hover-lift">
-                    <div class="text-center">
-                        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <i class="fas fa-crown text-green-600 text-2xl"></i>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-800 mb-2">প্রিমিয়াম প্যাকেজ</h3>
-                        <div class="text-4xl font-bold text-green-600 mb-2">১২০০ টাকা</div>
-                        <p class="text-gray-600 mb-2">মাসে ৪ বার</p>
-                        <p class="text-sm text-gray-500 mb-6">১.৫ - ২ ঘন্টার সেবা</p>
-                    </div>
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center text-gray-700">
-                            <i class="fas fa-check text-green-500 mr-3"></i>
-                            গাছ ছাঁটাই
-                        </li>
-                        <li class="flex items-center text-gray-700">
-                            <i class="fas fa-check text-green-500 mr-3"></i>
-                            আগাছা পরিষ্কার
-                        </li>
-                        <li class="flex items-center text-gray-700">
-                            <i class="fas fa-check text-green-500 mr-3"></i>
-                            সার-পানি দেওয়া
-                        </li>
-                        <li class="flex items-center text-gray-700">
-                            <i class="fas fa-check text-green-500 mr-3"></i>
-                            মেডিসিন দেওয়া
-                        </li>
-                        <li class="flex items-center text-gray-700">
-                            <i class="fas fa-check text-green-500 mr-3"></i>
-                            বিশেষ যত্ন
-                        </li>
-                    </ul>
-                    <a href="tel:01886950681"
-                        class="w-full btn-primary py-3 rounded-xl font-semibold text-center block">
-                        <i class="fas fa-phone mr-2"></i>বুক করুন
-                    </a>
-                </div>
-            </div>
-
-            <div class="text-center mt-12">
-                <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 max-w-2xl mx-auto">
-                    <i class="fas fa-info-circle text-blue-500 text-2xl mb-3"></i>
-                    <p class="text-gray-700 text-lg">
-                        <span class="font-semibold">নোট:</span> প্যাকেজটি ছাদ বাগান এবং বারান্দার বাগানের জন্য
-                    </p>
-                </div>
+        <div class="text-center mt-12">
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 max-w-2xl mx-auto">
+                <i class="fas fa-info-circle text-blue-500 text-2xl mb-3"></i>
+                <p class="text-gray-700 text-lg">
+                    <span class="font-semibold">নোট:</span> প্যাকেজটি ছাদ বাগান এবং বারান্দার বাগানের জন্য
+                </p>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
 
     <!-- Plant-Based Packages -->
     <section class="section-padding bg-gray-50">
