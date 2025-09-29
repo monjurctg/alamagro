@@ -84,6 +84,7 @@
 							<!--Data Entry Form-->
 							<div id="form-panel" class="card-body dnone">
 								<form novalidate="" data-validate="parsley" id="DataEntry_formId">
+									 <input type="hidden" name="RecordId" id="RecordId">
 
 
 
@@ -189,7 +190,7 @@
 			@endif
 		</div>
 	</div>
-	<!-- /main Section -->
+	<!-- /main Section --> 
 @endsection
 
 @push('scripts')
