@@ -306,7 +306,7 @@ $gtext = gtext();
             }
         }
     </style>
-</head>
+
 <body>
     <!-- Hero Section -->
     <section class="hero-gradient">
