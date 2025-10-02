@@ -308,34 +308,43 @@ $gtext = gtext();
     </style>
 
 <body>
-    <!-- Hero Section -->
-    <section class="hero-gradient">
-        <div class="container">
+ <!-- Hero Section -->
+    <section class="bg-success bg-gradient py-5">
+        <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-lg-10 text-center text-white">
-                    <div class="mb-5">
-                        <i class="fas fa-leaf text-5xl text-green-200"></i>
+                    <!-- Hero Icon -->
+                    <div class="mb-4">
+                        <i class="fas fa-leaf fa-4x text-light"></i>
                     </div>
-                    <h1 class="display-3 fw-bold mb-4 text-shadow">
+                    
+                    <!-- Hero Title -->
+                    <h1 class="display-4 fw-bold mb-4 text-shadow">
                         গাছের যত্ন নিতে পারছেন না?
                     </h1>
-                    <p class="fs-4 mb-5">
+                    
+                    <!-- Hero Subtitle -->
+                    <p class="fs-5 mb-5 lh-lg">
                         বাগান আছে কিন্তু পরিচর্যার সময় নেই, তাই বাগানের গাছের অবস্থা খারাপ?
                         চট্টগ্রাম শহরে এখন ঘরে বসেই পাচ্ছেন নির্ভরযোগ্য মালি সার্ভিস—আপনার গাছের জন্য ঠিক ততটা যত্ন, যতটা
                         আপনার নিজের জন্য চান।
                     </p>
-                    <div class="glass-effect rounded-3 p-5 mb-5">
-                        <div class="d-flex align-items-center justify-content-center mb-3">
-                            <i class="fas fa-home fs-1 me-3"></i>
-                            <h3 class="fs-2 fw-semibold">ঘরে বসেই পেশাদার সেবা</h3>
+                    
+                    <!-- Feature Card -->
+                    <div class="bg-light bg-opacity-25 rounded-3 p-4 p-md-5 mb-5 border border-light border-opacity-25">
+                        <div class="d-flex flex-column flex-md-row align-items-center justify-content-center mb-3">
+                            <i class="fas fa-home fa-2x me-0 me-md-3 mb-2 mb-md-0"></i>
+                            <h3 class="fs-2 fw-semibold text-center text-md-start">ঘরে বসেই পেশাদার সেবা</h3>
                         </div>
-                        <p class="fs-5 opacity-90">বিশেষজ্ঞ মালি দিয়ে আপনার বাগানকে জীবন্ত করুন</p>
+                        <p class="fs-5 text-light mb-0">বিশেষজ্ঞ মালি দিয়ে আপনার বাগানকে জীবন্ত করুন</p>
                     </div>
+                    
+                    <!-- Call to Action Buttons -->
                     <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
-                        <a href="#packages" class="btn btn-secondary px-4 py-3">
+                        <a href="#packages" class="btn btn-warning btn-lg px-4 py-3 fw-semibold">
                             <i class="fas fa-tags me-2"></i>প্যাকেজ দেখুন
                         </a>
-                        <a href="https://wa.me/8801886950681" class="btn btn-primary px-4 py-3">
+                        <a href="https://wa.me/8801886950681" class="btn btn-outline-light btn-lg px-4 py-3 fw-semibold">
                             <i class="fab fa-whatsapp me-2"></i>হোয়াটসঅ্যাপ
                         </a>
                     </div>
