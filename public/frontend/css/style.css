@@ -1211,7 +1211,7 @@ ul.top-list-1 li i {
 	text-decoration: none;
 }
 .mobile-menu li.has-children-menu.active > a {
-    color: var(--theme-color);
+    color: #0ddf79;
 }
 .mobile-menu li.has-children-menu ul.dropdown,
 .mobile-menu li.has-children-menu.active ul.dropdown,
