@@ -130,10 +130,10 @@ label {
 	font-weight: 600;
 }
 a.aclick {
-	color: #444444;
+	color: #fff;
 }
 a.aclick:hover {
-	color: #444444;
+	color: #fff;
 	text-decoration: underline;
 }
 .tik i.fa {

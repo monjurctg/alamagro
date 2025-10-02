@@ -965,7 +965,7 @@ ul.top-list-1 li i {
 }
 .tp-menu ul li:hover > a,
 .tp-menu ul li.active > a {
-	color: var(--color-black);
+	color: #0ddf79;
 }
 
 /*submenu*/
@@ -1061,7 +1061,7 @@ ul.top-list-1 li i {
 .tp-menu ul li ul.submenu li.active > a,
 .tp-menu ul li .mega-menu ul li:hover a,
 .tp-menu ul li .mega-menu ul li.active > a {
-	color: var(--theme-color);
+	color: #0ddf79;
 	background: transparent;
 }
 .tp-menu ul li .mega-menu ul li.mega-title {
