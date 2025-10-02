@@ -1207,7 +1207,7 @@ ul.top-list-1 li i {
 }
 .mobile-menu li > a:hover,
 .mobile-menu li.active > a {
-    color: var(--theme-color);
+    color: #0ddf79;
 	text-decoration: none;
 }
 .mobile-menu li.has-children-menu.active > a {
