@@ -264,7 +264,7 @@
         @foreach ($brands as $brand)
           <div class="col-6 col-sm-4 col-md-3 col-lg-2">
             <div class="card h-100 shadow-sm border-0 d-flex align-items-center justify-content-center" style="height: 120px;">
-              <a href="{{ route('frontend.brand', [$brand->id, $brand->slug]) }}">
+              <a href="#">
                 <img src="{{ asset('public/media/' . $brand->logo) }}" 
                      alt="{{ $brand->name }}" 
                      class="img-fluid p-2" 
