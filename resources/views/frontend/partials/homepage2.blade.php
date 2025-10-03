@@ -229,56 +229,34 @@
 @endif
 <!-- /Featured Categories/ -->
 
-
-
 <section class="brands-section py-4">
-	<div class="container">
+  <div class="container">
 
-		<!-- Section Header -->
-		<div class="mb-3">
-			<h6 class="mb-0">Brands</h6>
-		</div>
+    <!-- Section Header -->
+    <div class="mb-3">
+      <h6 class="mb-0">Brands</h6>
+    </div>
 
+    <!-- Grid for All Devices -->
+    <div class="row g-3">
+      @foreach ($brands as $brand)
+        <div class="col-4 col-sm-3 col-md-2 col-lg-2">
+          <div class="card h-100 shadow-sm border-0 d-flex align-items-center justify-content-center"
+               style="height: 100px;">
+            <a href="{{ route('frontend.brand', ['id' => $brand->id, 'title' => Str::slug($brand->name)]) }}">
+              <img src="{{ asset('public/media/' . $brand->thumbnail) }}" 
+                   alt="{{ $brand->name }}" 
+                   class="img-fluid p-2" 
+                   loading="lazy">
+            </a>
+          </div>
+        </div>
+      @endforeach
+    </div>
 
-
-		<!-- Mobile Scroll (Horizontal) -->
-		<div class="d-block d-lg-none">
-			<div class="d-flex overflow-auto">
-				@foreach ($brands as $brand)
-					<div class="card mx-2 flex-shrink-0 d-flex align-items-center justify-content-center"
-						style="width: 100px; height: 100px;">
-						<a href="{{ route('frontend.brand', ['id' => $brand->id, 'title' => Str::slug($brand->name)]) }}">
-							<img src="{{ asset('public/media/' . $brand->thumbnail) }}" alt="{{ $brand->name }}"
-								class="img-fluid p-2" loading="lazy">
-						</a>
-
-
-					</div>
-				@endforeach
-			</div>
-		</div>
-
-		<!-- Desktop Grid -->
-		<div class="d-none d-lg-block">
-			<div class="row g-3">
-				@foreach ($brands as $brand)
-					<div class="col-6 col-sm-4 col-md-3 col-lg-2">
-						<div class="card h-100 shadow-sm border-0 d-flex align-items-center justify-content-center"
-							style="height: 120px;">
-							<a
-								href="{{ route('frontend.brand', ['id' => $brand->id, 'title' => Str::slug($brand->name)]) }}">
-								<img src="{{ asset('public/media/' . $brand->thumbnail) }}" alt="{{ $brand->name }}"
-									class="img-fluid p-2" loading="lazy">
-							</a>
-
-						</div>
-					</div>
-				@endforeach
-			</div>
-		</div>
-
-	</div>
+  </div>
 </section>
+
 
 <!-- /Offer Section/ -->
 
