@@ -246,7 +246,7 @@
       <div class="d-flex overflow-auto">
         @foreach ($brands as $brand)
           <div class="card mx-2 flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 100px; height: 100px;">
-           <a href="{{ route('frontend.brand', ['id' => $brand->id, 'title' => Str::slug($brand->name)]) }}">
+           <a href="#">
     <img src="{{ asset('public/media/' . $brand->thumbnail) }}" 
          alt="{{ $brand->name }}" 
          class="img-fluid p-2" 
