@@ -209,7 +209,7 @@ class HomeFrontendController extends Controller
 			}
 
 			//Brand
-			$brand = Brand::where('is_publish', '=', 1)->where('is_featured', '=', 1)->where('lan', '=', $lan)->orderBy('id', 'desc')->get();
+			$brands = Brand::where('is_publish', '=', 1)->where('is_featured', '=', 1)->where('lan', '=', $lan)->orderBy('id', 'desc')->get();
 			
 			
 			
@@ -272,7 +272,7 @@ class HomeFrontendController extends Controller
 			'offer_ad_position1', 
 			'offer_ad_position2', 
 			'home_video', 
-			'brand', 
+			'brands', 
 		
 			'trending_products', 
 			'top_rated', 
