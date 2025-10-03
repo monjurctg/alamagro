@@ -47,9 +47,9 @@
 									<div class="slider-content text-white">
 										<!-- <h1 class="fw-bold">{{ $row->title }}</h1>
 
-												@if(!empty($aRow->sub_title))
-													<p class="mt-3">{{ $aRow->sub_title }}</p>
-												@endif -->
+																@if(!empty($aRow->sub_title))
+																	<p class="mt-3">{{ $aRow->sub_title }}</p>
+																@endif -->
 
 										@if(!empty($aRow->button_text))
 											<a href="{{ $row->url }}" class="btn theme-btn mt-3" {{ $aRow->target == '' ? '' : "target=" . $aRow->target }}>
@@ -77,8 +77,8 @@
 				<div class="col-md-12">
 					<div class="section-heading text-center">
 						<!-- @if($section2->desc != '')
-									<h5>{{ $section2->desc }}</h5>
-								@endif -->
+											<h5>{{ $section2->desc }}</h5>
+										@endif -->
 
 						@if($section2->title != '')
 							<h2>{{ $section2->title }}</h2>
@@ -151,8 +151,8 @@
 				align-self: center;
 				/* padding: 0.5rem 0.2rem; */
 				/* overflow-x: auto;
-					scroll-snap-type: x mandatory;
-					-webkit-overflow-scrolling: touch; */
+							scroll-snap-type: x mandatory;
+							-webkit-overflow-scrolling: touch; */
 			}
 
 			.categories-scroll::-webkit-scrollbar {
@@ -232,51 +232,52 @@
 
 
 <section class="brands-section py-4">
-  <div class="container">
+	<div class="container">
 
-    <!-- Section Header -->
-    <div class="mb-3">
-      <h6 class="mb-0">Brands</h6>
-    </div>
+		<!-- Section Header -->
+		<div class="mb-3">
+			<h6 class="mb-0">Brands</h6>
+		</div>
 
-	
 
-    <!-- Mobile Scroll (Horizontal) -->
-    <div class="d-block d-lg-none">
-      <div class="d-flex overflow-auto">
-        @foreach ($brands as $brand)
-          <div class="card mx-2 flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 100px; height: 100px;">
-           <a href="#">
-    <img src="{{ asset('public/media/' . $brand->thumbnail) }}" 
-         alt="{{ $brand->name }}" 
-         class="img-fluid p-2" 
-         loading="lazy">
-</a>
- 
-          </div>
-        @endforeach
-      </div>
-    </div>
 
-    <!-- Desktop Grid -->
-    <div class="d-none d-lg-block">
-      <div class="row g-3">
-        @foreach ($brands as $brand)
-          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <div class="card h-100 shadow-sm border-0 d-flex align-items-center justify-content-center" style="height: 120px;">
-              <a href="#">
-                <img src="{{ asset('public/media/' . $brand->thumbnail) }}" 
-                     alt="{{ $brand->name }}" 
-                     class="img-fluid p-2" 
-                     loading="lazy">
-              </a>
-            </div>
-          </div>
-        @endforeach
-      </div>
-    </div>
+		<!-- Mobile Scroll (Horizontal) -->
+		<div class="d-block d-lg-none">
+			<div class="d-flex overflow-auto">
+				@foreach ($brands as $brand)
+					<div class="card mx-2 flex-shrink-0 d-flex align-items-center justify-content-center"
+						style="width: 100px; height: 100px;">
+						<a href="{{ route('frontend.brand', ['id' => $brand->id, 'title' => Str::slug($brand->name)]) }}">
+							<img src="{{ asset('public/media/' . $brand->thumbnail) }}" alt="{{ $brand->name }}"
+								class="img-fluid p-2" loading="lazy">
+						</a>
 
-  </div>
+
+					</div>
+				@endforeach
+			</div>
+		</div>
+
+		<!-- Desktop Grid -->
+		<div class="d-none d-lg-block">
+			<div class="row g-3">
+				@foreach ($brands as $brand)
+					<div class="col-6 col-sm-4 col-md-3 col-lg-2">
+						<div class="card h-100 shadow-sm border-0 d-flex align-items-center justify-content-center"
+							style="height: 120px;">
+							<a
+								href="{{ route('frontend.brand', ['id' => $brand->id, 'title' => Str::slug($brand->name)]) }}">
+								<img src="{{ asset('public/media/' . $brand->thumbnail) }}" alt="{{ $brand->name }}"
+									class="img-fluid p-2" loading="lazy">
+							</a>
+
+						</div>
+					</div>
+				@endforeach
+			</div>
+		</div>
+
+	</div>
 </section>
 
 <!-- /Offer Section/ -->
