@@ -230,6 +230,124 @@
 <!-- /Featured Categories/ -->
 
 
+
+	<section class="category-section">
+		<div class="container">
+
+			<!-- Section Header -->
+			<div class="d-flex justify-content-between align-items-center mb-3">
+				<h6 class="mb-0">{{ $section2->title ?? 'Featured Categories' }}</h6>
+				<!-- <a href="#" class="btn btn-sm vs fs-10">View All</a> -->
+			</div>
+
+			<!-- Horizontal Scroll Categories -->
+			<div class="categories-scroll">
+				@foreach ($pro_category as $row)
+					<div class="category-card">
+						<a href="{{ route('frontend.product-category', [$row->id, $row->slug]) }}" class="category-link">
+							<div class="category-img-container">
+								<img src="{{ asset('public/media/' . $row->thumbnail) }}" alt="{{ $row->name }}"
+									class="category-img" loading="lazy">
+							</div>
+							
+						</a>
+					</div>
+				@endforeach
+			</div>
+		</div>
+
+		<style>
+			/* Section Wrapper */
+			.category-section {
+				padding: 1.5rem 0;
+				background: #fff;
+			}
+
+			/* Scrollable Container */
+			.categories-scroll {
+				display: flex;
+				/* gap: 0.2rem; */
+				gap: 5px;
+				justify-content: center;
+				flex-wrap: wrap;
+				align-self: center;
+				/* padding: 0.5rem 0.2rem; */
+				/* overflow-x: auto;
+					scroll-snap-type: x mandatory;
+					-webkit-overflow-scrolling: touch; */
+			}
+
+			.categories-scroll::-webkit-scrollbar {
+				display: none;
+				/* Hide scrollbar */
+			}
+
+			/* Category Card */
+			.category-card {
+				flex: 0 0 auto;
+				/* Don’t shrink */
+				width: 32.33%;
+				/* margin-top: 10, */
+				/* Fixed card width */
+				background: #fff;
+				/* border-radius: 12px; */
+				box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+				overflow: hidden;
+				scroll-snap-align: start;
+				transition: transform 0.3s ease;
+
+			}
+
+			.category-card:hover {
+				transform: translateY(-3px);
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+			}
+
+			.category-link {
+				text-decoration: none;
+				color: inherit;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+			}
+
+			.category-img-container {
+				width: 100%;
+				aspect-ratio: 1 / 1;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				/* background: #f9fafb; */
+
+			}
+
+			.category-img {
+				width: 80%;
+				height: auto;
+				object-fit: contain;
+				transition: transform 0.3s ease;
+			}
+
+			.category-card:hover .category-img {
+				transform: scale(1.05);
+			}
+
+			.category-content {
+				padding: 0.6rem;
+				text-align: center;
+			}
+
+			.category-title {
+				font-size: 0.75rem;
+				font-weight: 600;
+				color: #1f2937;
+				margin: 0;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: nowrap;
+			}
+		</style>
+	</section>
 <!-- /Offer Section/ -->
 
 <!-- New Products -->
