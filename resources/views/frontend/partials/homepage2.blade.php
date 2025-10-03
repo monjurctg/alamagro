@@ -239,17 +239,19 @@
       <h6 class="mb-0">Brands</h6>
     </div>
 
+	
+
     <!-- Mobile Scroll (Horizontal) -->
     <div class="d-block d-lg-none">
       <div class="d-flex overflow-auto">
         @foreach ($brands as $brand)
           <div class="card mx-2 flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 100px; height: 100px;">
-            <a href="{{ route('frontend.brand', [$brand->id, $brand->slug]) }}">
-              <img src="{{ asset('public/media/' . $brand->logo) }}" 
-                   alt="{{ $brand->name }}" 
-                   class="img-fluid p-2" 
-                   loading="lazy">
-            </a>
+           <a href="{{ route('frontend.brand', ['id' => $brand->id, 'title' => $brand->slug]) }}">
+    <img src="{{ asset('public/media/' . $brand->logo) }}" 
+         alt="{{ $brand->name }}" 
+         class="img-fluid p-2" 
+         loading="lazy">
+</a>
           </div>
         @endforeach
       </div>
