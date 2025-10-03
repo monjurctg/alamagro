@@ -231,27 +231,24 @@
 
 
 
-<section class="category-section py-4">
+<section class="brands-section py-4">
   <div class="container">
 
     <!-- Section Header -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h6 class="mb-0">Featured Categories</h6>
-      <a href="#" class="btn btn-sm btn-outline-success">View All</a>
+    <div class="mb-3">
+      <h6 class="mb-0">Brands</h6>
     </div>
 
     <!-- Mobile Scroll (Horizontal) -->
     <div class="d-block d-lg-none">
       <div class="d-flex overflow-auto">
-        @foreach ($pro_category as $row)
-          <div class="card text-center mx-2 flex-shrink-0" style="width: 120px;">
-            <a href="{{ route('frontend.product-category', [$row->id, $row->slug]) }}" class="text-decoration-none text-dark">
-              <div class="p-3">
-                <img src="{{ asset('public/media/' . $row->thumbnail) }}" 
-                     alt="{{ $row->name }}" 
-                     class="img-fluid mb-2" loading="lazy">
-                <p class="small mb-0">{{ $row->name }}</p>
-              </div>
+        @foreach ($brands as $brand)
+          <div class="card mx-2 flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 100px; height: 100px;">
+            <a href="{{ route('frontend.brand', [$brand->id, $brand->slug]) }}">
+              <img src="{{ asset('public/media/' . $brand->logo) }}" 
+                   alt="{{ $brand->name }}" 
+                   class="img-fluid p-2" 
+                   loading="lazy">
             </a>
           </div>
         @endforeach
@@ -261,16 +258,14 @@
     <!-- Desktop Grid -->
     <div class="d-none d-lg-block">
       <div class="row g-3">
-        @foreach ($pro_category as $row)
+        @foreach ($brands as $brand)
           <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <div class="card text-center h-100 shadow-sm border-0">
-              <a href="{{ route('frontend.product-category', [$row->id, $row->slug]) }}" class="text-decoration-none text-dark">
-                <div class="p-3">
-                  <img src="{{ asset('public/media/' . $row->thumbnail) }}" 
-                       alt="{{ $row->name }}" 
-                       class="img-fluid mb-2" loading="lazy">
-                  <p class="small mb-0">{{ $row->name }}</p>
-                </div>
+            <div class="card h-100 shadow-sm border-0 d-flex align-items-center justify-content-center" style="height: 120px;">
+              <a href="{{ route('frontend.brand', [$brand->id, $brand->slug]) }}">
+                <img src="{{ asset('public/media/' . $brand->logo) }}" 
+                     alt="{{ $brand->name }}" 
+                     class="img-fluid p-2" 
+                     loading="lazy">
               </a>
             </div>
           </div>
