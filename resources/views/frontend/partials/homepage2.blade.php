@@ -244,9 +244,9 @@
           <div class="card h-100 shadow-sm border-0 d-flex align-items-center justify-content-center"
                style="height: 100px;">
             <a href="{{ route('frontend.brand', ['id' => $brand->id, 'title' => Str::slug($brand->name)]) }}">
-              <img src="{{ asset('public/media/' . $brand->thumbnail) }}" 
-                   alt="{{ $brand->name }}" 
-                   class="img-fluid p-2" 
+              <img src="{{ asset('public/media/' . $brand->thumbnail) }}"
+                   alt="{{ $brand->name }}"
+                   class="img-fluid p-2"
                    loading="lazy">
             </a>
           </div>
@@ -514,7 +514,7 @@
 <!-- /Top Rated Products/ -->
 
 <!-- Video Section -->
-@if($home_video['is_publish'] == 1)
+<!-- @if($home_video['is_publish'] == 1)
 	<section class="section video-section"
 		style="background-image: url({{ asset('public/media/' . $home_video['image']) }});">
 		<div class="container">
@@ -538,7 +538,7 @@
 			</div>
 		</div>
 	</section>
-@endif
+@endif -->
 <!-- /Video Section/ -->
 
 

@@ -48,7 +48,7 @@ $gtext = gtext();
 @endif
 
 <!-- Start of Modal -->
-<div class="modal fade modal_newsletter_card" id="subscribe_popup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<!-- <div class="modal fade modal_newsletter_card" id="subscribe_popup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content" style="background-image: url({{ asset('public/media/'.$gtext['bg_image_popup']) }});">
 			<button onclick="popup_modal_close()" type="button" class="modal-close" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x-lg"></i></button>
@@ -68,7 +68,7 @@ $gtext = gtext();
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
 <!-- /End of Modal/ -->
 
 @endsection
