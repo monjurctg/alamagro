@@ -89,8 +89,8 @@ Route::post('/frontend/make_order', [App\Http\Controllers\Frontend\CheckoutFront
 Route::get('/thank', [App\Http\Controllers\Frontend\CheckoutFrontController::class, 'LoadThank'])->name('frontend.thank');
 
 //PayPal
-Route::get('/PayPalpayment-cancel', [App\Http\Controllers\Frontend\CheckoutFrontController::class, 'PayPalPaymentCancel'])->name('cancel.PayPalPayment');
-Route::get('/PayPalpayment-success', [App\Http\Controllers\Frontend\CheckoutFrontController::class, 'PayPalPaymentSuccess'])->name('success.PayPalPayment');
+// Route::get('/PayPalpayment-cancel', [App\Http\Controllers\Frontend\CheckoutFrontController::class, 'PayPalPaymentCancel'])->name('cancel.PayPalPayment');
+// Route::get('/PayPalpayment-success', [App\Http\Controllers\Frontend\CheckoutFrontController::class, 'PayPalPaymentSuccess'])->name('success.PayPalPayment');
 
 //Order Tracking
 Route::get('/order-tracking', [App\Http\Controllers\Frontend\OrderTrackingController::class, 'getOrderTracking'])->name('frontend.order-tracking');
@@ -125,7 +125,7 @@ Route::prefix('backend')->group(function () {
 	Route::post('/bulkActionOrders', [App\Http\Controllers\Backend\OrdersController::class, 'bulkActionOrders'])->name('backend.bulkActionOrders')->middleware(['auth', 'is_admin']);
 	Route::get('/order/{id}', [App\Http\Controllers\Backend\OrdersController::class, 'getOrderData'])->name('backend.order')->middleware(['auth', 'is_admin']);
 	Route::post('/updateOrderStatus', [App\Http\Controllers\Backend\OrdersController::class, 'updateOrderStatus'])->name('backend.updateOrderStatus')->middleware(['auth', 'is_admin']);
-	Route::get('/getPaymentOrderStatusData', [App\Http\Controllers\Backend\OrdersController::class, 'getPaymentOrderStatusData'])->name('backend.getPaymentOrderStatusData')->middleware(['auth', 'is_admin']);
+	// Route::get('/getPaymentOrderStatusData', [App\Http\Controllers\Backend\OrdersController::class, 'getPaymentOrderStatusData'])->name('backend.getPaymentOrderStatusData')->middleware(['auth', 'is_admin']);
 	Route::post('/deleteOrder', [App\Http\Controllers\Backend\OrdersController::class, 'deleteOrder'])->name('backend.deleteOrder')->middleware(['auth', 'is_admin']);
 
 	//Transactions
@@ -172,7 +172,7 @@ Route::prefix('backend')->group(function () {
 	Route::post('/getSellerById', [App\Http\Controllers\Backend\SellerController::class, 'getSellerById'])->name('backend.getSellerById')->middleware(['auth', 'is_admin']);
 	Route::post('/deleteSeller', [App\Http\Controllers\Backend\SellerController::class, 'deleteSeller'])->name('backend.deleteSeller')->middleware(['auth', 'is_admin']);
 	Route::post('/bulkActionSellers', [App\Http\Controllers\Backend\SellerController::class, 'bulkActionSellers'])->name('backend.bulkActionSellers')->middleware(['auth', 'is_admin']);
-	Route::post('/saveBankInformationData', [App\Http\Controllers\Backend\SellerController::class, 'saveBankInformationData'])->name('backend.saveBankInformationData')->middleware(['auth', 'is_admin']);
+	// Route::post('/saveBankInformationData', [App\Http\Controllers\Backend\SellerController::class, 'saveBankInformationData'])->name('backend.saveBankInformationData')->middleware(['auth', 'is_admin']);
 
 	//Users Page
 	Route::get('/users', [App\Http\Controllers\Backend\UsersController::class, 'getUsersPageLoad'])->name('backend.users')->middleware(['auth', 'is_admin']);
@@ -500,13 +500,13 @@ Route::prefix('backend')->group(function () {
 	Route::post('/saveMailSettings', [App\Http\Controllers\Backend\SettingsController::class, 'saveMailSettings'])->name('backend.saveMailSettings')->middleware(['auth', 'is_admin']);
 
 	//Payment methods
-	Route::get('/payment-methods', [App\Http\Controllers\Backend\SettingsController::class, 'loadPaymentMethodsPage'])->name('backend.payment-methods')->middleware(['auth', 'is_admin']);
-	Route::post('/StripeSettingsUpdate', [App\Http\Controllers\Backend\SettingsController::class, 'StripeSettingsUpdate'])->name('backend.StripeSettingsUpdate')->middleware(['auth', 'is_admin']);
-	Route::post('/PaypalSettingsUpdate', [App\Http\Controllers\Backend\SettingsController::class, 'PaypalSettingsUpdate'])->name('backend.PaypalSettingsUpdate')->middleware(['auth', 'is_admin']);
-	Route::post('/RazorpaySettingsUpdate', [App\Http\Controllers\Backend\SettingsController::class, 'RazorpaySettingsUpdate'])->name('backend.RazorpaySettingsUpdate')->middleware(['auth', 'is_admin']);
-	Route::post('/MollieSettingsUpdate', [App\Http\Controllers\Backend\SettingsController::class, 'MollieSettingsUpdate'])->name('backend.MollieSettingsUpdate')->middleware(['auth', 'is_admin']);
+	// Route::get('/payment-methods', [App\Http\Controllers\Backend\SettingsController::class, 'loadPaymentMethodsPage'])->name('backend.payment-methods')->middleware(['auth', 'is_admin']);
+	// Route::post('/StripeSettingsUpdate', [App\Http\Controllers\Backend\SettingsController::class, 'StripeSettingsUpdate'])->name('backend.StripeSettingsUpdate')->middleware(['auth', 'is_admin']);
+	// Route::post('/PaypalSettingsUpdate', [App\Http\Controllers\Backend\SettingsController::class, 'PaypalSettingsUpdate'])->name('backend.PaypalSettingsUpdate')->middleware(['auth', 'is_admin']);
+	// Route::post('/RazorpaySettingsUpdate', [App\Http\Controllers\Backend\SettingsController::class, 'RazorpaySettingsUpdate'])->name('backend.RazorpaySettingsUpdate')->middleware(['auth', 'is_admin']);
+	// Route::post('/MollieSettingsUpdate', [App\Http\Controllers\Backend\SettingsController::class, 'MollieSettingsUpdate'])->name('backend.MollieSettingsUpdate')->middleware(['auth', 'is_admin']);
 	Route::post('/CODSettingsUpdate', [App\Http\Controllers\Backend\SettingsController::class, 'CODSettingsUpdate'])->name('backend.CODSettingsUpdate')->middleware(['auth', 'is_admin']);
-	Route::post('/BankSettingsUpdate', [App\Http\Controllers\Backend\SettingsController::class, 'BankSettingsUpdate'])->name('backend.BankSettingsUpdate')->middleware(['auth', 'is_admin']);
+	// Route::post('/BankSettingsUpdate', [App\Http\Controllers\Backend\SettingsController::class, 'BankSettingsUpdate'])->name('backend.BankSettingsUpdate')->middleware(['auth', 'is_admin']);
 
 	//Media Settings
 	Route::get('/media-settings', [App\Http\Controllers\Backend\SettingsController::class, 'loadMediaSettingsPage'])->name('backend.media-settings')->middleware(['auth', 'is_admin']);
@@ -573,7 +573,7 @@ Route::prefix('seller')->group(function () {
 	//Settings Page
 	Route::get('/settings', [App\Http\Controllers\Seller\SellerSettingsController::class, 'getSellerSettingsPageLoad'])->name('seller.settings')->middleware(['auth', 'is_seller']);
 	Route::post('/saveSellersData', [App\Http\Controllers\Seller\SellerSettingsController::class, 'saveSellersData'])->name('seller.saveSellersData')->middleware(['auth', 'is_seller']);
-	Route::post('/saveBankInformationData', [App\Http\Controllers\Seller\SellerSettingsController::class, 'saveBankInformationData'])->name('seller.saveBankInformationData')->middleware(['auth', 'is_seller']);
+	// Route::post('/saveBankInformationData', [App\Http\Controllers\Seller\SellerSettingsController::class, 'saveBankInformationData'])->name('seller.saveBankInformationData')->middleware(['auth', 'is_seller']);
 	Route::post('/hasShopSlug', [App\Http\Controllers\Seller\SellerSettingsController::class, 'hasShopSlug'])->name('seller.hasShopSlug')->middleware(['auth', 'is_seller']);
 
 	//Review & Ratings
@@ -587,7 +587,7 @@ Route::prefix('seller')->group(function () {
 	Route::get('/getOrdersTableData', [App\Http\Controllers\Seller\OrdersSellerController::class, 'getOrdersTableData'])->name('seller.getOrdersTableData')->middleware(['auth', 'is_seller']);
 	Route::get('/order/{id}', [App\Http\Controllers\Seller\OrdersSellerController::class, 'getOrderData'])->name('seller.order')->middleware(['auth', 'is_seller']);
 	Route::post('/updateOrderStatus', [App\Http\Controllers\Seller\OrdersSellerController::class, 'updateOrderStatus'])->name('seller.updateOrderStatus')->middleware(['auth', 'is_seller']);
-	Route::get('/getPaymentOrderStatusData', [App\Http\Controllers\Seller\OrdersSellerController::class, 'getPaymentOrderStatusData'])->name('seller.getPaymentOrderStatusData')->middleware(['auth', 'is_seller']);
+	// Route::get('/getPaymentOrderStatusData', [App\Http\Controllers\Seller\OrdersSellerController::class, 'getPaymentOrderStatusData'])->name('seller.getPaymentOrderStatusData')->middleware(['auth', 'is_seller']);
 	Route::post('/deleteOrder', [App\Http\Controllers\Seller\OrdersSellerController::class, 'deleteOrder'])->name('seller.deleteOrder')->middleware(['auth', 'is_seller']);
 
 	//Orders Excel/CSV Export

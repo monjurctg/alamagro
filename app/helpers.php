@@ -651,10 +651,7 @@ function gtext()
 		// Payment Gateways (Stripe, PayPal, etc.)
 
 		$paymentOptions = [
-			'stripe' => ['stripe_key', 'stripe_secret', 'currency', 'isenable'],
-			'paypal' => ['paypal_client_id', 'paypal_secret', 'paypal_currency', 'ismode_paypal', 'isenable_paypal'],
-			'razorpay' => ['razorpay_key_id', 'razorpay_key_secret', 'razorpay_currency', 'ismode_razorpay', 'isenable_razorpay'],
-			'mollie' => ['mollie_api_key', 'mollie_currency', 'ismode_mollie', 'isenable_mollie'],
+
 			'cash_on_delivery' => ['description', 'isenable'],
 			'bank_transfer' => ['description', 'isenable'],
 		];
