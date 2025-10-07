@@ -499,6 +499,8 @@ Route::prefix('backend')->group(function () {
 	Route::get('/mail-settings', [App\Http\Controllers\Backend\SettingsController::class, 'loadMailSettingsPage'])->name('backend.mail-settings')->middleware(['auth', 'is_admin']);
 	Route::post('/saveMailSettings', [App\Http\Controllers\Backend\SettingsController::class, 'saveMailSettings'])->name('backend.saveMailSettings')->middleware(['auth', 'is_admin']);
 
+
+
 	//Payment methods
 	// Route::get('/payment-methods', [App\Http\Controllers\Backend\SettingsController::class, 'loadPaymentMethodsPage'])->name('backend.payment-methods')->middleware(['auth', 'is_admin']);
 	// Route::post('/StripeSettingsUpdate', [App\Http\Controllers\Backend\SettingsController::class, 'StripeSettingsUpdate'])->name('backend.StripeSettingsUpdate')->middleware(['auth', 'is_admin']);

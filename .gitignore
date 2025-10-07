@@ -28,3 +28,5 @@ storage/*.key
 .php-cs-fixer.cache
 npm-debug.log*
 yarn-error.log*
+# Ignore .htaccess files
+.htaccess
