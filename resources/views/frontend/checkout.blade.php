@@ -169,18 +169,9 @@ $tax_rate = $gtax['percentage'];
 						<div class="row">
 							<div class="col-md-12">
 								<span class="text-danger error-text payment_method_error"></span>
-							
 
-								@if($gtext['isenable_mollie'] == '1')
-								<div class="payment_card">
-									<div class="checkboxlist">
-										<label class="checkbox-title">
-											<input id="payment_method_mollie" name="payment_method" type="radio" value="6"><img src="{{ asset('public/frontend/images/mollie.png') }}" alt="Mollie" />
-										</label>
-									</div>
-									<p id="pay_mollie" class="hideclass">{{ __('Pay online via Mollie') }}</p>
-								</div>
-								@endif
+
+
 
 								@if($gtext['cod_isenable'] == '1')
 								<div class="payment_card">
