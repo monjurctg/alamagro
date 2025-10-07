@@ -25,7 +25,6 @@
 				<li class="dnone"><a href="{{ route('backend.coupons') }}">{{ __('Coupons') }}</a></li>
 				<li><a href="{{ route('backend.tax') }}">{{ __('Tax') }}</a></li>
 				<li><a href="{{ route('backend.currency') }}">{{ __('Currency') }}</a></li>
-				<!-- <li><a href="{{ route('backend.payment-methods') }}">{{ __('Payment Methods') }}</a></li> -->
 				<li><a href="{{ route('backend.slider') }}">{{ __('Home Slider') }}</a></li>
 				<li><a href="{{ route('backend.offer-ads') }}">{{ __('Offer & Ads') }}</a></li>
 				<li><a href="{{ route('backend.home-video') }}">{{ __('Home Video Section') }}</a></li>
