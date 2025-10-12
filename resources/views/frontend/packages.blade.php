@@ -122,7 +122,7 @@ $gtext = gtext();
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
         border: 1px solid var(--gray-200);
         position: relative;
-        overflow: hidden;
+    
     }
 
     .price-card::before {
@@ -323,10 +323,10 @@ $gtext = gtext();
                 <div class="mb-4">
                     <i class="fas fa-leaf fa-4x text-light mb-4"></i>
                 </div>
-                <h1 class="display-4 fw-bold mb-4">
+                <h1 class="display-4 fw-bold mb-4 text-light">
                     গাছের যত্ন নিতে পারছেন না?
                 </h1>
-                <p class="fs-5 mb-5 lh-lg">
+                <p class="fs-5 mb-5 lh-lg text-light">
                     বাগান আছে কিন্তু পরিচর্যার সময় নেই, তাই বাগানের গাছের অবস্থা খারাপ?
                     চট্টগ্রাম শহরে এখন ঘরে বসেই পাচ্ছেন নির্ভরযোগ্য মালি সার্ভিস—আপনার গাছের জন্য ঠিক ততটা যত্ন, যতটা
                     আপনার নিজের জন্য চান।
