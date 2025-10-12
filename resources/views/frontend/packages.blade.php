@@ -129,11 +129,11 @@ $gtext = gtext();
         content: '';
         position: absolute;
         top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
+        left: 5;
+        right: 5;
+        height: 3px;
         border-radius: 20px;
-        width:'90%';
+        width:96%;
         
         background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
         transform: scaleX(0);
