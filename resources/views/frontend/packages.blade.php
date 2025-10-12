@@ -133,6 +133,7 @@ $gtext = gtext();
         right: 0;
         height: 4px;
         border-radius: 20px;
+        width:'90%';
         
         background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
         transform: scaleX(0);
