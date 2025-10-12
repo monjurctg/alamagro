@@ -8,8 +8,8 @@ $gtext = gtext();
 
 
 
-echo monthlyPackages;
-echo  fulldayPackages
+echo $monthlyPackages;
+echo  $fulldayPackages;
 @endphp
 
 @section('meta-content')
