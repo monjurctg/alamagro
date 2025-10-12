@@ -50,7 +50,7 @@ $gtext = gtext();
         --darker-green: #065f46;
         --light-green: #ecfdf5;
         --gradient-start: #0f766e;
-        --gradient-end: #065f46;
+        --gradient-end: #25a5732qZ;
         --white: #ffffff;
         --light-gray: #f9fafb;
         --gray-100: #f3f4f6;
