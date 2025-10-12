@@ -429,7 +429,7 @@ echo  $fulldayPackages;
         </div>
 
         <div class="row g-4 justify-content-center">
-            @foreach ($fullDayPackages as $package)
+            @foreach ($fulldayPackages as $package)
                 <div class="col-md-6 col-lg-4">
                     <div class="price-card hover-lift {{ $package['is_popular'] ? 'position-relative border border-success' : '' }}">
                         @if ($package['is_popular'])
