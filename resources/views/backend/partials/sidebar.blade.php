@@ -44,13 +44,13 @@
 				<li><a href="{{ route('backend.theme-options') }}">{{ __('Theme Options') }}</a></li>
 			</ul>
 		</li>
-		<li class="dropdown"><a class="nav-link has-dropdown" href="#" data-toggle="dropdown"><i class="fa fa-sitemap"></i>{{ __('Marketplace') }}</a>
+		<!-- <li class="dropdown"><a class="nav-link has-dropdown" href="#" data-toggle="dropdown"><i class="fa fa-sitemap"></i>{{ __('Marketplace') }}</a>
 			<ul class="dropdown-menu">
 				<li><a href="{{ route('backend.sellers') }}">{{ __('Sellers') }}</a></li>
 				<li><a href="{{ route('backend.withdrawals') }}">{{ __('Withdrawals') }}</a></li>
 				<li><a href="{{ route('backend.seller-settings') }}">{{ __('Settings') }}</a></li>
 			</ul>
-		</li>
+		</li> -->
 		<li><a href="{{ route('backend.customers') }}"><i class="fa fa-users"></i>{{ __('Customers') }}</a></li>
 		<li><a href="{{ route('backend.review') }}"><i class="fa fa-recycle"></i>{{ __('Review & Ratings') }}</a></li>
 		<li><a href="{{ route('backend.contact') }}"><i class="fa fa-envelope"></i>{{ __('Contact') }}</a></li>

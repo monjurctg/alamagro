@@ -5,6 +5,11 @@
 @php
 $PageVariation = PageVariation();
 $gtext = gtext();
+
+
+
+echo monthlyPackages;
+echo  fulldayPackages
 @endphp
 
 @section('meta-content')
@@ -42,6 +47,8 @@ $gtext = gtext();
 @section('header')
 @include('frontend.partials.header')
 @endsection
+
+
 
 @section('content')
 
