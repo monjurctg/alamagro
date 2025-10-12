@@ -4,7 +4,6 @@
 @php
 $PageVariation = PageVariation();
 $gtext = gtext();
-
 @endphp
 
 @section('meta-content')
@@ -60,55 +59,72 @@ $gtext = gtext();
         --gray-700: #374151;
         --gray-800: #1f2937;
         --gray-900: #111827;
+        --amber: #f59e0b;
+        --amber-bg: #fffbeb;
     }
-    
+
     body {
         font-family: 'Inter', 'Noto Sans Bengali', sans-serif;
-        line-height: 1.6;
+        line-height: 1.65;
         background-color: var(--light-gray);
         color: var(--gray-800);
+        scroll-behavior: smooth;
     }
-    
-    /* Hero Section */
+
     .hero-gradient {
-        background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
-        padding: 80px 0;
+        background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+        padding: 100px 0;
+        position: relative;
+        overflow: hidden;
     }
-    
+
+    .hero-gradient::before {
+        content: "";
+        position: absolute;
+        top: -40%;
+        right: -10%;
+        width: 800px;
+        height: 800px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.06);
+    }
+
     .glass-effect {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 20px;
     }
-    
+
     .hover-lift {
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        will-change: transform;
     }
-    
+
     .hover-lift:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        transform: translateY(-6px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
     }
-    
+
     .gradient-text {
         background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
+        display: inline-block;
     }
-    
-    /* Price Cards */
+
     .price-card {
         background: var(--white);
-        border: 1px solid var(--gray-200);
-        transition: all 0.3s ease;
         border-radius: 20px;
         padding: 40px 30px;
         height: 100%;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        border: 1px solid var(--gray-200);
         position: relative;
         overflow: hidden;
     }
-    
+
     .price-card::before {
         content: '';
         position: absolute;
@@ -120,98 +136,29 @@ $gtext = gtext();
         transform: scaleX(0);
         transition: transform 0.3s ease;
     }
-    
+
     .price-card:hover::before {
         transform: scaleX(1);
     }
-    
+
     .price-card.featured {
-        background: linear-gradient(135deg, var(--darker-green), var(--gradient-end));
-        border: none;
+        background: linear-gradient(145deg, var(--darker-green), var(--dark-green));
         color: white;
-        transform: scale(1.05);
+        border: none;
+        box-shadow: 0 10px 35px rgba(6, 95, 70, 0.35);
+        transform: scale(1.03);
     }
-    
-    .price-card.featured::before {
-        display: none;
-    }
-    
+
     .price-card.featured .text-gray-800,
-    .price-card.featured .text-gray-700 {
-        color: var(--white) !important;
-    }
-    
+    .price-card.featured .text-gray-700,
     .price-card.featured .text-gray-600 {
-        color: var(--light-green) !important;
+        color: white !important;
     }
-    
-    /* Service Cards */
-    .service-card {
-        background: var(--white);
-        border: 1px solid var(--gray-200);
-        transition: all 0.3s ease;
-        border-radius: 16px;
-        padding: 32px;
-        height: 100%;
-        text-align: center;
-    }
-    
-    .service-card:hover {
-        border-color: var(--primary-green);
-        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.15);
-        transform: translateY(-3px);
-    }
-    
-    /* Buttons */
-    .btn-primary {
-        background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
-        color: white;
-        transition: all 0.3s ease;
-        border-radius: 50px;
-        font-weight: 600;
-        padding: 12px 32px;
-        border: none;
-        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-    }
-    
-    .btn-primary:hover {
-        background: linear-gradient(135deg, var(--dark-green), var(--darker-green));
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-        color: white;
-    }
-    
-    .btn-secondary {
-        background: white;
-        color: var(--primary-green);
-        border: 2px solid var(--primary-green);
-        transition: all 0.3s ease;
-        border-radius: 50px;
-        font-weight: 600;
-        padding: 12px 32px;
-    }
-    
-    .btn-secondary:hover {
-        background: var(--primary-green);
-        color: white;
-        transform: translateY(-2px);
-    }
-    
-    /* Section Padding */
-    .section-padding {
-        padding: 100px 0;
-    }
-    
-    /* Text Shadow */
-    .text-shadow {
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    
-    /* Popular Badge */
+
     .popular-badge {
         background: linear-gradient(135deg, #fbbf24, #f59e0b);
         color: var(--gray-900);
-        padding: 10px 20px;
+        padding: 8px 20px;
         border-radius: 50px;
         font-weight: 700;
         font-size: 14px;
@@ -220,105 +167,7 @@ $gtext = gtext();
         justify-content: center;
         box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
     }
-    
-    .popular-badge i {
-        margin-right: 8px;
-    }
-    
-    /* Feature List */
-    .feature-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-    
-    .feature-list li {
-        margin-bottom: 12px;
-        display: flex;
-        align-items: center;
-        padding: 8px 0;
-    }
-    
-    .feature-list li i {
-        color: var(--primary-green);
-        min-width: 20px;
-        margin-right: 12px;
-        font-size: 14px;
-    }
-    
-    /* WhatsApp Button */
-    .whatsapp-float {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        background: #25D366;
-        color: white;
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
-        z-index: 1000;
-        transition: all 0.3s ease;
-        text-decoration: none;
-    }
-    
-    .whatsapp-float:hover {
-        transform: scale(1.1);
-        background: #128C7E;
-        color: white;
-        box-shadow: 0 12px 30px rgba(37, 211, 102, 0.6);
-    }
-    
-    /* Scroll to Top */
-    .scroll-top {
-        position: fixed;
-        bottom: 30px;
-        left: 30px;
-        background: var(--gray-800);
-        color: white;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        z-index: 1000;
-        transition: all 0.3s ease;
-        border: none;
-    }
-    
-    .scroll-top:hover {
-        transform: scale(1.1);
-        background: var(--darker-green);
-    }
-    
-    /* Important Note */
-    .important-note {
-        background: linear-gradient(135deg, #fffbeb, #fef3c7);
-        border-left: 6px solid #f59e0b;
-        border-radius: 16px;
-        padding: 40px;
-        box-shadow: 0 10px 30px rgba(245, 158, 11, 0.1);
-    }
-    
-    /* Contact Cards */
-    .contact-card {
-        border-radius: 20px;
-        padding: 40px 30px;
-        text-align: center;
-        height: 100%;
-        transition: all 0.3s ease;
-    }
-    
-    .contact-card:hover {
-        transform: translateY(-5px);
-    }
-    
-    /* Icon Styles */
+
     .icon-container {
         width: 80px;
         height: 80px;
@@ -329,58 +178,140 @@ $gtext = gtext();
         justify-content: center;
         margin: 0 auto 24px;
     }
-    
+
     .icon-container i {
         color: var(--primary-green);
         font-size: 2rem;
     }
-    
-    /* Responsive Adjustments */
-    @media (max-width: 768px) {
-        .hero-gradient {
-            padding: 60px 0;
-        }
-        
-        .section-padding {
-            padding: 60px 0;
-        }
-        
-        h1 {
-            font-size: 2.5rem !important;
-        }
-        
-        h2 {
-            font-size: 2rem !important;
-        }
-        
-        .price-card.featured {
-            transform: scale(1);
-        }
+
+    .feature-list {
+        list-style: none;
+        padding-left: 0;
     }
-    
+
+    .feature-list li {
+        margin-bottom: 12px;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .feature-list li i {
+        color: var(--primary-green);
+        min-width: 20px;
+        margin-right: 12px;
+        margin-top: 4px;
+        font-size: 0.9rem;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-weight: 600;
+        padding: 12px 28px;
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        transition: all 0.25s ease;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, var(--dark-green), var(--darker-green));
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-secondary {
+        background: white;
+        color: var(--primary-green);
+        border: 2px solid var(--primary-green);
+        border-radius: 12px;
+        font-weight: 600;
+        padding: 12px 28px;
+        transition: all 0.25s ease;
+    }
+
+    .btn-secondary:hover {
+        background: var(--primary-green);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .section-padding {
+        padding: 100px 0;
+    }
+
+    .important-note {
+        background: var(--amber-bg);
+        border-left: 6px solid var(--amber);
+        border-radius: 0 16px 16px 0;
+        padding: 40px;
+        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.1);
+    }
+
+    .whatsapp-float {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: #25D366;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+        z-index: 1050;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .whatsapp-float:hover {
+        transform: scale(1.15) rotate(8deg);
+        background: #128C7E;
+    }
+
+    .scroll-top {
+        position: fixed;
+        bottom: 30px;
+        left: 30px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--gray-800);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        z-index: 1050;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .scroll-top:hover {
+        transform: scale(1.15);
+        background: var(--darker-green);
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+        .section-padding { padding: 80px 0; }
+        .hero-gradient { padding: 80px 0; }
+    }
+
+    @media (max-width: 768px) {
+        h1 { font-size: 2.3rem !important; }
+        h2 { font-size: 1.9rem !important; }
+        .price-card.featured { transform: scale(1); }
+    }
+
     @media (max-width: 576px) {
-        .btn {
-            width: 100%;
-            margin-bottom: 12px;
-        }
-        
-        .btn:last-child {
-            margin-bottom: 0;
-        }
-        
-        .whatsapp-float {
-            width: 60px;
-            height: 60px;
-            bottom: 20px;
-            right: 20px;
-        }
-        
-        .scroll-top {
-            width: 50px;
-            height: 50px;
-            bottom: 20px;
-            left: 20px;
-        }
+        .btn { width: 100%; margin-bottom: 12px; }
+        .btn:last-child { margin-bottom: 0; }
+        .whatsapp-float { width: 60px; height: 60px; bottom: 20px; right: 20px; }
+        .scroll-top { width: 50px; height: 50px; bottom: 20px; left: 20px; }
     }
 </style>
 
@@ -389,24 +320,17 @@ $gtext = gtext();
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-lg-10 text-center text-white">
-                <!-- Hero Icon -->
                 <div class="mb-4">
                     <i class="fas fa-leaf fa-4x text-light mb-4"></i>
                 </div>
-                
-                <!-- Hero Title -->
-                <h1 class="display-4 fw-bold mb-4 text-shadow">
+                <h1 class="display-4 fw-bold mb-4">
                     গাছের যত্ন নিতে পারছেন না?
                 </h1>
-                
-                <!-- Hero Subtitle -->
                 <p class="fs-5 mb-5 lh-lg">
                     বাগান আছে কিন্তু পরিচর্যার সময় নেই, তাই বাগানের গাছের অবস্থা খারাপ?
                     চট্টগ্রাম শহরে এখন ঘরে বসেই পাচ্ছেন নির্ভরযোগ্য মালি সার্ভিস—আপনার গাছের জন্য ঠিক ততটা যত্ন, যতটা
                     আপনার নিজের জন্য চান।
                 </p>
-                
-                <!-- Feature Card -->
                 <div class="glass-effect rounded-4 p-4 p-md-5 mb-5 hover-lift">
                     <div class="d-flex flex-column flex-md-row align-items-center justify-content-center mb-3">
                         <i class="fas fa-home fa-2x me-0 me-md-3 mb-2 mb-md-0"></i>
@@ -414,8 +338,6 @@ $gtext = gtext();
                     </div>
                     <p class="fs-5 text-light mb-0">বিশেষজ্ঞ মালি দিয়ে আপনার বাগানকে জীবন্ত করুন</p>
                 </div>
-                
-                <!-- Call to Action Buttons -->
                 <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
                     <a href="#packages" class="btn btn-warning btn-lg px-4 py-3 fw-semibold hover-lift">
                         <i class="fas fa-tags me-2"></i>প্যাকেজ দেখুন
@@ -440,7 +362,6 @@ $gtext = gtext();
                 <p class="fs-4 text-gray-600">আপনার বাগানের জন্য উপযুক্ত প্যাকেজ বেছে নিন</p>
             </div>
         </div>
-
         <div class="row g-4 justify-content-center">
             @foreach ($monthlyPackages as $package)
                 <div class="col-md-6 col-lg-4">
@@ -452,7 +373,6 @@ $gtext = gtext();
                                 </span>
                             </div>
                         @endif
-
                         <div class="text-center mb-4">
                             <div class="icon-container">
                                 <i class="fas fa-seedling"></i>
@@ -466,13 +386,11 @@ $gtext = gtext();
                             <p class="{{ $package['is_popular'] ? 'text-light' : 'text-gray-600' }} mb-1">{{ $package['subtitle'] }}</p>
                             <p class="text-sm {{ $package['is_popular'] ? 'text-green-100' : 'text-gray-500' }}">{{ $package['frequency'] }}</p>
                         </div>
-
                         <ul class="feature-list mb-4">
                             @foreach ($package['features'] as $feature)
                                 <li><i class="fas fa-check"></i> {{ $feature }}</li>
                             @endforeach
                         </ul>
-
                         <a href="tel:01886950681" class="btn btn-primary w-100 py-3 fw-semibold">
                             <i class="fas fa-phone me-2"></i>বুক করুন
                         </a>
@@ -484,7 +402,7 @@ $gtext = gtext();
 </section>
 
 <!-- Full-Day Packages -->
-<section class="section-padding bg-light-green">
+<section class="section-padding bg-light">
     <div class="container">
         <div class="row justify-content-center mb-5">
             <div class="col-lg-8 text-center">
@@ -496,7 +414,6 @@ $gtext = gtext();
                 </p>
             </div>
         </div>
-
         <div class="row g-4 justify-content-center">
             @foreach ($fulldayPackages as $package)
                 <div class="col-md-6 col-lg-4">
@@ -508,7 +425,6 @@ $gtext = gtext();
                                 </span>
                             </div>
                         @endif
-
                         <div class="text-center mb-4">
                             <div class="icon-container">
                                 <i class="fas fa-tree"></i>
@@ -518,13 +434,11 @@ $gtext = gtext();
                             <p class="{{ $package['is_popular'] ? 'text-light' : 'text-gray-600' }} mb-1">{{ $package['subtitle'] }}</p>
                             <p class="text-sm {{ $package['is_popular'] ? 'text-green-100' : 'text-gray-500' }}">{{ $package['frequency'] }}</p>
                         </div>
-
                         <ul class="feature-list mb-4">
                             @foreach ($package['features'] as $feature)
                                 <li><i class="fas fa-check"></i> {{ $feature }}</li>
                             @endforeach
                         </ul>
-
                         <a href="tel:01886950681" class="btn btn-primary w-100 py-3 fw-semibold">
                             <i class="fas fa-phone me-2"></i>বুক করুন
                         </a>
@@ -548,7 +462,6 @@ $gtext = gtext();
                 </p>
             </div>
         </div>
-
         <div class="row justify-content-center">
             <div class="col-lg-10">
                 <div class="price-card hover-lift text-center">
@@ -559,7 +472,6 @@ $gtext = gtext();
                     <p class="fs-5 text-gray-600 mb-4">
                         বড় বাগান বা ল্যান্ডস্কেপিং প্রকল্পের জন্য আমাদের বিশেষ সেবা
                     </p>
-
                     <div class="row g-4">
                         <div class="col-md-6">
                             <h4 class="fs-4 fw-semibold text-gray-800 mb-3">সেবার অন্তর্ভুক্ত:</h4>
@@ -571,9 +483,8 @@ $gtext = gtext();
                                 <li><i class="fas fa-check"></i> আলোকসজ্জা</li>
                             </ul>
                         </div>
-
                         <div class="col-md-6">
-                            <div class="bg-green-50 rounded-3 p-4 h-100">
+                            <div class="bg-light rounded-3 p-4 h-100">
                                 <h4 class="fs-4 fw-semibold text-gray-800 mb-3">মূল্য নির্ধারণ:</h4>
                                 <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-white rounded-2">
                                     <span class="text-gray-700">স্কয়ার ফিট অনুযায়ী</span>
@@ -615,7 +526,6 @@ $gtext = gtext();
                 </p>
             </div>
         </div>
-
         <div class="row g-4">
             <div class="col-md-6 col-lg-4">
                 <div class="service-card hover-lift">
@@ -626,7 +536,6 @@ $gtext = gtext();
                     <p class="text-gray-600">পেশাদার উপায়ে গাছের ছাঁটাই করে সুন্দর আকৃতি দেওয়া</p>
                 </div>
             </div>
-
             <div class="col-md-6 col-lg-4">
                 <div class="service-card hover-lift">
                     <div class="icon-container">
@@ -636,7 +545,6 @@ $gtext = gtext();
                     <p class="text-gray-600">বাগান থেকে সব ধরনের আগাছা পরিষ্কার করা</p>
                 </div>
             </div>
-
             <div class="col-md-6 col-lg-4">
                 <div class="service-card hover-lift">
                     <div class="icon-container">
@@ -646,7 +554,6 @@ $gtext = gtext();
                     <p class="text-gray-600">গাছের জন্য প্রয়োজনীয় সার ও পানি সরবরাহ</p>
                 </div>
             </div>
-
             <div class="col-md-6 col-lg-4">
                 <div class="service-card hover-lift">
                     <div class="icon-container">
@@ -656,7 +563,6 @@ $gtext = gtext();
                     <p class="text-gray-600">গাছের রোগ-বালাই থেকে রক্ষার জন্য প্রয়োজনীয় ওষুধ</p>
                 </div>
             </div>
-
             <div class="col-md-6 col-lg-4">
                 <div class="service-card hover-lift">
                     <div class="icon-container">
@@ -666,7 +572,6 @@ $gtext = gtext();
                     <p class="text-gray-600">আপনার বাগানটাকে আবার সবুজ প্রাণবন্ত করে তোলা</p>
                 </div>
             </div>
-
             <div class="col-md-6 col-lg-4">
                 <div class="service-card hover-lift">
                     <div class="icon-container">
@@ -687,8 +592,8 @@ $gtext = gtext();
             <div class="col-lg-8">
                 <div class="important-note hover-lift">
                     <div class="d-flex">
-                        <div class="flex-shrink-0">
-                            <i class="fas fa-exclamation-triangle text-warning fs-1"></i>
+                        <div class="flex-shrink-0 mt-1">
+                            <i class="fas fa-exclamation-triangle text-warning fs-4"></i>
                         </div>
                         <div class="ms-4">
                             <h3 class="fs-4 fw-bold text-gray-800 mb-3">গুরুত্বপূর্ণ তথ্য</h3>
@@ -717,7 +622,6 @@ $gtext = gtext();
                 </p>
             </div>
         </div>
-
         <div class="row g-4 justify-content-center">
             <div class="col-md-6 col-lg-5">
                 <div class="glass-effect contact-card hover-lift">
@@ -731,7 +635,6 @@ $gtext = gtext();
                     <p class="text-green-100">সরাসরি কল করে কথা বলুন</p>
                 </div>
             </div>
-
             <div class="col-md-6 col-lg-5">
                 <div class="glass-effect contact-card hover-lift">
                     <div class="icon-container mb-4">
@@ -748,16 +651,13 @@ $gtext = gtext();
     </div>
 </section>
 
-<!-- WhatsApp Floating Button -->
-<a href="https://wa.me/8801886950681" class="whatsapp-float">
+<a href="https://wa.me/8801886950681" class="whatsapp-float" aria-label="WhatsApp">
     <i class="fab fa-whatsapp fs-2"></i>
 </a>
 
-<!-- Scroll to Top Button -->
-<button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="scroll-top">
+<button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="scroll-top" aria-label="Scroll to top">
     <i class="fas fa-arrow-up"></i>
 </button>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @endsection
