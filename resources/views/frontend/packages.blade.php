@@ -360,38 +360,48 @@ echo  $fulldayPackages;
         </div>
     </section>
 
-    <!-- Monthly Packages -->
-    <section id="packages" class="section-padding bg-white">
-        <div class="container">
-            <div class="row justify-content-center mb-5">
-                <div class="col-lg-8 text-center">
-                    <h2 class="display-4 fw-bold text-gray-800 mb-3">
-                        মাসিক পরিচর্যার <span class="gradient-text">প্যাকেজ</span>
-                    </h2>
-                    <p class="fs-4 text-gray-600">
-                        আপনার বাগানের জন্য উপযুক্ত প্যাকেজ বেছে নিন
-                    </p>
-                </div>
+<!-- Monthly Packages -->
+<section id="packages" class="section-padding bg-white">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <h2 class="display-4 fw-bold text-gray-800 mb-3">
+                    মাসিক পরিচর্যার <span class="gradient-text">প্যাকেজ</span>
+                </h2>
+                <p class="fs-4 text-gray-600">আপনার বাগানের জন্য উপযুক্ত প্যাকেজ বেছে নিন</p>
             </div>
+        </div>
 
-            <div class="row g-4 justify-content-center">
-                <!-- Package 1 -->
+        <div class="row g-4 justify-content-center">
+            @foreach ($packages as $package)
                 <div class="col-md-6 col-lg-4">
-                    <div class="price-card hover-lift">
+                    <div class="price-card hover-lift {{ $package['is_popular'] ? 'featured position-relative' : '' }}">
+                        @if ($package['is_popular'])
+                            <div class="position-absolute top-0 start-50 translate-middle-x" style="margin-top: -20px;">
+                                <span class="popular-badge">
+                                    <i class="fas fa-star"></i> সবচেয়ে জনপ্রিয়
+                                </span>
+                            </div>
+                        @endif
+
                         <div class="text-center mb-4">
                             <div class="w-20 h-20 bg-green-100 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4">
                                 <i class="fas fa-seedling text-green-600 fs-1"></i>
                             </div>
-                            <h3 class="fs-2 fw-bold text-gray-800 mb-2">বেসিক</h3>
-                            <div class="fs-1 fw-bold text-green-600 mb-2">৪৯৯ টাকা</div>
-                            <p class="text-gray-600 mb-1">সপ্তাহে ১ বার</p>
-                            <p class="text-sm text-gray-500">মাসিক সেবা</p>
+                            <h3 class="fs-2 fw-bold {{ $package['is_popular'] ? 'text-white' : 'text-gray-800' }} mb-2">
+                                {{ $package['title'] }}
+                            </h3>
+                            <div class="fs-1 fw-bold {{ $package['is_popular'] ? 'text-white' : 'text-green-600' }} mb-2">
+                                {{ $package['price'] }} টাকা
+                            </div>
+                            <p class="{{ $package['is_popular'] ? 'text-light' : 'text-gray-600' }} mb-1">{{ $package['subtitle'] }}</p>
+                            <p class="text-sm {{ $package['is_popular'] ? 'text-green-100' : 'text-gray-500' }}">{{ $package['frequency'] }}</p>
                         </div>
 
                         <ul class="feature-list mb-4">
-                            <li><i class="fas fa-check"></i> গাছ ছাঁটাই</li>
-                            <li><i class="fas fa-check"></i> আগাছা পরিষ্কার</li>
-                            <li><i class="fas fa-check"></i> সার-পানি দেওয়া</li>
+                            @foreach ($package['features'] as $feature)
+                                <li><i class="fas fa-check"></i> {{ $feature }}</li>
+                            @endforeach
                         </ul>
 
                         <a href="tel:01886950681" class="btn btn-primary w-100 py-2">
@@ -399,30 +409,51 @@ echo  $fulldayPackages;
                         </a>
                     </div>
                 </div>
+            @endforeach
+        </div>
+    </div>
+</section>
 
-                <!-- Package 2 -->
+<!-- Full-Day Packages -->
+<section class="section-padding bg-light">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <h2 class="display-4 fw-bold text-gray-800 mb-3">
+                    গাছের সংখ্যা অনুযায়ী <span class="gradient-text">পূর্ণ দিনের সেবা</span>
+                </h2>
+                <p class="fs-4 text-gray-600">
+                    বড় বাগানের জন্য গাছের সংখ্যা অনুযায়ী পূর্ণ দিনের সেবা
+                </p>
+            </div>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            @foreach ($fullDayPackages as $package)
                 <div class="col-md-6 col-lg-4">
-                    <div class="price-card featured hover-lift position-relative">
-                        <div class="position-absolute top-0 start-50 translate-middle-x" style="margin-top: -20px;">
-                            <span class="popular-badge">
-                                <i class="fas fa-star"></i>সবচেয়ে জনপ্রিয়
-                            </span>
-                        </div>
+                    <div class="price-card hover-lift {{ $package['is_popular'] ? 'position-relative border border-success' : '' }}">
+                        @if ($package['is_popular'])
+                            <div class="position-absolute top-0 start-50 translate-middle-x" style="margin-top: -20px;">
+                                <span class="bg-green-500 text-white px-3 py-2 rounded-pill fw-bold fs-6">
+                                    <i class="fas fa-star me-1"></i>জনপ্রিয়
+                                </span>
+                            </div>
+                        @endif
+
                         <div class="text-center mb-4">
                             <div class="w-20 h-20 bg-green-100 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4">
                                 <i class="fas fa-tree text-green-600 fs-1"></i>
                             </div>
-                            <h3 class="fs-2 fw-bold text-white mb-2">স্ট্যান্ডার্ড</h3>
-                            <div class="fs-1 fw-bold text-white mb-2">৬৯৯ টাকা</div>
-                            <p class="text-light mb-1">সপ্তাহে ২ বার</p>
-                            <p class="text-sm" style="color: #d1fae5;">মাসিক সেবা</p>
+                            <h3 class="fs-2 fw-bold text-gray-800 mb-2">{{ $package['title'] }}</h3>
+                            <div class="fs-1 fw-bold text-green-600 mb-2">{{ $package['price'] }} টাকা</div>
+                            <p class="text-gray-600 mb-1">{{ $package['subtitle'] }}</p>
+                            <p class="text-sm text-gray-500">{{ $package['frequency'] }}</p>
                         </div>
 
                         <ul class="feature-list mb-4">
-                            <li><i class="fas fa-check"></i> গাছ ছাঁটাই</li>
-                            <li><i class="fas fa-check"></i> আগাছা পরিষ্কার</li>
-                            <li><i class="fas fa-check"></i> সার-পানি দেওয়া</li>
-                            <li><i class="fas fa-check"></i> মেডিসিন দেওয়া</li>
+                            @foreach ($package['features'] as $feature)
+                                <li><i class="fas fa-check"></i> {{ $feature }}</li>
+                            @endforeach
                         </ul>
 
                         <a href="tel:01886950681" class="btn btn-primary w-100 py-2">
@@ -430,142 +461,11 @@ echo  $fulldayPackages;
                         </a>
                     </div>
                 </div>
-
-                <!-- Package 3 -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="price-card hover-lift">
-                        <div class="text-center mb-4">
-                            <div class="w-20 h-20 bg-green-100 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4">
-                                <i class="fas fa-crown text-green-600 fs-1"></i>
-                            </div>
-                            <h3 class="fs-2 fw-bold text-gray-800 mb-2">প্রিমিয়াম</h3>
-                            <div class="fs-1 fw-bold text-green-600 mb-2">৮৯৯ টাকা</div>
-                            <p class="text-gray-600 mb-1">সপ্তাহে ৩ বার</p>
-                            <p class="text-sm text-gray-500">মাসিক সেবা</p>
-                        </div>
-
-                        <ul class="feature-list mb-4">
-                            <li><i class="fas fa-check"></i> গাছ ছাঁটাই</li>
-                            <li><i class="fas fa-check"></i> আগাছা পরিষ্কার</li>
-                            <li><i class="fas fa-check"></i> সার-পানি দেওয়া</li>
-                            <li><i class="fas fa-check"></i> মেডিসিন দেওয়া</li>
-                            <li><i class="fas fa-check"></i> বিশেষ যত্ন</li>
-                        </ul>
-
-                        <a href="tel:01886950681" class="btn btn-primary w-100 py-2">
-                            <i class="fas fa-phone me-2"></i>বুক করুন
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row justify-content-center mt-5">
-                <div class="col-lg-8">
-                    <div class="bg-blue-50 border border-blue-200 rounded-3 p-4 text-center">
-                        <i class="fas fa-info-circle text-blue-500 fs-1 mb-3"></i>
-                        <p class="text-gray-700 fs-5">
-                            <span class="fw-semibold">নোট:</span> প্যাকেজটি ছাদ বাগান এবং বারান্দার বাগানের জন্য
-                        </p>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Plant-Based Packages -->
-    <section class="section-padding bg-light">
-        <div class="container">
-            <div class="row justify-content-center mb-5">
-                <div class="col-lg-8 text-center">
-                    <h2 class="display-4 fw-bold text-gray-800 mb-3">
-                        গাছের সংখ্যা অনুযায়ী <span class="gradient-text">পূর্ণ দিনের সেবা</span>
-                    </h2>
-                    <p class="fs-4 text-gray-600">
-                        বড় বাগানের জন্য গাছের সংখ্যা অনুযায়ী পূর্ণ দিনের সেবা
-                    </p>
-                </div>
-            </div>
-
-            <div class="row g-4 justify-content-center">
-                <!-- Package 1 -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="price-card hover-lift">
-                        <div class="text-center mb-4">
-                            <div class="w-20 h-20 bg-green-100 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4">
-                                <i class="fas fa-seedling text-green-600 fs-1"></i>
-                            </div>
-                            <h3 class="fs-2 fw-bold text-gray-800 mb-2">ছোট বাগান</h3>
-                            <div class="fs-1 fw-bold text-green-600 mb-2">৬৯৯ টাকা</div>
-                            <p class="text-gray-600 mb-1">৩০-৩০ টি গাছ</p>
-                            <p class="text-sm text-gray-500">পূর্ণ দিনের সেবা</p>
-                        </div>
-                        <ul class="feature-list mb-4">
-                            <li><i class="fas fa-check"></i> গাছ ছাঁটাই</li>
-                            <li><i class="fas fa-check"></i> আগাছা পরিষ্কার</li>
-                            <li><i class="fas fa-check"></i> সার-পানি দেওয়া</li>
-                        </ul>
-                        <a href="tel:01886950681" class="btn btn-primary w-100 py-2">
-                            <i class="fas fa-phone me-2"></i>বুক করুন
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Package 2 -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="price-card hover-lift position-relative" style="border: 2px solid #4ade80;">
-                        <div class="position-absolute top-0 start-50 translate-middle-x" style="margin-top: -20px;">
-                            <span class="bg-green-500 text-white px-3 py-2 rounded-pill fw-bold fs-6">
-                                <i class="fas fa-star me-1"></i>জনপ্রিয়
-                            </span>
-                        </div>
-                        <div class="text-center mb-4">
-                            <div class="w-20 h-20 bg-green-100 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4">
-                                <i class="fas fa-tree text-green-600 fs-1"></i>
-                            </div>
-                            <h3 class="fs-2 fw-bold text-gray-800 mb-2">মাঝারি বাগান</h3>
-                            <div class="fs-1 fw-bold text-green-600 mb-2">৮৯৯ টাকা</div>
-                            <p class="text-gray-600 mb-1">৩০-৪০ টি গাছ</p>
-                            <p class="text-sm text-gray-500">পূর্ণ দিনের সেবা</p>
-                        </div>
-                        <ul class="feature-list mb-4">
-                            <li><i class="fas fa-check"></i> গাছ ছাঁটাই</li>
-                            <li><i class="fas fa-check"></i> আগাছা পরিষ্কার</li>
-                            <li><i class="fas fa-check"></i> সার-পানি দেওয়া</li>
-                            <li><i class="fas fa-check"></i> মেডিসিন দেওয়া</li>
-                        </ul>
-                        <a href="tel:01886950681" class="btn btn-primary w-100 py-2">
-                            <i class="fas fa-phone me-2"></i>বুক করুন
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Package 3 -->
-                <div class="col-md-6 col-lg-4">
-                    <div class="price-card hover-lift">
-                        <div class="text-center mb-4">
-                            <div class="w-20 h-20 bg-green-100 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4">
-                                <i class="fas fa-crown text-green-600 fs-1"></i>
-                            </div>
-                            <h3 class="fs-2 fw-bold text-gray-800 mb-2">বড় বাগান</h3>
-                            <div class="fs-1 fw-bold text-green-600 mb-2">১০৯৯ টাকা</div>
-                            <p class="text-gray-600 mb-1">৪০-৫০ টি গাছ</p>
-                            <p class="text-sm text-gray-500">পূর্ণ দিনের সেবা</p>
-                        </div>
-                        <ul class="feature-list mb-4">
-                            <li><i class="fas fa-check"></i> গাছ ছাঁটাই</li>
-                            <li><i class="fas fa-check"></i> আগাছা পরিষ্কার</li>
-                            <li><i class="fas fa-check"></i> সার-পানি দেওয়া</li>
-                            <li><i class="fas fa-check"></i> মেডিসিন দেওয়া</li>
-                            <li><i class="fas fa-check"></i> বিশেষ যত্ন</li>
-                        </ul>
-                        <a href="tel:01886950681" class="btn btn-primary w-100 py-2">
-                            <i class="fas fa-phone me-2"></i>বুক করুন
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Landscaping Services -->
     <section class="section-padding bg-white">
