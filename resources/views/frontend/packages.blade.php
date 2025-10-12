@@ -132,8 +132,11 @@ $gtext = gtext();
         left: 0;
         right: 0;
         height: 4px;
+        border-radius: 20px;
+        
         background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
         transform: scaleX(0);
+
         transition: transform 0.3s ease;
     }
 
