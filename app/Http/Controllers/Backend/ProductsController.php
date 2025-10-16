@@ -342,7 +342,7 @@ class ProductsController extends Controller
 
 		$storeList = DB::table('users')
 			->select('users.id', 'users.shop_name')
-			->where('users.role_id', '=', 3)
+			// ->where('users.role_id', '=', 3)
 			->where('users.status_id', '=', 1)
 			->orderBy('users.shop_name','asc')
 			->get();
