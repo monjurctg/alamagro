@@ -9,7 +9,7 @@
 		@if (Auth::user()->role_id == 1)
 		<li><a href="{{ route('backend.dashboard') }}"><i class="fa fa-tachometer"></i>{{ __('Dashboard') }}</a></li>
 		<li><a href="{{ route('backend.media') }}"><i class="fa fa-picture-o"></i>{{ __('Media') }}</a></li>
-		<li><a href="{{ route('backend.page') }}"><i class="fa fa-clipboard"></i>{{ __('Pages') }}</a></li>
+		<!-- <li><a href="{{ route('backend.page') }}"><i class="fa fa-clipboard"></i>{{ __('Pages') }}</a></li> -->
 		<li><a href="{{ route('backend.orders') }}" id="select_orders"><i class="fa fa-rocket"></i>{{ __('Orders') }}</a></li>
 		<li class="dnone"><a href="{{ route('backend.transactions') }}"><i class="fa fa-credit-card"></i>{{ __('Transactions') }}</a></li>
 		<li class="dropdown"><a class="nav-link has-dropdown" href="#" data-toggle="dropdown"><i class="fa fa-shopping-cart"></i>{{ __('eCommerce') }}</a>
@@ -44,13 +44,13 @@
 				<li><a href="{{ route('backend.theme-options') }}">{{ __('Theme Options') }}</a></li>
 			</ul>
 		</li>
-		<li class="dropdown"><a class="nav-link has-dropdown" href="#" data-toggle="dropdown"><i class="fa fa-sitemap"></i>{{ __('Marketplace') }}</a>
+		<!-- <li class="dropdown"><a class="nav-link has-dropdown" href="#" data-toggle="dropdown"><i class="fa fa-sitemap"></i>{{ __('Marketplace') }}</a>
 			<ul class="dropdown-menu">
 				<li><a href="{{ route('backend.sellers') }}">{{ __('Sellers') }}</a></li>
 				<li><a href="{{ route('backend.withdrawals') }}">{{ __('Withdrawals') }}</a></li>
 				<li><a href="{{ route('backend.seller-settings') }}">{{ __('Settings') }}</a></li>
 			</ul>
-		</li>
+		</li> -->
 		<li><a href="{{ route('backend.customers') }}"><i class="fa fa-users"></i>{{ __('Customers') }}</a></li>
 		<li><a href="{{ route('backend.review') }}"><i class="fa fa-recycle"></i>{{ __('Review & Ratings') }}</a></li>
 		<li><a href="{{ route('backend.contact') }}"><i class="fa fa-envelope"></i>{{ __('Contact') }}</a></li>
