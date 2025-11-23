@@ -76,9 +76,7 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="section-heading text-center">
-						<!-- @if($section2->desc != '')
-											<h5>{{ $section2->desc }}</h5>
-										@endif -->
+
 
 						@if($section2->title != '')
 							<h2>{{ $section2->title }}</h2>
@@ -269,9 +267,7 @@
 			<div class="row">
 				<div class="col">
 					<div class="section-heading text-center mb-4">
-						<!-- @if($section4->desc != '')
-							<h5>{{ $section4->desc }}</h5>
-						@endif -->
+
 						@if($section4->title != '')
 							<h2>{{ $section4->title }}</h2>
 						@endif
@@ -298,9 +294,7 @@
 			<div class="row">
 				<div class="col">
 					<div class="section-heading text-center mb-4">
-						<!-- @if($section5->desc != '')
-							<h5>{{ $section5->desc }}</h5>
-						@endif -->
+
 						@if($section5->title != '')
 							<h2>{{ $section5->title }}</h2>
 						@endif
@@ -328,9 +322,7 @@
 			<div class="row">
 				<div class="col">
 					<div class="section-heading text-center mb-4">
-						<!-- @if($section6->desc != '')
-							<h5>{{ $section6->desc }}</h5>
-						@endif -->
+
 						@if($section6->title != '')
 							<h2>{{ $section6->title }}</h2>
 						@endif
@@ -358,9 +350,7 @@
 			<div class="row">
 				<div class="col">
 					<div class="section-heading text-center">
-						<!-- @if($section8->desc != '')
-							<h5>{{ $section8->desc }}</h5>
-						@endif -->
+
 
 						@if($section8->title != '')
 							<h2>{{ $section8->title }}</h2>
@@ -439,9 +429,7 @@
 			<div class="row">
 				<div class="col">
 					<div class="section-heading text-center">
-						@if($section9->desc != '')
-							<h5>{{ $section9->desc }}</h5>
-						@endif
+
 
 						@if($section9->title != '')
 							<h2>{{ $section9->title }}</h2>
