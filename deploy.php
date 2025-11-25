@@ -11,6 +11,7 @@ $gitRepo   = 'https://github.com/monjurctg/alamagro.git';
 
 chdir($publicDir);
 
+
 function runCommand($cmd) {
     echo "<div style='background: #2d3748; color: #e2e8f0; padding: 10px 15px; border-radius: 5px; margin: 10px 0; font-family: monospace; white-space: pre-wrap;'>";
     echo "<span style='color: #81e6d9'>$</span> <span style='color: #fff'>".htmlspecialchars($cmd)."</span>\n";
