@@ -1,11 +1,12 @@
 <?php
-$secret = "MyStrongPassword123";
+$secret = "MyStrongPassword";
 if (!isset($_GET['key']) || $_GET['key'] !== $secret) {
     http_response_code(403);
     die("<div style='font-family: Arial, sans-serif; padding: 20px; background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 5px; max-width: 600px; margin: 50px auto;'>Access Denied - Invalid or missing key</div>");
 }
 
 $publicDir = '/home/tarumuog/public_html';
+
 $gitRepo   = 'https://github.com/monjurctg/alamagro.git';
 
 chdir($publicDir);

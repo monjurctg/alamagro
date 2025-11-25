@@ -294,7 +294,6 @@
 			<div class="row">
 				<div class="col">
 					<div class="section-heading text-center mb-4">
-
 						@if($section5->title != '')
 							<h2>{{ $section5->title }}</h2>
 						@endif
