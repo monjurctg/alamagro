@@ -56,7 +56,7 @@
 		</div>
 	</div>
 	<!-- /Page Breadcrumb/ -->
-	
+
 	<!-- Inner Section -->
 	<section class="inner-section inner-section-bg">
 		<div class="container">
@@ -103,11 +103,11 @@
 								@endif
 							@endif
 							@if(($data->is_discount == 1) && ($data->old_price !=''))
-								
-								@php 
+
+								@php
 									$discount = number_format((($data->old_price - $data->sale_price)*100)/$data->old_price);
 								@endphp
-							
+
 								@if($gtext['currency_position'] == 'left')
 								<div class="old-item-price">{{ $gtext['currency_icon'] }}{{ NumberFormat($data->old_price) }}</div><span class="discount">-{{ $discount }}%</span>
 								@else
@@ -115,14 +115,56 @@
 								@endif
 							@endif
 						</div>
-						@if($data->variation_size != '')
-						<div class="pr_widget">
-							<label class="widget-title">{{ __('Unit') }}</label>
-							<ul class="widget-size">
-								<li class="unit active">{{ $data->variation_size }}</li>
-							</ul>
-						</div>
-						@endif
+						<!-- Size and Color Variations -->
+                        @if($data->variation_size != '' || $data->variation_color != '')
+                        <div id="product-variations" class="pr_widget">
+                            <!-- Size Options -->
+                            @if($data->variation_size != '')
+                            <div class="variation-section">
+                                <label class="widget-title">{{ __('Size') }}</label>
+                                <ul class="widget-size variation-options">
+                                    @php
+                                        $sizes = explode(',', $data->variation_size);
+                                    @endphp
+                                    @foreach($sizes as $size)
+                                        <li class="size-option" data-size="{{ trim($size) }}">{{ trim($size) }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
+
+                            <!-- Color Options -->
+                            @if($data->variation_color != '')
+                            <div class="variation-section">
+                                <label class="widget-title">{{ __('Color') }}</label>
+                                <ul class="widget-color variation-options">
+                                    @php
+                                        $colors = explode(',', $data->variation_color);
+                                    @endphp
+                                    @foreach($colors as $color)
+                                        @php
+                                            $colorParts = explode('|', $color);
+                                            $colorName = trim($colorParts[0]);
+                                            $colorValue = isset($colorParts[1]) ? trim($colorParts[1]) : '#ccc';
+                                        @endphp
+                                        <li class="color-option" data-color="{{ $colorName }}" style="background-color: {{ $colorValue }};" title="{{ $colorName }}"></li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
+                        </div>
+                        <!-- /Size and Color Variations -->
+
+                        <!-- Selected Variation Info -->
+                        <div id="selected-variation-info" class="mt-3 d-none">
+                            <div class="alert alert-info">
+                                <strong>{{ __('Selected:') }}</strong>
+                                <span id="variation-details"></span>
+                            </div>
+                        </div>
+                        <!-- /Selected Variation Info -->
+                        @endif
+
 						<div class="pr_quantity">
 							<label for="quantity">{{ __('Quantity') }}</label>
 							<input name="quantity" id="quantity" type="number" min="1" max="{{ $data->is_stock == 1 ? $data->stock_qty : 999 }}" value="1">
@@ -132,7 +174,7 @@
 							<a class="btn theme-btn cart product_buy_now" data-id="{{ $data->id }}" data-stockqty="{{ $data->is_stock == 1 ? $data->stock_qty : 999 }}" href="javascript:void(0);">{{ __('Buy Now') }}</a>
 							<a class="btn theme-btn cart wishlist addtowishlist" data-id="{{ $data->id }}" href="javascript:void(0);"><i class="bi bi-heart-fill"></i></a>
 						</div>
-						
+
 						@if($data->is_stock == 1)
 							@if($data->stock_status_id == 1)
 							<div class="pr_extra"><strong>{{ __('Availability') }}:</strong><span class="instock">{{ $data->stock_qty }} {{ __('In Stock') }}</span></div>
@@ -149,7 +191,7 @@
 						<div class="pr_extra"><strong>{{ __('Brand') }}: </strong><a href="{{ route('frontend.brand', [$data->brand_id, str_slug($data->brandname)]) }}"> {{ $data->brandname }}</a></div>
 						@endif
 						<div class="pr_extra"><strong>{{ __('Category') }}: </strong> <a href="{{ route('frontend.product-category', [$data->cat_id, $data->cat_slug]) }}">{{ $data->cat_name }}</a></div>
-						
+
 						<div class="pr_widget">
 							<label class="widget-title">{{ __('Share this') }}</label>
 							<div class="social-media">
@@ -162,7 +204,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<!-- Product Description Review and Vendor -->
 			<div class="row">
 				<div class="col-lg-12">
@@ -171,13 +213,13 @@
 						{{Session::get('success')}}
 					</div>
 					@endif
-					
+
 					@if(Session::has('fail'))
 					<div class="alert alert-danger">
 						{{Session::get('fail')}}
 					</div>
 					@endif
-					
+
 					@if($errors->any())
 						<ul class="errors-list">
 						@foreach($errors->all() as $error)
@@ -203,7 +245,7 @@
 								</div>
 							</div>
 							<!-- /Description/ -->
-							
+
 							<!-- Review -->
 							<div id="des_reviews" class="tab-pane">
 								<div class="review-content">
@@ -246,7 +288,7 @@
 										</div>
 									</div>
 									<!-- /Review Form/-->
-									
+
 									<!-- Product Review -->
 									@if(count($pro_reviews)>0)
 									<div class="row">
@@ -264,7 +306,7 @@
 								</div>
 							</div>
 							<!-- /Review/ -->
-							
+
 							<!-- Vendor -->
 							<div id="vendor" class="tab-pane">
 								<div class="store-content">
@@ -303,11 +345,11 @@
 					</div>
 				</div>
 			</div>
-			<!-- /Product Description Review and Vendor/ -->		
+			<!-- /Product Description Review and Vendor/ -->
 		</div>
 	</section>
 	<!-- /Inner Section/ -->
-	
+
 	<!-- Popular Products -->
 	<section class="section product-section">
 		<div class="container">
@@ -321,7 +363,7 @@
 			<div class="row owl-carousel caro-common category-carousel">
 				@if(count($related_products)>0)
 					@foreach ($related_products as $row)
-					@php 
+					@php
 						if(($row->is_discount == 1) && ($row->old_price !='')){
 							$discount = number_format((($row->old_price - $row->sale_price)*100)/$row->old_price);
 						}
@@ -374,7 +416,7 @@
 					@endforeach
 				@else
 					@foreach ($category_products as $row)
-					@php 
+					@php
 						if(($row->is_discount == 1) && ($row->old_price !='')){
 							$discount = number_format((($row->old_price - $row->sale_price)*100)/$row->old_price);
 						}
@@ -439,11 +481,11 @@
  	var item_id = "{{ $data->id }}";
 	var is_stock = "{{ $data->is_stock }}";
 	var is_stock_status = "{{ $data->stock_status_id }}";
-	
+
 var TEXT = [];
 	TEXT['Please enter quantity.'] = "{{ __('Please enter quantity.') }}";
-	TEXT['The value must be less than or equal to'] = "{{ __('The value must be less than or equal to') }} {{ $data->is_stock == 1 ? $data->stock_qty : '' }}";	
-	TEXT['This product out of stock.'] = "{{ __('This product out of stock.') }}";	
+	TEXT['The value must be less than or equal to'] = "{{ __('The value must be less than or equal to') }} {{ $data->is_stock == 1 ? $data->stock_qty : '' }}";
+	TEXT['This product out of stock.'] = "{{ __('This product out of stock.') }}";
 </script>
 <script src="{{asset('public/frontend/pages/product.js')}}"></script>
-@endpush	
+@endpush

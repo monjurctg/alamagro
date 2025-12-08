@@ -8,15 +8,19 @@ $(function () {
 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 		}
 	});
-	
+
 	onViewCart();
 	onWishlist();
-	
+
 	$(document).on("click", ".product_addtocart", function(event) {
 		event.preventDefault();
 
 		var id = $(this).data('id');
 		var qty = $("#quantity").val();
+
+		// Get selected variations
+		var selectedSize = $('.size-option.active').data('size');
+		var selectedColor = $('.color-option.active').data('color');
 
 		if((qty == undefined) || (qty == '') || (qty <= 0)){
 			onErrorMsg(TEXT['Please enter quantity.']);
@@ -34,10 +38,17 @@ $(function () {
 				return;
 			}
 		}
-		
+
+		// Prepare data with variations
+		var requestData = {
+			size: selectedSize,
+			color: selectedColor
+		};
+
 		$.ajax({
 			type : 'GET',
 			url: base_url + '/frontend/add_to_cart/'+id+'/'+qty,
+			data: requestData,
 			dataType:"json",
 			success: function (response) {
 				var msgType = response.msgType;
@@ -52,13 +63,16 @@ $(function () {
 			}
 		});
     });
-	
+
 	$(document).on("click", ".product_buy_now", function(event) {
 		event.preventDefault();
-
 		var id = $(this).data('id');
 		var qty = $("#quantity").val();
-		
+
+		// Get selected variations
+		var selectedSize = $('.size-option.active').data('size');
+		var selectedColor = $('.color-option.active').data('color');
+
 		if((qty == undefined) || (qty == '') || (qty <= 0)){
 			onErrorMsg(TEXT['Please enter quantity.']);
 			return;
@@ -75,10 +89,17 @@ $(function () {
 				return;
 			}
 		}
-		
+
+		// Prepare data with variations
+		var requestData = {
+			size: selectedSize,
+			color: selectedColor
+		};
+
 		$.ajax({
 			type : 'GET',
 			url: base_url + '/frontend/add_to_cart/'+id+'/'+qty,
+			data: requestData,
 			dataType:"json",
 			success: function (response) {
 				var msgType = response.msgType;
@@ -94,10 +115,10 @@ $(function () {
 			}
 		});
     });
-	
+
 	$(document).on("click", ".addtocart", function(event) {
 		event.preventDefault();
-		
+
 		var id = $(this).data('id');
 		var qty = 0;
 		$.ajax({
@@ -116,11 +137,11 @@ $(function () {
 				onViewCart();
 			}
 		});
-    });	
-	
+    });
+
 	$(document).on("click", ".addtowishlist", function(event) {
 		event.preventDefault();
-		
+
 		var id = $(this).data('id');
 
 		$.ajax({
@@ -139,7 +160,7 @@ $(function () {
 				onWishlist();
 			}
 		});
-    });	
+    });
 });
 
 function onViewCart() {
@@ -156,10 +177,10 @@ function onViewCart() {
 			}else{
 				$(".has_item_empty").hide();
 				$(".has_cart_item").show();
-				
+
 				$('#tp_cart_data').html(data.items);
 				$('#tp_cart_data_for_mobile').html(data.items);
-				
+
 				$(".total_qty").text(data.total_qty);
 				$(".sub_total").text(data.sub_total);
 				$(".tax").text(data.tax);
@@ -177,7 +198,7 @@ function onRemoveToCart(id) {
 		url: base_url + '/frontend/remove_to_cart/'+rowid,
 		dataType:"json",
 		success: function (response) {
-			
+
 			var msgType = response.msgType;
 			var msg = response.msg;
 
@@ -186,7 +207,7 @@ function onRemoveToCart(id) {
 			} else {
 				onErrorMsg(msg);
 			}
-			
+
 			onViewCart();
 		}
 	});

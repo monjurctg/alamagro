@@ -263,6 +263,11 @@ $tax_rate = $gtax['percentage'];
 											}else{
 												$unit = '<strong>'.$row['qty'].' '.$row['unit'].'</strong>';
 											}
+
+											// Add variation details if available
+											if(isset($row['variation_details']) && $row['variation_details']) {
+												$unit .= '<br><small>(' . $row['variation_details'] . ')</small>';
+											}
 											@endphp
 
 											@if($tempSellerId != $row['seller_id'])

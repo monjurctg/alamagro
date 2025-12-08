@@ -56,7 +56,7 @@
 		</div>
 	</div>
 	<!-- /Page Breadcrumb/ -->
-	
+
 	<!-- Inner Section -->
 	<section class="inner-section inner-section-bg">
 		<div class="container">
@@ -80,9 +80,9 @@
 
 			<div class="my_card mb40">
 				@if (count($datalist)>0)
-				
+
 				@foreach($masterData as $mdata)
-				@php 
+				@php
 					if($mdata->order_status_id == 1){
 						$awaiting = "check";
 						$processing = "x";
@@ -131,7 +131,7 @@
 					</div>
 				</div>
 				@endforeach
-				
+
 				<div class="row">
 					<div class="col-lg-12">
 						@foreach($masterData as $mdata)
@@ -183,23 +183,35 @@
 												}else{
 													$size = $row->quantity.' '.$row->variation_size;
 												}
-											@endphp
-											<tr>
-												<td class="pro-image-w">
-													<div class="pro-image">
-														<a href="{{ route('frontend.product', [$row->id, str_slug($row->title)]) }}">
-															<img src="{{ asset('public/media/'.$row->f_thumbnail) }}" alt="{{ $row->title }}" />
-														</a>
-													</div>
-												</td>
-												<td class="pro-name-w">
-													<span class="pro-name"><a href="{{ route('frontend.product', [$row->id, str_slug($row->title)]) }}">{{ $row->title }}</a></span>
-												</td>
-												<td class="text-left">@php echo $size; @endphp</td>
-												<td class="text-center">{{ $price }}</td>
-												<td class="text-center">{{ $row->quantity }}</td>
-												<td class="text-center">{{ $total_price }}</td>
-											</tr>
+
+                                                // Display color and size variations
+                                                $variationInfo = '';
+                                                if($row->variation_size != '' && $row->variation_size != '0') {
+                                                    $variationInfo .= 'Size: ' . $row->variation_size;
+                                                }
+                                                if($row->variation_color != '' && $row->variation_color != '0') {
+                                                    $variationInfo .= ($variationInfo ? ', ' : '') . 'Color: ' . $row->variation_color;
+                                                }
+                                                if($variationInfo) {
+                                                    $size .= ' (' . $variationInfo . ')';
+                                                }
+                                            @endphp
+                                            <tr>
+                                                <td class="pro-image-w">
+                                                    <div class="pro-image">
+                                                        <a href="{{ route('frontend.product', [$row->id, str_slug($row->title)]) }}">
+                                                            <img src="{{ asset('public/media/'.$row->f_thumbnail) }}" alt="{{ $row->title }}" />
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                                <td class="pro-name-w">
+                                                    <span class="pro-name"><a href="{{ route('frontend.product', [$row->id, str_slug($row->title)]) }}">{{ $row->title }}</a></span>
+                                                </td>
+                                                <td class="text-left">@php echo $size; @endphp</td>
+                                                <td class="text-center">{{ $price }}</td>
+                                                <td class="text-center">{{ $row->quantity }}</td>
+                                                <td class="text-center">{{ $total_price }}</td>
+                                            </tr>
 											@endforeach
 										</tbody>
 									</table>
@@ -216,7 +228,7 @@
 										<table class="table">
 											<tbody>
 											@foreach($masterData as $mdata)
-												@php	
+												@php
 													$total_amount_shipping_fee = $mdata->total_amount+$mdata->shipping_fee+$mdata->tax;
 
 													if($gtext['currency_position'] == 'left'){
@@ -224,7 +236,7 @@
 														$tax = $gtext['currency_icon'].NumberFormat($mdata->tax);
 														$subtotal = $gtext['currency_icon'].NumberFormat($mdata->total_amount);
 														$total_amount = $gtext['currency_icon'].NumberFormat($total_amount_shipping_fee);
-														
+
 													}else{
 														$shipping_fee = NumberFormat($mdata->shipping_fee).$gtext['currency_icon'];
 														$tax = NumberFormat($mdata->tax).$gtext['currency_icon'];
@@ -232,7 +244,7 @@
 														$total_amount = NumberFormat($total_amount_shipping_fee).$gtext['currency_icon'];
 													}
 												@endphp
-												
+
 												<tr><td><span class="title">{{ __('Shipping Fee') }}<br>({{ $mdata->shipping_title }})</span><span class="price">{{ $shipping_fee }}</span></td></tr>
 												<tr><td><span class="title">{{ __('Tax') }}</span><span class="price">{{ $tax }}</span></td></tr>
 												<tr><td><span class="title">{{ __('Subtotal') }}</span><span class="price">{{ $subtotal }}</span></td></tr>
@@ -262,4 +274,4 @@
 @endsection
 
 @push('scripts')
-@endpush	
+@endpush

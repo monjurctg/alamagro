@@ -11,7 +11,11 @@ use App\Models\User;
 class CartController extends Controller
 {
 	//Add to Cart
-	public function AddToCart($id, $qty){
+	public function AddToCart($id, $qty, Request $request){
+
+        // Get variation details from request
+        $selectedSize = $request->input('size');
+        $selectedColor = $request->input('color');
 
 		$res = array();
 		$datalist = Product::where('id', $id)->first();
@@ -19,11 +23,25 @@ class CartController extends Controller
 
 		$quantity = $qty == 0 ? 1 : $qty;
 		$cart = session()->get('shopping_cart', []);
-		
-		if(isset($cart[$id])){
-			$cart[$id]['qty'] = $cart[$id]['qty'] + $quantity;
+
+		// Create a unique key for the cart item based on product ID and variations
+		$cartKey = $id;
+		if ($selectedSize || $selectedColor) {
+		    $variationIdentifier = '';
+		    if ($selectedSize) {
+		        $variationIdentifier .= 'size:' . $selectedSize;
+		    }
+		    if ($selectedColor) {
+		        if ($variationIdentifier) $variationIdentifier .= '|';
+		        $variationIdentifier .= 'color:' . $selectedColor;
+		    }
+		    $cartKey = $id . '_' . md5($variationIdentifier);
+		}
+
+		if(isset($cart[$cartKey])){
+			$cart[$cartKey]['qty'] = $cart[$cartKey]['qty'] + $quantity;
 		}else{
-			$cart[$id] = [
+			$cart[$cartKey] = [
 				"id" => $datalist['id'],
 				"name" => $datalist['title'],
 				"qty" => $quantity,
@@ -40,16 +58,28 @@ class CartController extends Controller
 				"seller_phone" => $user['phone'],
 				"seller_address" => $user['address']
 			];
+
+			// Add variation info if selected
+            if ($selectedSize || $selectedColor) {
+                $variationDetails = '';
+                if ($selectedSize) {
+                    $variationDetails .= 'Size: ' . $selectedSize;
+                }
+                if ($selectedColor) {
+                    $variationDetails .= ($variationDetails ? ', ' : '') . 'Color: ' . $selectedColor;
+                }
+                $cart[$cartKey]['variation_details'] = $variationDetails;
+            }
 		}
 
 		session()->put('shopping_cart', $cart);
 
 		$res['msgType'] = 'success';
 		$res['msg'] = __('New Data Added Successfully');
-		
+
 		return response()->json($res);
 	}
-	
+
 	//Add to Cart
 	public function ViewCart(){
 		$gtext = gtext();
@@ -69,13 +99,13 @@ class CartController extends Controller
 				$count += $row['qty'];
 				$Total_Price += $row['price']*$row['qty'];
 				$Sub_Total += $row['price']*$row['qty'];
-				
+
 				if($gtext['currency_position'] == 'left'){
-					$price = '<span id="product-quatity">'.$row['qty'].'</span> x '.$gtext['currency_icon'].$row['price']; 
+					$price = '<span id="product-quatity">'.$row['qty'].'</span> x '.$gtext['currency_icon'].$row['price'];
 				}else{
-					$price = '<span id="product-quatity">'.$row['qty'].'</span> x '.$row['price'].$gtext['currency_icon']; 
+					$price = '<span id="product-quatity">'.$row['qty'].'</span> x '.$row['price'].$gtext['currency_icon'];
 				}
-			
+
 				$items .= '<li>
 							<div class="cart-item-card">
 								<a data-id="'.$row['id'].'" id="removetocart_'.$row['id'].'" onclick="onRemoveToCart('.$row['id'].')" href="javascript:void(0);" class="item-remove"><i class="bi bi-x"></i></a>
@@ -90,17 +120,17 @@ class CartController extends Controller
 						</li>';
 			}
 		}
-		
+
 		$TotalPrice = NumberFormat($Total_Price);
 		$SubTotal = NumberFormat($Sub_Total);
-		
+
 		$TaxCal = ($Total_Price*$taxRate)/100;
 		$tax = NumberFormat($TaxCal);
-		
+
 		$total = $Sub_Total+$TaxCal;
 		$GrandTotal = NumberFormat($total);
 		$discount = 0;
-		
+
 		$datalist = array();
 		$datalist['items'] = $items;
 		$datalist['total_qty'] = $count;
@@ -118,7 +148,7 @@ class CartController extends Controller
 
 		return response()->json($datalist);
 	}
-	
+
 	//Remove to Cart
 	public function RemoveToCart($rowid){
 		$res = array();
@@ -131,28 +161,28 @@ class CartController extends Controller
 
 		$res['msgType'] = 'success';
 		$res['msg'] = __('Data Removed Successfully');
-		
+
 		return response()->json($res);
 	}
-	
+
     //get Cart
     public function getCart(){
         return view('frontend.cart');
     }
-	
+
     //get Cart
     public function getViewCartData(){
 		$gtext = gtext();
 		$gtax = getTax();
 		$taxRate = $gtax['percentage'];
-		
+
 		$ShoppingCartData = session()->get('shopping_cart');
 		$count = 0;
 		$Total_Price = 0;
 		$Sub_Total = 0;
 		$tax = 0;
 		$total = 0;
-		
+
 		if(session()->get('shopping_cart')){
 			foreach ($ShoppingCartData as $row) {
 				$count += $row['qty'];
@@ -160,17 +190,17 @@ class CartController extends Controller
 				$Sub_Total += $row['price']*$row['qty'];
 			}
 		}
-		
+
 		$TotalPrice = NumberFormat($Total_Price);
 		$SubTotal = NumberFormat($Sub_Total);
-		
+
 		$TaxCal = ($Total_Price*$taxRate)/100;
 		$tax = NumberFormat($TaxCal);
-		
+
 		$total = $SubTotal+$TaxCal;
 		$GrandTotal = NumberFormat($total);
 		$discount = 0;
-		
+
 		$datalist = array();
 		$datalist['total_qty'] = $count;
 		if($gtext['currency_position'] == 'left'){
@@ -189,17 +219,17 @@ class CartController extends Controller
 
 		return response()->json($datalist);
     }
-	
+
 	//Add to Wishlist
 	public function addToWishlist($id){
 
 		$res = array();
 		$datalist = Product::where('id', $id)->first();
 		$user = User::where('id', $datalist['user_id'])->first();
-		
+
 		$quantity = 1;
 		$cart = session()->get('shopping_wishlist', []);
-		
+
 		if(isset($cart[$id])){
 			$cart[$id]['qty'] = $quantity;
 		}else{
@@ -225,19 +255,19 @@ class CartController extends Controller
 
 		$res['msgType'] = 'success';
 		$res['msg'] = __('New Data Added Successfully');
-		
+
 		return response()->json($res);
 	}
-	
+
     //get Wishlist
     public function getWishlist(){
 		return view('frontend.wishlist');
 	}
-	
+
 	//Remove to Wishlist
 	public function RemoveToWishlist($rowid){
 		$res = array();
-		
+
 		$cart = session()->get('shopping_wishlist');
 		if(isset($cart[$rowid])){
 			unset($cart[$rowid]);
@@ -246,10 +276,10 @@ class CartController extends Controller
 
 		$res['msgType'] = 'success';
 		$res['msg'] = __('Data Removed Successfully');
-		
+
 		return response()->json($res);
 	}
-	
+
 	//Count to Wishlist
 	public function countWishlist(){
 
@@ -260,7 +290,7 @@ class CartController extends Controller
 				$count++;
 			}
 		}
-		
+
 		return response()->json($count);
 	}
 }

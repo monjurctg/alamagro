@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('title', __('Cart'))
-@php 
+@php
 $gtext = gtext();
 $gtax = getTax();
 @endphp
@@ -58,7 +58,7 @@ $gtax = getTax();
 		</div>
 	</div>
 	<!-- /Page Breadcrumb/ -->
-	
+
 	<!-- Inner Section -->
 	<section class="inner-section inner-section-bg">
 		<div class="container">
@@ -82,16 +82,16 @@ $gtax = getTax();
 							<tbody>
 								@foreach (session('shopping_cart') as $row)
 								@php
-								
+
 									$pro_price = $row['price'];
 									$pro_qty = $row['qty'];
-									
+
 									$total_Price = $row['price']*$row['qty'];
-									
-									if($gtext['currency_position'] == 'left'){ 
-										$price = $gtext['currency_icon'].NumberFormat($pro_price); 
+
+									if($gtext['currency_position'] == 'left'){
+										$price = $gtext['currency_icon'].NumberFormat($pro_price);
 									}else{
-										$price = NumberFormat($pro_price).$gtext['currency_icon'];  
+										$price = NumberFormat($pro_price).$gtext['currency_icon'];
 									}
 
 									if($gtext['currency_position'] == 'left'){
@@ -99,7 +99,7 @@ $gtax = getTax();
 									}else{
 										$totalPrice = NumberFormat($total_Price).$gtext['currency_icon'];
 									}
-									
+
 								@endphp
 								<tr id="row_delete_{{ $row['id'] }}">
 									<td class="pro-image-w">
@@ -109,9 +109,14 @@ $gtax = getTax();
 											</a>
 										</div>
 									</td>
-									<td class="pro-name-w" data-title="{{ __('Product') }}:">
-										<span class="pro-name"><a href="{{ route('frontend.product', [$row['id'], str_slug($row['name'])]) }}">{{ $row['name'] }}</a></span>
-									</td>
+									<td class="text-center pro-name-w" data-title="{{ __('Product') }}:">
+                                        <div class="pro-name">
+                                            <a href="{{ route('frontend.product', [$row['id'], str_slug($row['name'])]) }}">{{ $row['name'] }}</a>
+                                            @if(isset($row['variation_details']) && $row['variation_details'])
+                                                <br><small>({{ $row['variation_details'] }})</small>
+                                            @endif
+                                        </div>
+                                    </td>
 									<td class="pro-store-w" data-title="{{ __('Sold By') }}:">
 										<a href="{{ route('frontend.stores', [$row['seller_id'], str_slug($row['store_name'])]) }}">{{ $row['store_name'] }}</a>
 									</td>
@@ -137,7 +142,7 @@ $gtax = getTax();
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="row">
 				<div class="col-lg-7"></div>
 				<div class="col-lg-5 mt10">
@@ -178,4 +183,4 @@ $gtax = getTax();
 
 @push('scripts')
 <script src="{{asset('public/frontend/pages/view_cart.js')}}"></script>
-@endpush	
+@endpush

@@ -7,7 +7,7 @@
 <div class="main-body">
 	<div class="container-fluid">
 		@php $vipc = vipc(); @endphp
-		@if($vipc['bkey'] == 0) 
+		@if($vipc['bkey'] == 0)
 		@include('seller.partials.vipc')
 		@else
 		<div class="row mt-25">
@@ -54,27 +54,35 @@
 										}else{
 											$color = 'Color: '.$row->variation_color.'&nbsp;';
 										}
-				
+
 										if($row->variation_size == '0'){
 											$size = '&nbsp;';
 										}else{
 											$size = 'Size: '.$row->variation_size;
 										}
-										
+
+                                        // Combine variation info
+                                        $variationInfo = '';
+                                        if(trim($color) != '&nbsp;') {
+                                            $variationInfo .= $color;
+                                        }
+                                        if(trim($size) != '&nbsp;') {
+                                            $variationInfo .= ($variationInfo ? ', ' : '') . $size;
+                                        }
 									@endphp
 									<tr>
 										<td>
 											<h5>{{ $row->title }}</h5>
-											<p>@php echo $color @endphp @php echo $size @endphp</p>
+											<p>@php echo $variationInfo @endphp</p>
 										</td>
 										<td class="text-center">{{ $price }} x {{ $row->quantity }}</td>
 										<td class="text-right">{{ $total_price }}</td>
 									</tr>
 									@endforeach
-									
+
 									@php
 										$total_amount_shipping_fee = $mdata->total_amount+$mdata->shipping_fee+$mdata->tax;
-										
+
 										if($gtext['currency_position'] == 'left'){
 											$shipping_fee = $gtext['currency_icon'].NumberFormat($mdata->shipping_fee);
 											$tax = $gtext['currency_icon'].NumberFormat($mdata->tax);
@@ -89,7 +97,7 @@
 											$total_amount = NumberFormat($total_amount_shipping_fee).$gtext['currency_icon'];
 										}
 									@endphp
-										
+
 									<tr>
 										<td>{{ $mdata->shipping_title }}</td>
 										<td><strong>{{ __('Shipping Fee') }}</strong></td>
@@ -110,11 +118,11 @@
 										<td><strong>{{ __('Total') }}</strong></td>
 										<td class="text-right"><strong>{{ $total_amount }}</strong></td>
 									</tr>
-									
+
 								</tbody>
 							</table>
 						</div>
-						
+
 						<form novalidate="" data-validate="parsley" id="DataEntry_formId">
 						<div class="row mt-25">
 							<div class="col-lg-4">
@@ -169,31 +177,31 @@
 						@if ($mdata->customer_name != '')
 						<p><strong>{{ __('Name') }}</strong>: {{ $mdata->customer_name }}</p>
 						@endif
-						
+
 						@if ($mdata->customer_email != '')
 						<p><strong>{{ __('Email') }}</strong>: {{ $mdata->customer_email }}</p>
 						@endif
-						
+
 						@if ($mdata->customer_phone != '')
 						<p><strong>{{ __('Phone') }}</strong>: {{ $mdata->customer_phone }}</p>
 						@endif
-						
+
 						@if ($mdata->country != '')
 						<p><strong>{{ __('Country') }}</strong>: {{ $mdata->country }}</p>
 						@endif
-						
+
 						@if ($mdata->state != '')
 						<p><strong>{{ __('State') }}</strong>: {{ $mdata->state }}</p>
 						@endif
-						
+
 						@if ($mdata->zip_code != '')
 						<p><strong>{{ __('Zip Code') }}</strong>: {{ $mdata->zip_code }}</p>
 						@endif
-						
+
 						@if ($mdata->city != '')
 						<p><strong>{{ __('City') }}</strong>: {{ $mdata->city }}</p>
 						@endif
-						
+
 						@if ($mdata->customer_address != '')
 						<p><strong>{{ __('Address') }}</strong>: {{ $mdata->customer_address }}</p>
 						@endif

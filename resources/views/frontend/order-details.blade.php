@@ -56,7 +56,7 @@
 		</div>
 	</div>
 	<!-- /Page Breadcrumb/ -->
-	
+
 	<!-- Inner Section -->
 	<section class="inner-section inner-section-bg">
 		<div class="container">
@@ -115,6 +115,18 @@
 														}else{
 															$size = $row->quantity.' '.$row->variation_size;
 														}
+
+                                                        // Display color and size variations
+                                                        $variationInfo = '';
+                                                        if($row->variation_size != '' && $row->variation_size != '0') {
+                                                            $variationInfo .= 'Size: ' . $row->variation_size;
+                                                        }
+                                                        if($row->variation_color != '' && $row->variation_color != '0') {
+                                                            $variationInfo .= ($variationInfo ? ', ' : '') . 'Color: ' . $row->variation_color;
+                                                        }
+                                                        if($variationInfo) {
+                                                            $size .= ' (' . $variationInfo . ')';
+                                                        }
 													@endphp
 													<tr>
 														<td class="pro-image-w">
@@ -137,8 +149,8 @@
 										</div>
 									</div>
 								</div>
-								
-								@php	
+
+								@php
 									$total_amount_shipping_fee = $mdata->total_amount+$mdata->shipping_fee+$mdata->tax;
 
 									if($gtext['currency_position'] == 'left'){
@@ -146,7 +158,7 @@
 										$tax = $gtext['currency_icon'].NumberFormat($mdata->tax);
 										$subtotal = $gtext['currency_icon'].NumberFormat($mdata->total_amount);
 										$total_amount = $gtext['currency_icon'].NumberFormat($total_amount_shipping_fee);
-										
+
 									}else{
 										$shipping_fee = NumberFormat($mdata->shipping_fee).$gtext['currency_icon'];
 										$tax = NumberFormat($mdata->tax).$gtext['currency_icon'];
@@ -154,7 +166,7 @@
 										$total_amount = NumberFormat($total_amount_shipping_fee).$gtext['currency_icon'];
 									}
 								@endphp
-								
+
 								<div class="row">
 									<div class="col-lg-7 mt10">
 										<p>{{ $mdata->shipping_title }}: {{ $shipping_fee }}</p>
@@ -194,4 +206,4 @@
 	$('ul.sidebar-nav li a').parent().removeClass('active');
 	$(my_dashbord_elem).addClass('active');
 </script>
-@endpush	
+@endpush
