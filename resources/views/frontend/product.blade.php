@@ -143,11 +143,10 @@
                                     @endphp
                                     @foreach($colors as $color)
                                         @php
-                                            $colorParts = explode('|', $color);
-                                            $colorName = trim($colorParts[0]);
-                                            $colorValue = isset($colorParts[1]) ? trim($colorParts[1]) : '#ccc';
+                                            // For colors, we'll display them as text since we don't have color values
+                                            $colorName = trim($color);
                                         @endphp
-                                        <li class="color-option" data-color="{{ $colorName }}" style="background-color: {{ $colorValue }};" title="{{ $colorName }}"></li>
+                                        <li class="color-option" data-color="{{ $colorName }}" title="{{ $colorName }}">{{ $colorName }}</li>
                                     @endforeach
                                 </ul>
                             </div>

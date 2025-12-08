@@ -2596,38 +2596,47 @@ ul.widget-size li.unit.active {
 .shopping-cart table td {
   vertical-align: middle;
 }
+
 .shopping-cart thead th {
 	border-bottom-color: var(--color-light-green) !important;
 	background: var(--color-light-green);
 }
+
 .shopping-cart .table > :not(:first-child) {
 	border-top: none;
 }
+
 .shopping-cart .pro-image {
 	width: 80px;
 	height: auto;
 	border: 1px solid var(--color-light-green);
 	text-align: center;
 }
+
 .shopping-cart .pro-image img {
 	width: 100%;
 	height: auto;
 }
+
 .shopping-cart .pro-name,
 .shopping-cart .pro-name a {
 	font-size: var(--font-size-200);
 	font-weight: 600;
 }
+
 .shopping-cart .pro-price {
 	font-weight: 700;
 }
+
 .shopping-cart .pro-quantity {}
+
 .shopping-cart .pro-quantity .quantity {
 	border: 1px solid var(--color-light-green);
 	padding: 7px 5px;
 	text-align: center;
 	width: 60px;
 }
+
 .shopping-cart .pro-quantity .qty-btn {
 	border: none;
 	background: var(--color-light-green);
@@ -2645,19 +2654,24 @@ ul.widget-size li.unit.active {
 	-o-transition: all 0.3s ease-out 0s;
 	transition: all 0.3s ease-out 0s;
 }
+
 .shopping-cart .pro-quantity .qty-btn:hover {
 	background: var(--theme-color);
 	color: var(--color-white);
 }
+
 .shopping-cart .pro-total-price {
 	font-weight: 700;
 }
+
 .shopping-cart .instock {
 	color: #388e3c;
 }
+
 .shopping-cart .stockout {
 	color: var(--theme-color);
 }
+
 .shopping-cart .pro-addtocart .cart {
 	text-transform: capitalize;
 	padding: 10px 15px;
@@ -2678,6 +2692,7 @@ ul.widget-size li.unit.active {
 	border: 1px solid var(--color-light-green);
 	background: var(--color-white);
 }
+
 .carttotals-card .carttotals-head {
 	background: var(--color-light-green);
 	padding: 10px 15px;
@@ -2685,32 +2700,41 @@ ul.widget-size li.unit.active {
 	font-size: var(--font-size-200);
 	color: var(--color-black);
 }
+
 .carttotals-card .carttotals-body {
 	padding: 20px;
 }
+
 .carttotals-card .carttotals-body .title {}
+
 .carttotals-card .carttotals-body .total {
 	font-weight: 700;
 }
+
 .carttotals-card .carttotals-body .price {
 	float: right;
 }
+
 .carttotals-card .carttotals-body .total-price {
 	float: right;
 	font-weight: 700;
 }
+
 .carttotals-card .carttotals-body tr:last-child td {
 	border-bottom: none;
 }
+
 .carttotals-card .carttotals-body .alert {
 	padding: 10px 12px;
 	margin-bottom: 0;
 	border-radius: 0;
 	margin-top: 10px;
 }
+
 .table .tp_group {
 	background-color: #f7f7f7;
 }
+
 .table .tp_group .store_logo {
 	width: 30px;
 	height: 30px;
@@ -2719,14 +2743,17 @@ ul.widget-size li.unit.active {
 	float: left;
 	margin-right: 5px;
 }
+
 .table .tp_group .store_logo img {
 	width: 100%;
 	height: 100%;
 }
+
 .table .tp_group .store_name {
 	width: calc(100% - 50px);
 	float: left;
 }
+
 .table .tp_group .store_name p {
 	margin: 0;
 	padding: 0;
@@ -2735,14 +2762,18 @@ ul.widget-size li.unit.active {
 	font-family: var(--primary-font-family);
 	color: var(--color-black);
 }
+
 .table .tp_group .store_name p strong {}
+
 .table .tp_group .store_name a {
 	color: var(--theme-color);
 	font-size: 14px;
 }
+
 .hideclass {
 	display: none;
 }
+
 .thank span {
 	font-size: 60px;
 	color: var(--theme-color);
@@ -2751,6 +2782,44 @@ ul.widget-size li.unit.active {
 .empty_card {
 	padding: 20px;
 }
+
+/* ======================
+   Product Variations
+   ====================== */
+.widget-size, .widget-color {
+	list-style: none;
+	padding: 0;
+	margin: 10px 0;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.widget-size li, .widget-color li {
+	cursor: pointer;
+	padding: 8px 15px;
+	margin: 5px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	background: #f8f8f8;
+	transition: all 0.3s ease;
+}
+
+.widget-size li:hover, .widget-color li:hover {
+	background: #e9e9e9;
+	border-color: #999;
+}
+
+.widget-size li.active, .widget-color li.active {
+	background: var(--theme-color);
+	color: white;
+	border-color: var(--theme-color);
+}
+
+.widget-color li {
+	min-width: 80px;
+	text-align: center;
+}
+
 .empty_card .empty_img {
 	padding: 20px;
 }
@@ -4406,3 +4475,40 @@ ul.errors-list li {
 
 /* Optional: compact the “Show More” item */
 .cat-more-btn { display: block; text-align: center; margin-top: 8px; }
+
+/* ======================
+   Product Variations
+   ====================== */
+.widget-size, .widget-color {
+	list-style: none;
+	padding: 0;
+	margin: 10px 0;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.widget-size li, .widget-color li {
+	cursor: pointer;
+	padding: 8px 15px;
+	margin: 5px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	background: #f8f8f8;
+	transition: all 0.3s ease;
+}
+
+.widget-size li:hover, .widget-color li:hover {
+	background: #e9e9e9;
+	border-color: #999;
+}
+
+.widget-size li.active, .widget-color li.active {
+	background: var(--theme-color);
+	color: white;
+	border-color: var(--theme-color);
+}
+
+.widget-color li {
+	min-width: 80px;
+	text-align: center;
+}
