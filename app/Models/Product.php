@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
-	
+
     protected $fillable = [
         'title',
         'slug',
@@ -44,4 +44,20 @@ class Product extends Model
         'og_description',
         'og_keywords',
     ];
+
+    /**
+     * Get the variations for the product.
+     */
+    public function variations()
+    {
+        return $this->hasMany(ProductVariation::class);
+    }
+
+    /**
+     * Get the default variation for the product.
+     */
+    public function defaultVariation()
+    {
+        return $this->hasOne(ProductVariation::class)->where('is_default', true);
+    }
 }

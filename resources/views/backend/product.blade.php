@@ -7,7 +7,7 @@
 <div class="main-body">
 	<div class="container-fluid">
 		@php $vipc = vipc(); @endphp
-		@if($vipc['bkey'] == 0) 
+		@if($vipc['bkey'] == 0)
 		@include('backend.partials.vipc')
 		@else
 		<div class="row mt-25">
@@ -30,7 +30,7 @@
 						<div class="tabs-body">
 							<!--Data Entry Form-->
 							<form novalidate="" data-validate="parsley" id="DataEntry_formId">
-								<div class="row">	
+								<div class="row">
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label for="lan">{{ __('Language') }}<span class="red">*</span></label>
@@ -53,7 +53,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="row">	
+								<div class="row">
 									<div class="col-lg-12">
 										<div class="form-group">
 											<label for="slug">{{ __('Slug') }}<span class="red">*</span></label>
@@ -61,7 +61,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="row">	
+								<div class="row">
 									<div class="col-lg-12">
 										<div class="form-group">
 											<label for="short_desc">{{ __('Short Description') }}</label>
@@ -69,7 +69,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="row">	
+								<div class="row">
 									<div class="col-lg-12">
 										<div class="form-group tpeditor">
 											<label for="description">{{ __('Product Content') }}</label>
@@ -77,7 +77,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="row">	
+								<div class="row">
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label for="brand_id">{{ __('Brand') }}<span class="red">*</span></label>
@@ -90,7 +90,7 @@
 											@endforeach
 											</select>
 										</div>
-									</div>	
+									</div>
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label for="cat_id">{{ __('Category') }}<span class="red">*</span></label>
@@ -106,7 +106,7 @@
 									</div>
 								</div>
 
-								<div class="row">	
+								<div class="row">
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label for="tax_id">{{ __('Tax') }}<span class="red">*</span></label>
@@ -141,7 +141,7 @@
 									</div>
 									<div class="col-lg-6">
 										<div class="form-group">
-											<label for="variation_size">{{ __('Unit') }}<span class="red">*</span></label>
+											<label for="variation_size">{{ __('Size') }}</label>
 											<select name="variation_size" id="variation_size" class="chosen-select form-control">
 											@foreach($unitlist as $row)
 												<option {{ $row->name == $datalist['variation_size'] ? "selected=selected" : '' }} value="{{ $row->name }}">
@@ -152,8 +152,23 @@
 										</div>
 									</div>
 								</div>
-								
+
 								<div class="row">
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label for="variation_color">{{ __('Color') }}</label>
+											<select name="variation_color" id="variation_color" class="chosen-select form-control">
+												<option value="">{{ __('Select Color') }}</option>
+												@foreach($unitlist as $row)
+													@if($row->att_type == 'Color')
+													<option {{ $row->name == $datalist['variation_color'] ? "selected=selected" : '' }} value="{{ $row->name }}">
+														{{ $row->name }}
+													</option>
+													@endif
+												@endforeach
+											</select>
+										</div>
+									</div>
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label for="is_featured">{{ __('Is Popular') }}</label>
@@ -163,17 +178,8 @@
 											</select>
 										</div>
 									</div>
-									<div class="col-lg-6">
-										<div class="form-group">
-											<label for="collection_id">{{ __('Is Trending') }}</label>
-											<select name="collection_id" id="collection_id" class="chosen-select form-control">
-												<option {{ 1 == $datalist['collection_id'] ? "selected=selected" : '' }} value="1">{{ __('YES') }}</option>
-												<option {{ 0 == $datalist['collection_id'] ? "selected=selected" : '' }} value="0">{{ __('NO') }}</option>
-											</select>
-										</div>
-									</div>
 								</div>
-								
+
 								<div class="row">
 									<div class="col-lg-6">
 										<div class="form-group">

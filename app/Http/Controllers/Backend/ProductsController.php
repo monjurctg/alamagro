@@ -370,6 +370,7 @@ class ProductsController extends Controller
 		$cat_id = $request->input('cat_id');
 		$user_id = $request->input('storeid');
 		$variation_size = $request->input('variation_size');
+		$variation_color = $request->input('variation_color');
 		$sale_price = $request->input('sale_price');
 
 		$validator_array = array(
@@ -380,7 +381,6 @@ class ProductsController extends Controller
 			'language' => $request->input('lan'),
 			'status' => $request->input('is_publish'),
 			'store' => $request->input('storeid'),
-			'variation_size' => $request->input('variation_size'),
 			'sale_price' => $request->input('sale_price')
 		);
 
@@ -393,7 +393,6 @@ class ProductsController extends Controller
 			'category' => 'required',
 			'status' => 'required',
 			'store' => 'required',
-			'variation_size' => 'required',
 			'sale_price' => 'required'
 		]);
 
@@ -468,6 +467,7 @@ class ProductsController extends Controller
 			'is_publish' => $is_publish,
 			'user_id' => $user_id,
 			'variation_size' => $variation_size,
+			'variation_color' => $variation_color,
 			'sale_price' => $sale_price,
 			'lan' => $lan
 		);
