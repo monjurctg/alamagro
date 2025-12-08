@@ -8,15 +8,54 @@ $(function () {
 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 		}
 	});
-	
+
 	onViewCartData();
+
+	// Handle quantity changes
+	$(document).on('click', '.qty-btn', function() {
+		var productKey = $(this).data('id');
+		var input = $('#quantity_' + productKey);
+		var currentValue = parseInt(input.val());
+		var maxValue = parseInt(input.attr('max')) || 999;
+		var minValue = parseInt(input.attr('min')) || 1;
+
+		if ($(this).hasClass('plus')) {
+			if (currentValue < maxValue) {
+				input.val(currentValue + 1);
+				updateCartQuantity(productKey, currentValue + 1);
+			}
+		} else if ($(this).hasClass('minus')) {
+			if (currentValue > minValue) {
+				input.val(currentValue - 1);
+				updateCartQuantity(productKey, currentValue - 1);
+			}
+		}
+	});
+
+	// Handle direct input changes
+	$(document).on('change', '.quantity', function() {
+		var productKey = $(this).data('id');
+		var newValue = parseInt($(this).val());
+		var maxValue = parseInt($(this).attr('max')) || 999;
+		var minValue = parseInt($(this).attr('min')) || 1;
+
+		if (newValue > maxValue) {
+			$(this).val(maxValue);
+			newValue = maxValue;
+		} else if (newValue < minValue) {
+			$(this).val(minValue);
+			newValue = minValue;
+		}
+
+		updateCartQuantity(productKey, newValue);
+	});
 });
 
 function onViewCartData() {
 
     $.ajax({
 		type : 'GET',
-		url: base_url + '/frontend/viewcart_data',
+		url: base_url + "/frontend/viewcart_data",
 		dataType:"json",
 		success: function (data) {
 
@@ -29,28 +68,48 @@ function onViewCartData() {
 	});
 }
 
-function onRemoveToCart(id) {
-	var rowid = $("#removetoviewcart_"+id).data('id');
-
+function onRemoveToCart(cartKey) {
 	$.ajax({
 		type : 'GET',
-		url: base_url + '/frontend/remove_to_cart/'+rowid,
+		url: base_url + '/frontend/remove_to_cart/' + encodeURIComponent(cartKey),
 		dataType:"json",
 		success: function (response) {
-			
+
 			var msgType = response.msgType;
 			var msg = response.msg;
 
 			if (msgType == "success") {
 				onSuccessMsg(msg);
-				$('#row_delete_'+id).remove();
+				$('#row_delete_' + cartKey).remove();
 			} else {
 				onErrorMsg(msg);
 			}
-			
+
 			onViewCartData();
 			onViewCart();
 		}
 	});
 }
 
+function updateCartQuantity(productKey, quantity) {
+	$.ajax({
+		type : 'POST',
+		url: base_url + '/frontend/update_cart_quantity',
+		data: {
+			product_id: productKey,
+			quantity: quantity
+		},
+		dataType:"json",
+		success: function (response) {
+			if (response.msgType == "success") {
+				onViewCartData();
+				onViewCart();
+			} else {
+				onErrorMsg(response.msg);
+			}
+		},
+		error: function(xhr, status, error) {
+			onErrorMsg('Failed to update cart quantity');
+		}
+	});
+}

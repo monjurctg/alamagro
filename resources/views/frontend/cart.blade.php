@@ -80,9 +80,8 @@ $gtax = getTax();
 								</tr>
 							</thead>
 							<tbody>
-								@foreach (session('shopping_cart') as $row)
+								@foreach (session('shopping_cart') as $cartKey => $row)
 								@php
-
 									$pro_price = $row['price'];
 									$pro_qty = $row['qty'];
 
@@ -101,7 +100,7 @@ $gtax = getTax();
 									}
 
 								@endphp
-								<tr id="row_delete_{{ $row['id'] }}">
+								<tr id="row_delete_{{ $cartKey }}">
 									<td class="pro-image-w">
 										<div class="pro-image">
 											<a href="{{ route('frontend.product', [$row['id'], str_slug($row['name'])]) }}">
@@ -127,13 +126,17 @@ $gtax = getTax();
 										<span class="pro-price"><span class="pro-price">{{ $price }}</span></span>
 									</td>
 									<td class="text-center pro-quantity-w" data-title="{{ __('Quantity') }}:">
-										<div class="pro-quantity">{{ $row['qty'] }}</div>
-									</td>
+                                        <div class="pro-quantity">
+                                            <button class="qty-btn minus" data-id="{{ $cartKey }}">-</button>
+                                            <input type="number" class="quantity" id="quantity_{{ $cartKey }}" value="{{ $row['qty'] }}" min="1" max="{{ $row['is_stock'] == 1 ? $row['stock_qty'] : 999 }}" data-id="{{ $cartKey }}">
+                                            <button class="qty-btn plus" data-id="{{ $cartKey }}">+</button>
+                                        </div>
+                                    </td>
 									<td class="text-center pro-total-price-w" data-title="{{ __('Total') }}:">
 										<span class="pro-total-price">{{ $totalPrice }}</span>
 									</td>
 									<td class="text-center pro-remove-w" data-title="Remove:">
-										<a data-id="{{ $row['id'] }}" id="removetoviewcart_{{ $row['id'] }}" onclick="onRemoveToCart({{ $row['id'] }})" href="javascript:void(0);" class="pro-remove"><i class="bi bi-x-lg"></i></a>
+										<a data-id="{{ $cartKey }}" id="removetoviewcart_{{ $cartKey }}" onclick="onRemoveToCart('{{ $cartKey }}')" href="javascript:void(0);" class="pro-remove"><i class="bi bi-x-lg"></i></a>
 									</td>
 								</tr>
 								@endforeach
