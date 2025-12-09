@@ -125,7 +125,8 @@ class CartController extends Controller
                 'variation_details' => $variationInfo,
                 'is_stock' => $product->is_stock,
                 'stock_qty' => $product->stock_qty,
-                'weight' => 0
+                'weight' => 0,
+                'unit' => ''
             ];
         }
 
