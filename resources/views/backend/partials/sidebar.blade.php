@@ -20,7 +20,7 @@
 				<li><a href="{{ route('backend.brands') }}">{{ __('Brands') }}</a></li>
 				<li><a href="{{ route('backend.shipping') }}">{{ __('Shipping') }}</a></li>
 				<li class="dnone"><a href="{{ route('backend.collections') }}">{{ __('Collections') }}</a></li>
-				<li><a href="{{ route('backend.attributes') }}">{{ __('Unit') }}</a></li>
+				<li><a href="{{ route('backend.attributes') }}">{{ __('Attributes') }}</a></li>
 				<li class="dnone"><a href="{{ route('backend.labels') }}">{{ __('Labels') }}</a></li>
 				<li class="dnone"><a href="{{ route('backend.coupons') }}">{{ __('Coupons') }}</a></li>
 				<li><a href="{{ route('backend.tax') }}">{{ __('Tax') }}</a></li>
