@@ -114,6 +114,9 @@ class CartController extends Controller
 
             $cart[$cartKey]['qty'] = $newQty;
         } else {
+            // Get seller details
+            $seller = DB::table('users')->where('id', $product->user_id)->first();
+
             // Add new item to cart
             $cart[$cartKey] = [
                 'id' => $id,
@@ -126,7 +129,15 @@ class CartController extends Controller
                 'is_stock' => $product->is_stock,
                 'stock_qty' => $product->stock_qty,
                 'weight' => 0,
-                'unit' => ''
+                'unit' => '',
+                'seller_id' => $seller->id,
+                'seller_name' => $seller->name,
+                'store_name' => $seller->shop_name,
+                'store_logo' => $seller->shop_logo,
+                'store_url' => $seller->shop_url,
+                'seller_email' => $seller->email,
+                'seller_phone' => $seller->phone,
+                'seller_address' => $seller->address
             ];
         }
 
@@ -258,6 +269,9 @@ class CartController extends Controller
         }else{
             $res['total'] = NumberFormat($SubTotal).$gtext['currency_icon'];
         }
+
+        $res['total_qty'] = $total_qty;
+        $res['items'] = view('frontend.partials.cart_item', compact('gtext'))->render();
 
         return response()->json($res);
     }
