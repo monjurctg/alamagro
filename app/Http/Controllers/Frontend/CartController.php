@@ -34,7 +34,13 @@ class CartController extends Controller
         $selectedColor = $request->input('color');
 
         // Validate variations if they exist
-        if ($selectedSize && $product->variation_size) {
+        // Validate variations if they exist
+        if ($product->variation_size) {
+            if (!$selectedSize) {
+                $res['msgType'] = 'error';
+                $res['msg'] = __('Please select a size.');
+                return response()->json($res);
+            }
             $availableSizes = explode(',', $product->variation_size);
             $availableSizes = array_map('trim', $availableSizes);
             if (!in_array($selectedSize, $availableSizes)) {
@@ -44,7 +50,12 @@ class CartController extends Controller
             }
         }
 
-        if ($selectedColor && $product->variation_color) {
+        if ($product->variation_color) {
+            if (!$selectedColor) {
+                $res['msgType'] = 'error';
+                $res['msg'] = __('Please select a color.');
+                return response()->json($res);
+            }
             $availableColors = explode(',', $product->variation_color);
             $availableColors = array_map('trim', $availableColors);
             if (!in_array($selectedColor, $availableColors)) {
@@ -110,7 +121,7 @@ class CartController extends Controller
                 'price' => $product->sale_price,
                 'qty' => $qty,
                 'image' => $product->f_thumbnail,
-                'variation_info' => $variationInfo,
+                'variation_details' => $variationInfo,
                 'is_stock' => $product->is_stock,
                 'stock_qty' => $product->stock_qty
             ];

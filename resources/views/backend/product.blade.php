@@ -139,30 +139,19 @@
 											</select>
 										</div>
 									</div>
+								<div class="row">
 									<div class="col-lg-6">
 										<div class="form-group">
-											<label for="variation_size">{{ __('Size') }}</label>
-											<input value="{{ $datalist['variation_size'] }}" name="variation_size" id="variation_size" type="text" class="form-control" placeholder="e.g., Small, Medium, Large">
-											<small class="form-text text-muted">{{ __('Separate multiple sizes with commas') }}</small>
+											<label for="variation_size">{{ __('Size / Unit') }}</label>
+											<input value="{{ $datalist['variation_size'] }}" name="variation_size" id="variation_size" type="text" class="form-control" placeholder="e.g., Small, Medium, Large, 1 Kg, 1 Box">
+											<small class="form-text text-muted">{{ __('Separate multiple sizes with commas, or enter a single unit.') }}</small>
 										</div>
 									</div>
-								</div>
-
-								<div class="row">
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label for="variation_color">{{ __('Color') }}</label>
 											<input value="{{ $datalist['variation_color'] }}" name="variation_color" id="variation_color" type="text" class="form-control" placeholder="e.g., Red, Blue, Green">
 											<small class="form-text text-muted">{{ __('Separate multiple colors with commas') }}</small>
-										</div>
-									</div>
-									<div class="col-lg-6">
-										<div class="form-group">
-											<label for="is_featured">{{ __('Is Popular') }}</label>
-											<select name="is_featured" id="is_featured" class="chosen-select form-control">
-												<option {{ 1 == $datalist['is_featured'] ? "selected=selected" : '' }} value="1">{{ __('YES') }}</option>
-												<option {{ 0 == $datalist['is_featured'] ? "selected=selected" : '' }} value="0">{{ __('NO') }}</option>
-											</select>
 										</div>
 									</div>
 								</div>
@@ -182,7 +171,15 @@
 											</div>
 										</div>
 									</div>
-									<div class="col-lg-6"></div>
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label for="is_featured">{{ __('Is Popular') }}</label>
+											<select name="is_featured" id="is_featured" class="chosen-select form-control">
+												<option {{ 1 == $datalist['is_featured'] ? "selected=selected" : '' }} value="1">{{ __('YES') }}</option>
+												<option {{ 0 == $datalist['is_featured'] ? "selected=selected" : '' }} value="0">{{ __('NO') }}</option>
+											</select>
+										</div>
+									</div>
 								</div>
 								<div class="row">
 									<div class="col-lg-3">

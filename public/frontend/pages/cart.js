@@ -19,8 +19,19 @@ $(function () {
 		var qty = $("#quantity").val();
 
 		// Get selected variations
+		var hasSizeOptions = $('.widget-size').length > 0;
+		var hasColorOptions = $('.widget-color').length > 0;
 		var selectedSize = $('.size-option.active').data('size');
 		var selectedColor = $('.color-option.active').data('color');
+
+		if (hasSizeOptions && !selectedSize) {
+			onErrorMsg(TEXT['Please select a size.']);
+			return;
+		}
+		if (hasColorOptions && !selectedColor) {
+			onErrorMsg(TEXT['Please select a color.']);
+			return;
+		}
 
 		if((qty == undefined) || (qty == '') || (qty <= 0)){
 			onErrorMsg(TEXT['Please enter quantity.']);
@@ -70,8 +81,19 @@ $(function () {
 		var qty = $("#quantity").val();
 
 		// Get selected variations
+		var hasSizeOptions = $('.widget-size').length > 0;
+		var hasColorOptions = $('.widget-color').length > 0;
 		var selectedSize = $('.size-option.active').data('size');
 		var selectedColor = $('.color-option.active').data('color');
+
+		if (hasSizeOptions && !selectedSize) {
+			onErrorMsg(TEXT['Please select a size.']);
+			return;
+		}
+		if (hasColorOptions && !selectedColor) {
+			onErrorMsg(TEXT['Please select a color.']);
+			return;
+		}
 
 		if((qty == undefined) || (qty == '') || (qty <= 0)){
 			onErrorMsg(TEXT['Please enter quantity.']);

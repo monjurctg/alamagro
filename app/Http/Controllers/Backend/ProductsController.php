@@ -138,6 +138,7 @@ class ProductsController extends Controller
 		$cat_id = $request->input('categoryid');
 		$brand_id = $request->input('brandid');
 		$user_id = $request->input('storeid');
+		$unit = $request->input('unit');
 
 		$validator_array = array(
 			'product_name' => $request->input('title'),
@@ -204,7 +205,10 @@ class ProductsController extends Controller
 			'brand_id' => $brand_id,
 			'user_id' => $user_id,
 			'lan' => $lan,
-			'is_publish' => 2
+			'user_id' => $user_id,
+			'lan' => $lan,
+			'is_publish' => 2,
+			'lan' => $lan
 		);
 
 		if($id ==''){
@@ -469,6 +473,8 @@ class ProductsController extends Controller
 			'variation_size' => $variation_size,
 			'variation_color' => $variation_color,
 			'sale_price' => $sale_price,
+			'sale_price' => $sale_price,
+			'lan' => $lan,
 			'lan' => $lan
 		);
 

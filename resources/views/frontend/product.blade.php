@@ -121,7 +121,7 @@
                             <!-- Size Options -->
                             @if($data->variation_size != '')
                             <div class="variation-section">
-                                <label class="widget-title">{{ __('Size') }}</label>
+                                <label class="widget-title">{{ __('Size / Unit') }}</label>
                                 <ul class="widget-size variation-options">
                                     @php
                                         $sizes = explode(',', $data->variation_size);
@@ -485,6 +485,8 @@ var TEXT = [];
 	TEXT['Please enter quantity.'] = "{{ __('Please enter quantity.') }}";
 	TEXT['The value must be less than or equal to'] = "{{ __('The value must be less than or equal to') }} {{ $data->is_stock == 1 ? $data->stock_qty : '' }}";
 	TEXT['This product out of stock.'] = "{{ __('This product out of stock.') }}";
+	TEXT['Please select a size.'] = "{{ __('Please select a size.') }}";
+	TEXT['Please select a color.'] = "{{ __('Please select a color.') }}";
 </script>
 <script src="{{asset('public/frontend/pages/product.js')}}"></script>
 @endpush
