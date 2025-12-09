@@ -17,12 +17,12 @@ class AttributesController extends Controller
 
         return view('backend.attributes', compact('datalist'));
     }
-	
+
 	//Get data for Attributes Pagination
 	public function getAttributesTableData(Request $request){
 
 		$search = $request->search;
-		
+
 		if($request->ajax()){
 
 			if($search != ''){
@@ -37,24 +37,26 @@ class AttributesController extends Controller
 			return view('backend.partials.attributes_table', compact('datalist'))->render();
 		}
 	}
-	
+
 	//Save data for Attributes
     public function saveAttributesData(Request $request){
 		$res = array();
-		
+
 		$id = $request->input('RecordId');
 		$name = $request->input('name');
-		
+
 		$validator_array = array(
-			'name' => $request->input('name')
+			'name' => $request->input('name'),
+			'att_type' => $request->input('att_type')
 		);
-		
+
 		$validator = Validator::make($validator_array, [
-			'name' => 'required|max:100'
+			'name' => 'required|max:100',
+			'att_type' => 'required'
 		]);
 
 		$errors = $validator->errors();
-		
+
 		if($errors->has('name')){
 			$res['msgType'] = 'error';
 			$res['msg'] = $errors->first('name');
@@ -62,9 +64,11 @@ class AttributesController extends Controller
 		}
 
 		$data = array(
-			'name' => $name
+			'att_type' => $request->input('att_type'),
+			'name' => $name,
+			'color' => $request->input('color')
 		);
-		
+
 		if($id ==''){
 			$response = Attribute::create($data);
 			if($response){
@@ -84,23 +88,23 @@ class AttributesController extends Controller
 				$res['msg'] = __('Data update failed');
 			}
 		}
-		
+
 		return response()->json($res);
     }
-	
+
 	//Get data for Attribute by id
     public function getAttributesById(Request $request){
 
 		$id = $request->id;
-		
+
 		$data = Attribute::where('id', $id)->first();
-		
+
 		return response()->json($data);
 	}
-	
+
 	//Delete data for Attributes
 	public function deleteAttributes(Request $request){
-		
+
 		$res = array();
 
 		$id = $request->id;
@@ -115,18 +119,18 @@ class AttributesController extends Controller
 				$res['msg'] = __('Data remove failed');
 			}
 		}
-		
+
 		return response()->json($res);
 	}
-	
+
 	//Bulk Action for Attributes
 	public function bulkActionAttributes(Request $request){
-		
+
 		$res = array();
 
 		$idsStr = $request->ids;
 		$idsArray = explode(',', $idsStr);
-		
+
 		$BulkAction = $request->BulkAction;
 
 		if($BulkAction == 'delete'){
@@ -139,7 +143,7 @@ class AttributesController extends Controller
 				$res['msg'] = __('Data remove failed');
 			}
 		}
-		
+
 		return response()->json($res);
-	}	
+	}
 }

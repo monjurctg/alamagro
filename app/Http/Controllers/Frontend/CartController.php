@@ -121,9 +121,11 @@ class CartController extends Controller
                 'price' => $product->sale_price,
                 'qty' => $qty,
                 'image' => $product->f_thumbnail,
+                'thumbnail' => $product->f_thumbnail,
                 'variation_details' => $variationInfo,
                 'is_stock' => $product->is_stock,
-                'stock_qty' => $product->stock_qty
+                'stock_qty' => $product->stock_qty,
+                'weight' => 0
             ];
         }
 

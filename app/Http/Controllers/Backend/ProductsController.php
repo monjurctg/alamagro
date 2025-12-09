@@ -341,6 +341,8 @@ class ProductsController extends Controller
 		$categorylist = Pro_category::where('lan', '=', $lan)->where('is_publish', '=', 1)->orderBy('name','asc')->get();
 
 		$taxlist = Tax::orderBy('title','asc')->get();
+		$sizelist = Attribute::where('att_type', 'Size')->orderBy('name','asc')->get();
+		$colorlist = Attribute::where('att_type', 'Color')->orderBy('name','asc')->get();
 		$unitlist = Attribute::orderBy('name','asc')->get();
 		$media_datalist = Media_option::orderBy('id','desc')->paginate(28);
 
@@ -351,7 +353,7 @@ class ProductsController extends Controller
 			->orderBy('users.shop_name','asc')
 			->get();
 
-        return view('backend.product', compact('datalist', 'statuslist', 'languageslist', 'brandlist', 'categorylist', 'taxlist', 'media_datalist', 'storeList', 'unitlist'));
+        return view('backend.product', compact('datalist', 'statuslist', 'languageslist', 'brandlist', 'categorylist', 'taxlist', 'media_datalist', 'storeList', 'unitlist', 'sizelist', 'colorlist'));
     }
 
 	//Update data for Products
@@ -374,7 +376,13 @@ class ProductsController extends Controller
 		$cat_id = $request->input('cat_id');
 		$user_id = $request->input('storeid');
 		$variation_size = $request->input('variation_size');
+		if(is_array($variation_size)){
+			$variation_size = implode(',', $variation_size);
+		}
 		$variation_color = $request->input('variation_color');
+		if(is_array($variation_color)){
+			$variation_color = implode(',', $variation_color);
+		}
 		$sale_price = $request->input('sale_price');
 
 		$validator_array = array(

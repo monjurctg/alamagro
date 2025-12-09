@@ -143,15 +143,21 @@
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label for="variation_size">{{ __('Size / Unit') }}</label>
-											<input value="{{ $datalist['variation_size'] }}" name="variation_size" id="variation_size" type="text" class="form-control" placeholder="e.g., Small, Medium, Large, 1 Kg, 1 Box">
-											<small class="form-text text-muted">{{ __('Separate multiple sizes with commas, or enter a single unit.') }}</small>
+											<select name="variation_size[]" id="variation_size" class="chosen-select form-control" multiple>
+											@foreach($sizelist as $row)
+												<option value="{{ $row->name }}" {{ in_array($row->name, explode(',', $datalist['variation_size'])) ? 'selected' : '' }}>{{ $row->name }}</option>
+											@endforeach
+											</select>
 										</div>
 									</div>
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label for="variation_color">{{ __('Color') }}</label>
-											<input value="{{ $datalist['variation_color'] }}" name="variation_color" id="variation_color" type="text" class="form-control" placeholder="e.g., Red, Blue, Green">
-											<small class="form-text text-muted">{{ __('Separate multiple colors with commas') }}</small>
+											<select name="variation_color[]" id="variation_color" class="chosen-select form-control" multiple>
+											@foreach($colorlist as $row)
+												<option value="{{ $row->name }}" {{ in_array($row->name, explode(',', $datalist['variation_color'])) ? 'selected' : '' }}>{{ $row->name }}</option>
+											@endforeach
+											</select>
 										</div>
 									</div>
 								</div>

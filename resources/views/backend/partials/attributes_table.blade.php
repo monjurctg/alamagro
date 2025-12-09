@@ -3,7 +3,9 @@
 		<thead>
 			<tr>
 				<th class="checkboxlist text-center" style="width:5%"><input class="tp-check-all checkAll" type="checkbox"></th>
-				<th class="text-left" style="width:85%">{{ __('Name') }}</th>
+				<th class="text-left" style="width:35%">{{ __('Name') }}</th>
+				<th class="text-left" style="width:25%">{{ __('Type') }}</th>
+				<th class="text-left" style="width:25%">{{ __('Color') }}</th>
 				<th class="text-center" style="width:10%">{{ __('Action') }}</th>
 			</tr>
 		</thead>
@@ -11,8 +13,14 @@
 			@if (count($datalist)>0)
 			@foreach($datalist as $row)
 			<tr>
-				<td class="checkboxlist text-center"><input name="item_ids[]" value="{{ $row->id }}" class="tp-checkbox selected_item" type="checkbox"></td> 
+				<td class="checkboxlist text-center"><input name="item_ids[]" value="{{ $row->id }}" class="tp-checkbox selected_item" type="checkbox"></td>
 				<td class="text-left">{{ $row->name }}</td>
+				<td class="text-left">{{ $row->att_type }}</td>
+				<td class="text-left">
+					@if($row->att_type == 'Color')
+					<span style="background-color:{{ $row->color }}; width:20px; height:20px; display:inline-block; border:1px solid #ddd;"></span> {{ $row->color }}
+					@endif
+				</td>
 				<td class="text-center">
 					<div class="btn-group action-group">
 						<a class="action-btn" href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>

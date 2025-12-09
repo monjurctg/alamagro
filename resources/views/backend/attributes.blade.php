@@ -1,13 +1,13 @@
 @extends('layouts.backend')
 
-@section('title', __('Unit'))
+@section('title', __('Attributes'))
 
 @section('content')
 <!-- main Section -->
 <div class="main-body">
 	<div class="container-fluid">
 		@php $vipc = vipc(); @endphp
-		@if($vipc['bkey'] == 0) 
+		@if($vipc['bkey'] == 0)
 		@include('backend.partials.vipc')
 		@else
 		<div class="row mt-25">
@@ -16,7 +16,7 @@
 					<div class="card-header">
 						<div class="row">
 							<div class="col-lg-6">
-								<span>{{ __('Unit') }}</span>
+								<span>{{ __('Attributes') }}</span>
 							</div>
 							<div class="col-lg-6">
 								<div class="float-right">
@@ -55,10 +55,25 @@
 					<div id="form-panel" class="card-body dnone">
 						<form novalidate="" data-validate="parsley" id="DataEntry_formId">
 							<div class="row">
-								<div class="col-md-6">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="att_type">{{ __('Type') }}<span class="red">*</span></label>
+										<select name="att_type" id="att_type" class="form-control parsley-validated" data-required="true">
+											<option value="Size">{{ __('Size') }}</option>
+											<option value="Color">{{ __('Color') }}</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-4">
 									<div class="form-group">
 										<label for="name">{{ __('Name') }}<span class="red">*</span></label>
 										<input type="text" name="name" id="name" class="form-control parsley-validated" data-required="true">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="color">{{ __('Color') }}</label>
+										<input type="color" name="color" id="color" class="form-control">
 									</div>
 								</div>
 							</div>
