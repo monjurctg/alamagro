@@ -144,6 +144,9 @@ $(function () {
 
 		var id = $(this).data('id');
 		var qty = 1;
+
+		console.log("Adding to cart: ID " + id + ", Qty " + qty); // Debug
+
 		$.ajax({
 			type: 'GET',
 			url: base_url + '/frontend/add_to_cart/' + id + '/' + qty,
@@ -158,6 +161,10 @@ $(function () {
 					onErrorMsg(msg);
 				}
 				onViewCart();
+			},
+			error: function (xhr, status, error) {
+				console.error("Add to cart failed:", error);
+				onErrorMsg("Failed to add to cart. Please try again.");
 			}
 		});
 	});

@@ -45,11 +45,12 @@ class CartController extends Controller
         if ($product->variation_size) {
             $availableSizes = explode(',', $product->variation_size);
             $availableSizes = array_map('trim', $availableSizes);
+            $availableSizes = array_filter($availableSizes); // Remove empty values
 
             if (!$selectedSize) {
                 // If only one size available, auto-select it
                 if(count($availableSizes) == 1) {
-                    $selectedSize = $availableSizes[0];
+                    $selectedSize = array_values($availableSizes)[0];
                 } elseif(count($availableSizes) > 1) {
                      // For multiple sizes, if logic allows direct add (like from listing),
                      // we can auto-select the first one.
@@ -58,7 +59,8 @@ class CartController extends Controller
                      // Current compromise: Auto-select first option for listing page add implies "Direct Add" feature.
                      // The Frontend JS for details page will enforce selection.
                      // So if we reach here without selection, it's likely a Direct Add.
-                     $selectedSize = $availableSizes[0];
+                     // use array_values to ensure index 0 exists after filter
+                     $selectedSize = array_values($availableSizes)[0];
                 }
             } else {
                  if (!in_array($selectedSize, $availableSizes)) {
@@ -72,13 +74,14 @@ class CartController extends Controller
         if ($product->variation_color) {
             $availableColors = explode(',', $product->variation_color);
             $availableColors = array_map('trim', $availableColors);
+            $availableColors = array_filter($availableColors); // Remove empty values
 
             if (!$selectedColor) {
                if(count($availableColors) == 1) {
-                    $selectedColor = $availableColors[0];
+                    $selectedColor = array_values($availableColors)[0];
                } elseif(count($availableColors) > 1) {
                     // Auto-select first color for direct add
-                    $selectedColor = $availableColors[0];
+                    $selectedColor = array_values($availableColors)[0];
                }
             } else {
                 if (!in_array($selectedColor, $availableColors)) {

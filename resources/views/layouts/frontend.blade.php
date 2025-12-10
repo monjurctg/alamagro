@@ -214,7 +214,7 @@
 		}
 	</script>
 	<script src="{{ asset('public/frontend/js/scripts.js')}}"></script>
-	<script src="{{asset('public/frontend/pages/cart.js')}}"></script>
+	<script src="{{asset('public/frontend/pages/cart.js')}}?v={{ time() }}"></script>
 	<div class="custom-popup light width-100 dnone" id="lightCustomModal">
 		<div class="padding-md">
 			<h4 class="m-top-none"></h4>
