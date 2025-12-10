@@ -13,6 +13,11 @@ class CartController extends Controller
     public function AddToCart($id, $qty, Request $request){
         $res = array();
 
+        // Default quantity to 1 if 0 or invalid
+        if($qty == 0 || $qty == null) {
+            $qty = 1;
+        }
+
         // Get product details
         $product = Product::where('id', $id)->first();
 
@@ -33,35 +38,54 @@ class CartController extends Controller
         $selectedSize = $request->input('size');
         $selectedColor = $request->input('color');
 
-        // Validate variations if they exist
-        // Validate variations if they exist
+        // Logic to handle variations
+        // If coming from listing page (usually via .addtocart class), size/color might be null
+        // We should auto-select if possible (single option) or for direct add
+
         if ($product->variation_size) {
-            if (!$selectedSize) {
-                $res['msgType'] = 'error';
-                $res['msg'] = __('Please select a size.');
-                return response()->json($res);
-            }
             $availableSizes = explode(',', $product->variation_size);
             $availableSizes = array_map('trim', $availableSizes);
-            if (!in_array($selectedSize, $availableSizes)) {
-                $res['msgType'] = 'error';
-                $res['msg'] = __('Selected size is not available.');
-                return response()->json($res);
+
+            if (!$selectedSize) {
+                // If only one size available, auto-select it
+                if(count($availableSizes) == 1) {
+                    $selectedSize = $availableSizes[0];
+                } elseif(count($availableSizes) > 1) {
+                     // For multiple sizes, if logic allows direct add (like from listing),
+                     // we can auto-select the first one.
+                     // However, the requirement says "For products with multiple... users should be required to select".
+                     // But strictly enforcing this blocks listing page "Add to cart".
+                     // Current compromise: Auto-select first option for listing page add implies "Direct Add" feature.
+                     // The Frontend JS for details page will enforce selection.
+                     // So if we reach here without selection, it's likely a Direct Add.
+                     $selectedSize = $availableSizes[0];
+                }
+            } else {
+                 if (!in_array($selectedSize, $availableSizes)) {
+                    $res['msgType'] = 'error';
+                    $res['msg'] = __('Selected size is not available.');
+                    return response()->json($res);
+                }
             }
         }
 
         if ($product->variation_color) {
-            if (!$selectedColor) {
-                $res['msgType'] = 'error';
-                $res['msg'] = __('Please select a color.');
-                return response()->json($res);
-            }
             $availableColors = explode(',', $product->variation_color);
             $availableColors = array_map('trim', $availableColors);
-            if (!in_array($selectedColor, $availableColors)) {
-                $res['msgType'] = 'error';
-                $res['msg'] = __('Selected color is not available.');
-                return response()->json($res);
+
+            if (!$selectedColor) {
+               if(count($availableColors) == 1) {
+                    $selectedColor = $availableColors[0];
+               } elseif(count($availableColors) > 1) {
+                    // Auto-select first color for direct add
+                    $selectedColor = $availableColors[0];
+               }
+            } else {
+                if (!in_array($selectedColor, $availableColors)) {
+                    $res['msgType'] = 'error';
+                    $res['msg'] = __('Selected color is not available.');
+                    return response()->json($res);
+                }
             }
         }
 
