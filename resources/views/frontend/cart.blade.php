@@ -117,7 +117,7 @@ $gtax = getTax();
                                         </div>
                                     </td>
 									<td class="pro-store-w" data-title="{{ __('Sold By') }}:">
-										<a href="{{ route('frontend.stores', [$row['seller_id'], str_slug($row['store_name'])]) }}">{{ $row['store_name'] }}</a>
+										<a href="{{ route('frontend.stores', [$row['seller_id'], \Illuminate\Support\Str::slug($row['store_name'])]) }}">{{ $row['store_name'] }}</a>
 									</td>
 									<td class="text-center pro-variation-w" data-title="{{ __('Unit') }}:">
 										<span class="pro-variation">{{ $row['unit'] ?? '' }}</span>

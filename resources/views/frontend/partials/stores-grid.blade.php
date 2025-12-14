@@ -22,7 +22,7 @@
 				</a>
 			</div>
 			<div class="item-title">
-				<a href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ str_limit($row->title) }}</a>
+				<a href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ \Illuminate\Support\Str::limit($row->title) }}</a>
 			</div>
 			<div class="rating-wrap">
 				<div class="stars-outer">
@@ -31,7 +31,7 @@
 				<span class="rating-count">({{ $row->TotalReview }})</span>
 			</div>
 			<div class="item-sold">
-				{{ __('Sold By') }} <a href="{{ route('frontend.stores', [$row->seller_id, \Illuminate\Support\Str::slug($row->shop_url)]) }}">{{ str_limit($row->shop_name) }}</a>
+				{{ __('Sold By') }} <a href="{{ route('frontend.stores', [$row->seller_id, \Illuminate\Support\Str::slug($row->shop_url)]) }}">{{ \Illuminate\Support\Str::limit($row->shop_name) }}</a>
 			</div>
 			<div class="item-pric-card">
 				@if($row->sale_price != '')

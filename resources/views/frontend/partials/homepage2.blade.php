@@ -374,7 +374,7 @@
 							</div>
 							<div class="item-title">
 								<a
-									href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ str_limit($row->title) }}</a>
+									href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ \Illuminate\Support\Str::limit($row->title) }}</a>
 							</div>
 							<div class="rating-wrap">
 								<div class="stars-outer">
@@ -384,7 +384,7 @@
 							</div>
 							<div class="item-sold">
 								{{ __('Sold By') }} <a
-									href="{{ route('frontend.stores', [$row->seller_id, \Illuminate\Support\Str::slug($row->shop_url)]) }}">{{ str_limit($row->shop_name) }}</a>
+									href="{{ route('frontend.stores', [$row->seller_id, \Illuminate\Support\Str::slug($row->shop_url)]) }}">{{ \Illuminate\Support\Str::limit($row->shop_name) }}</a>
 							</div>
 							<div class="item-pric-card">
 								@if($row->sale_price != '')
@@ -456,7 +456,7 @@
 							</div>
 							<div class="item-title">
 								<a
-									href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ str_limit($row->title) }}</a>
+									href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ \Illuminate\Support\Str::limit($row->title) }}</a>
 							</div>
 							<div class="rating-wrap">
 								<div class="stars-outer">
@@ -466,7 +466,7 @@
 							</div>
 							<div class="item-sold">
 								{{ __('Sold By') }} <a
-									href="{{ route('frontend.stores', [$row->seller_id, \Illuminate\Support\Str::slug($row->shop_url)]) }}">{{ str_limit($row->shop_name) }}</a>
+									href="{{ route('frontend.stores', [$row->seller_id, \Illuminate\Support\Str::slug($row->shop_url)]) }}">{{ \Illuminate\Support\Str::limit($row->shop_name) }}</a>
 							</div>
 							<div class="item-pric-card">
 								@if($row->sale_price != '')
