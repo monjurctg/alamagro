@@ -815,6 +815,19 @@
 			});
 	});
 
+    // Variation Selection Logic - Robust Version 2.2 (Fixing Syntax)
+    jQuery(document).ready(function($) {
+        console.log("homepage2.blade.php: Variation JS Loaded v2.2");
+
+        $(document).on("click", ".homepage-addtocart", function (event) {
+            event.preventDefault();
+            console.log("Add to cart clicked!");
+
+            var id = $(this).attr('data-id');
+            var sizeStr = $(this).attr('data-variation-size');
+            var colorStr = $(this).attr('data-variation-color');
+            console.log("Product ID:", id, "SizeStr:", sizeStr, "ColorStr:", colorStr);
+
             // Handle case where data attribute might be null or undefined
             sizeStr = sizeStr ? String(sizeStr) : "";
             colorStr = colorStr ? String(colorStr) : "";
