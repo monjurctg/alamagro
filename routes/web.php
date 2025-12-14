@@ -53,6 +53,7 @@ Route::post('/frontend/update_cart_quantity', [App\Http\Controllers\Frontend\Car
 Route::get('/frontend/remove_to_cart/{rowid}', [App\Http\Controllers\Frontend\CartController::class, 'RemoveToCart'])->name('frontend.remove_to_cart');
 Route::get('/cart', [App\Http\Controllers\Frontend\CartController::class, 'getCart'])->name('frontend.cart');
 Route::get('/frontend/viewcart_data', [App\Http\Controllers\Frontend\CartController::class, 'getViewCartData'])->name('frontend.getViewCartData');
+Route::get('/frontend/view_cart', [App\Http\Controllers\Frontend\CartController::class, 'getViewCartData'])->name('frontend.view_cart');
 
 
 //Wishlist

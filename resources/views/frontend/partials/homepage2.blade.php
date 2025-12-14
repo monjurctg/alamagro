@@ -403,8 +403,11 @@
 								@endif
 							</div>
 							<div class="item-card-bottom">
-								<a data-id="{{ $row->id }}" href="javascript:void(0);"
-									class="btn add-to-cart addtocart">{{ __('Add To Cart') }}</a>
+								<a data-id="{{ $row->id }}"
+                                   data-variation-size="{{ $row->variation_size }}"
+                                   data-variation-color="{{ $row->variation_color }}"
+                                   href="javascript:void(0);"
+									class="btn add-to-cart homepage-addtocart">{{ __('Add To Cart') }}</a>
 								<ul class="item-cart-list">
 									<li><a class="addtowishlist" data-id="{{ $row->id }}" href="javascript:void(0);"><i
 												class="bi bi-heart"></i></a></li>
@@ -482,8 +485,11 @@
 								@endif
 							</div>
 							<div class="item-card-bottom">
-								<a data-id="{{ $row->id }}" href="javascript:void(0);"
-									class="btn add-to-cart addtocart">{{ __('Add To Cart') }}</a>
+								<a data-id="{{ $row->id }}"
+                                   data-variation-size="{{ $row->variation_size }}"
+                                   data-variation-color="{{ $row->variation_color }}"
+                                   href="javascript:void(0);"
+									class="btn add-to-cart homepage-addtocart">{{ __('Add To Cart') }}</a>
 								<ul class="item-cart-list">
 									<li><a class="addtowishlist" data-id="{{ $row->id }}" href="javascript:void(0);"><i
 												class="bi bi-heart"></i></a></li>
@@ -593,8 +599,11 @@
 
                                 <!-- Buttons -->
                                 <div class="item-card-bottom d-flex justify-content-between align-items-center">
-                                    <a data-id="${row.id}" href="javascript:void(0);"
-                                       class="btn btn-sm btn-primary add-to-cart addtocart">
+                                    <a data-id="${row.id}"
+                                       data-variation-size="${row.variation_size || ''}"
+                                       data-variation-color="${row.variation_color || ''}"
+                                       href="javascript:void(0);"
+                                       class="btn btn-sm btn-primary add-to-cart homepage-addtocart">
                                         Add To Cart
                                     </a>
                                     <div class="d-flex">
@@ -682,8 +691,11 @@
 
                                 <!-- Buttons -->
                                 <div class="item-card-bottom d-flex justify-content-between align-items-center">
-                                    <a data-id="${row.id}" href="javascript:void(0);"
-                                       class="btn btn-sm btn-primary add-to-cart addtocart">
+                                    <a data-id="${row.id}"
+                                       data-variation-size="${row.variation_size || ''}"
+                                       data-variation-color="${row.variation_color || ''}"
+                                       href="javascript:void(0);"
+                                       class="btn btn-sm btn-primary add-to-cart homepage-addtocart">
                                         Add To Cart
                                     </a>
                                     <div class="d-flex">
@@ -772,8 +784,11 @@
 
                                 <!-- Buttons -->
                                 <div class="item-card-bottom d-flex justify-content-between align-items-center">
-                                    <a data-id="${row.id}" href="javascript:void(0);"
-                                       class="btn btn-sm btn-primary add-to-cart addtocart">
+                                    <a data-id="${row.id}"
+                                       data-variation-size="${row.variation_size || ''}"
+                                       data-variation-color="${row.variation_color || ''}"
+                                       href="javascript:void(0);"
+                                       class="btn btn-sm btn-primary add-to-cart homepage-addtocart">
                                         Add To Cart
                                     </a>
                                     <div class="d-flex">
@@ -799,4 +814,186 @@
 					`<div class="col-12 text-center text-danger py-5">Failed to load top selling products.</div>`;
 			});
 	});
+
+    // Variation Selection Logic
+    $(document).on("click", ".homepage-addtocart", function (event) {
+        event.preventDefault();
+
+        var id = $(this).data('id');
+        var sizeStr = $(this).data('variation-size');
+        var colorStr = $(this).data('variation-color');
+
+        // Handle case where data attribute might be null or undefined
+        sizeStr = sizeStr ? String(sizeStr) : "";
+        colorStr = colorStr ? String(colorStr) : "";
+
+        var sizes = sizeStr.split(',').filter(s => s.trim() !== "");
+        var colors = colorStr.split(',').filter(c => c.trim() !== "");
+
+        // Reset modal state
+        $('#variation_product_id').val(id);
+        $('#variation_selected_size').val('');
+        $('#variation_selected_color').val('');
+        $('#variation-size-group').hide();
+        $('#variation-color-group').hide();
+        $('#variation-size-options').empty();
+        $('#variation-color-options').empty();
+
+        // Remove active class from all options
+        $('.variation-option').removeClass('active');
+
+        var needsModal = false;
+
+        if (sizes.length > 0) {
+            needsModal = true;
+            $('#variation-size-group').show();
+            var sizeHtml = '';
+            sizes.forEach(function(size) {
+                sizeHtml += `<div class="variation-option size-option" data-value="${size.trim()}">${size.trim()}</div>`;
+            });
+            $('#variation-size-options').html(sizeHtml);
+        }
+
+        if (colors.length > 0) {
+            needsModal = true;
+            $('#variation-color-group').show();
+            var colorHtml = '';
+            colors.forEach(function(color) {
+                colorHtml += `<div class="variation-option color-option" data-value="${color.trim()}">${color.trim()}</div>`;
+            });
+            $('#variation-color-options').html(colorHtml);
+        }
+
+        if (needsModal) {
+            // Show Modal
+            var variationModal = new bootstrap.Modal(document.getElementById('variationModal'));
+            variationModal.show();
+        } else {
+            // No variations, proceed with standard add to cart
+            // Re-trigger the logic that handles standard add to cart, usually a direct AJAX call
+            // We can reuse the logic from cart.js by calling a function or repeating AJAX
+            addToCartDirect(id, 1);
+        }
+    });
+
+    $(document).on('click', '.variation-option.size-option', function() {
+        $('.variation-option.size-option').removeClass('active');
+        $(this).addClass('active');
+        $('#variation_selected_size').val($(this).data('value'));
+    });
+
+    $(document).on('click', '.variation-option.color-option', function() {
+        $('.variation-option.color-option').removeClass('active');
+        $(this).addClass('active');
+        $('#variation_selected_color').val($(this).data('value'));
+    });
+
+    $('#confirm-add-to-cart').on('click', function() {
+        var id = $('#variation_product_id').val();
+        var size = $('#variation_selected_size').val();
+        var color = $('#variation_selected_color').val();
+
+        // Check if visible options are selected
+        if ($('#variation-size-group').is(':visible') && size === '') {
+            onErrorMsg("Please select a size");
+            return;
+        }
+        if ($('#variation-color-group').is(':visible') && color === '') {
+            onErrorMsg("Please select a color");
+            return;
+        }
+
+        // Close modal
+        var modalEl = document.getElementById('variationModal');
+        var modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
+
+        // Add to Cart with selections
+        addToCartDirect(id, 1, size, color);
+    });
+
+    function addToCartDirect(id, qty, size = null, color = null) {
+        var url = "{{ url('/frontend/add_to_cart') }}/" + id + "/" + qty;
+
+        var data = {};
+        if (size) data.size = size;
+        if (color) data.color = color;
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data: data,
+            dataType: "json",
+            success: function (response) {
+                var msgType = response.msgType;
+                var msg = response.msg;
+
+                if (msgType == "success") {
+                    onSuccessMsg(msg);
+                } else {
+                    onErrorMsg(msg);
+                }
+                onViewCart();
+            },
+            error: function(xhr, status, error) {
+                // If specific 500 error, try to parse JSON if possible, else generic error
+                onErrorMsg("Something went wrong. Please try again.");
+            }
+        });
+    }
+</script>
+
+<!-- Variation Selection Modal -->
+<div class="modal fade" id="variationModal" tabindex="-1" aria-labelledby="variationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="variationModalLabel">Select Options</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="variation_product_id">
+        <input type="hidden" id="variation_selected_size">
+        <input type="hidden" id="variation_selected_color">
+
+        <div class="mb-3" id="variation-size-group">
+            <label class="form-label fw-bold">Size:</label>
+            <div class="d-flex flex-wrap gap-2" id="variation-size-options">
+                <!-- Options injected via JS -->
+            </div>
+        </div>
+
+        <div class="mb-3" id="variation-color-group">
+            <label class="form-label fw-bold">Color:</label>
+            <div class="d-flex flex-wrap gap-2" id="variation-color-options">
+                <!-- Options injected via JS -->
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="confirm-add-to-cart">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+    .variation-option {
+        border: 1px solid #ddd;
+        padding: 5px 15px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: all 0.2s;
+    }
+    .variation-option:hover {
+        border-color: #aaa;
+        background-color: #f8f9fa;
+    }
+    .variation-option.active {
+        border-color: var(--theme-color, #0d6efd);
+        background-color: var(--theme-color, #0d6efd);
+        color: white;
+    }
+</style>	});
 </script>
