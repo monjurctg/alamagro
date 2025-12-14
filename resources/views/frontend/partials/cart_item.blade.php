@@ -15,12 +15,12 @@
 	@endphp
 	<li id="row_delete_{{ $cartKey }}">
 		<div class="cart-img">
-			<a href="{{ route('frontend.product', [$row['id'], str_slug($row['name'])]) }}">
+			<a href="{{ route('frontend.product', [$row['id'], \Illuminate\Support\Str::slug($row['name'])]) }}">
 				<img src="{{ asset('public/media/'.($row['thumbnail'] ?? 'default.png')) }}" alt="{{ $row['name'] }}">
 			</a>
 		</div>
 		<div class="cart-info">
-			<h4><a href="{{ route('frontend.product', [$row['id'], str_slug($row['name'])]) }}">{{ $row['name'] }}</a></h4>
+			<h4><a href="{{ route('frontend.product', [$row['id'], \Illuminate\Support\Str::slug($row['name'])]) }}">{{ $row['name'] }}</a></h4>
 			@if(isset($row['variation_details']) && $row['variation_details'])
 				<p class="mb-0"><small>({{ $row['variation_details'] }})</small></p>
 			@endif

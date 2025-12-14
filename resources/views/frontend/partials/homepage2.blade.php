@@ -815,19 +815,6 @@
 			});
 	});
 
-    // Variation Selection Logic
-    // Variation Selection Logic
-    // Variation Selection Logic - Robust Version 1.1
-    jQuery(document).ready(function($) {
-        $(document).on("click", ".homepage-addtocart", function (event) {
-            event.preventDefault();
-            console.log("Add to cart clicked!");
-
-            var id = $(this).data('id');
-            var sizeStr = $(this).attr('data-variation-size');
-            var colorStr = $(this).attr('data-variation-color');
-            console.log("Product ID:", id, "SizeStr:", sizeStr, "ColorStr:", colorStr);
-
             // Handle case where data attribute might be null or undefined
             sizeStr = sizeStr ? String(sizeStr) : "";
             colorStr = colorStr ? String(colorStr) : "";
