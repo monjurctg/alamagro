@@ -11,170 +11,175 @@ class CartController extends Controller
 {
     //Add to Cart
     public function AddToCart($id, $qty, Request $request){
-        $res = array();
+        try {
+            $res = array();
 
-        // Default quantity to 1 if 0 or invalid
-        if($qty == 0 || $qty == null) {
-            $qty = 1;
-        }
+            // Default quantity to 1 if 0 or invalid
+            if($qty == 0 || $qty == null) {
+                $qty = 1;
+            }
 
-        // Get product details
-        $product = Product::where('id', $id)->first();
+            // Get product details
+            $product = Product::where('id', $id)->first();
 
-        if (!$product) {
-            $res['msgType'] = 'error';
-            $res['msg'] = __('Product not found.');
-            return response()->json($res);
-        }
+            if (!$product) {
+                $res['msgType'] = 'error';
+                $res['msg'] = __('Product not found.');
+                return response()->json($res);
+            }
 
-        // Check if product is published
-        if ($product->is_publish != 1) {
-            $res['msgType'] = 'error';
-            $res['msg'] = __('Product is not available.');
-            return response()->json($res);
-        }
+            // Check if product is published
+            if ($product->is_publish != 1) {
+                $res['msgType'] = 'error';
+                $res['msg'] = __('Product is not available.');
+                return response()->json($res);
+            }
 
-        // Get variations from request
-        $selectedSize = $request->input('size');
-        $selectedColor = $request->input('color');
+            // Get variations from request
+            $selectedSize = $request->input('size');
+            $selectedColor = $request->input('color');
 
-        // Logic to handle variations
-        // If coming from listing page (usually via .addtocart class), size/color might be null
-        // We should auto-select if possible (single option) or for direct add
+            // Logic to handle variations
+            // If coming from listing page (usually via .addtocart class), size/color might be null
+            // We should auto-select if possible (single option) or for direct add
 
-        if ($product->variation_size) {
-            $availableSizes = explode(',', $product->variation_size);
-            $availableSizes = array_map('trim', $availableSizes);
-            $availableSizes = array_filter($availableSizes); // Remove empty values
+            if ($product->variation_size) {
+                $availableSizes = explode(',', $product->variation_size);
+                $availableSizes = array_map('trim', $availableSizes);
+                $availableSizes = array_filter($availableSizes); // Remove empty values
 
-            if (!$selectedSize) {
-                // If only one size available, auto-select it
-                if(count($availableSizes) == 1) {
-                    $selectedSize = array_values($availableSizes)[0];
-                } elseif(count($availableSizes) > 1) {
-                     // For multiple sizes, if logic allows direct add (like from listing),
-                     // we can auto-select the first one.
-                     // However, the requirement says "For products with multiple... users should be required to select".
-                     // But strictly enforcing this blocks listing page "Add to cart".
-                     // Current compromise: Auto-select first option for listing page add implies "Direct Add" feature.
-                     // The Frontend JS for details page will enforce selection.
-                     // So if we reach here without selection, it's likely a Direct Add.
-                     // use array_values to ensure index 0 exists after filter
-                     $selectedSize = array_values($availableSizes)[0];
+                if (!$selectedSize) {
+                    // If only one size available, auto-select it
+                    if(count($availableSizes) == 1) {
+                        $selectedSize = array_values($availableSizes)[0];
+                    } elseif(count($availableSizes) > 1) {
+                         // For multiple sizes, if logic allows direct add (like from listing),
+                         // we can auto-select the first one.
+                         // However, the requirement says "For products with multiple... users should be required to select".
+                         // But strictly enforcing this blocks listing page "Add to cart".
+                         // Current compromise: Auto-select first option for listing page add implies "Direct Add" feature.
+                         // The Frontend JS for details page will enforce selection.
+                         // So if we reach here without selection, it's likely a Direct Add.
+                         // use array_values to ensure index 0 exists after filter
+                         $selectedSize = array_values($availableSizes)[0];
+                    }
+                } else {
+                     if (!in_array($selectedSize, $availableSizes)) {
+                        $res['msgType'] = 'error';
+                        $res['msg'] = __('Selected size is not available.');
+                        return response()->json($res);
+                    }
                 }
-            } else {
-                 if (!in_array($selectedSize, $availableSizes)) {
+            }
+
+            if ($product->variation_color) {
+                $availableColors = explode(',', $product->variation_color);
+                $availableColors = array_map('trim', $availableColors);
+                $availableColors = array_filter($availableColors); // Remove empty values
+
+                if (!$selectedColor) {
+                   if(count($availableColors) == 1) {
+                        $selectedColor = array_values($availableColors)[0];
+                   } elseif(count($availableColors) > 1) {
+                        // Auto-select first color for direct add
+                        $selectedColor = array_values($availableColors)[0];
+                   }
+                } else {
+                    if (!in_array($selectedColor, $availableColors)) {
+                        $res['msgType'] = 'error';
+                        $res['msg'] = __('Selected color is not available.');
+                        return response()->json($res);
+                    }
+                }
+            }
+
+            // Check stock availability
+            if ($product->is_stock == 1) {
+                if ($product->stock_status_id != 1) {
                     $res['msgType'] = 'error';
-                    $res['msg'] = __('Selected size is not available.');
+                    $res['msg'] = __('This product is out of stock.');
+                    return response()->json($res);
+                }
+
+                if ($qty > $product->stock_qty) {
+                    $res['msgType'] = 'error';
+                    $res['msg'] = __('Requested quantity is not available.');
                     return response()->json($res);
                 }
             }
-        }
 
-        if ($product->variation_color) {
-            $availableColors = explode(',', $product->variation_color);
-            $availableColors = array_map('trim', $availableColors);
-            $availableColors = array_filter($availableColors); // Remove empty values
+            // Create cart item key
+            $cartKey = $id;
+            $variationInfo = '';
 
-            if (!$selectedColor) {
-               if(count($availableColors) == 1) {
-                    $selectedColor = array_values($availableColors)[0];
-               } elseif(count($availableColors) > 1) {
-                    // Auto-select first color for direct add
-                    $selectedColor = array_values($availableColors)[0];
-               }
-            } else {
-                if (!in_array($selectedColor, $availableColors)) {
+            if ($selectedSize || $selectedColor) {
+                $variationParts = [];
+                if ($selectedSize) {
+                    $variationParts[] = 'Size: ' . $selectedSize;
+                }
+                if ($selectedColor) {
+                    $variationParts[] = 'Color: ' . $selectedColor;
+                }
+                $variationInfo = implode(', ', $variationParts);
+                // Create a unique key for variations
+                $cartKey .= '_' . md5($variationInfo);
+            }
+
+            // Get current cart
+            $cart = session()->get('shopping_cart', []);
+
+            // Check if product with same variations already exists in cart
+            if (isset($cart[$cartKey])) {
+                // Update quantity
+                $newQty = $cart[$cartKey]['qty'] + $qty;
+
+                // Check stock again with new quantity
+                if ($product->is_stock == 1 && $newQty > $product->stock_qty) {
                     $res['msgType'] = 'error';
-                    $res['msg'] = __('Selected color is not available.');
+                    $res['msg'] = __('Requested quantity exceeds available stock.');
                     return response()->json($res);
                 }
+
+                $cart[$cartKey]['qty'] = $newQty;
+            } else {
+                // Get seller details
+                $seller = DB::table('users')->where('id', $product->user_id)->first();
+
+                // Add new item to cart
+                $cart[$cartKey] = [
+                    'id' => $id,
+                    'name' => $product->title,
+                    'price' => $product->sale_price,
+                    'qty' => $qty,
+                    'image' => $product->f_thumbnail,
+                    'thumbnail' => $product->f_thumbnail,
+                    'variation_details' => $variationInfo,
+                    'is_stock' => $product->is_stock,
+                    'stock_qty' => $product->stock_qty,
+                    'weight' => 0,
+                    'unit' => '',
+                    'seller_id' => $seller->id,
+                    'seller_name' => $seller->name,
+                    'store_name' => $seller->shop_name,
+                    'store_logo' => $seller->shop_logo,
+                    'store_url' => $seller->shop_url,
+                    'seller_email' => $seller->email,
+                    'seller_phone' => $seller->phone,
+                    'seller_address' => $seller->address
+                ];
             }
+
+            // Save cart to session
+            session()->put('shopping_cart', $cart);
+
+            $res['msgType'] = 'success';
+            $res['msg'] = __('Product added to cart successfully.');
+
+            return response()->json($res);
+
+        } catch (\Exception $e) {
+            return response()->json(['msgType' => 'error', 'msg' => 'Error: ' . $e->getMessage() . ' Line: ' . $e->getLine() . ' File: ' . $e->getFile()]);
         }
-
-        // Check stock availability
-        if ($product->is_stock == 1) {
-            if ($product->stock_status_id != 1) {
-                $res['msgType'] = 'error';
-                $res['msg'] = __('This product is out of stock.');
-                return response()->json($res);
-            }
-
-            if ($qty > $product->stock_qty) {
-                $res['msgType'] = 'error';
-                $res['msg'] = __('Requested quantity is not available.');
-                return response()->json($res);
-            }
-        }
-
-        // Create cart item key
-        $cartKey = $id;
-        $variationInfo = '';
-
-        if ($selectedSize || $selectedColor) {
-            $variationParts = [];
-            if ($selectedSize) {
-                $variationParts[] = 'Size: ' . $selectedSize;
-            }
-            if ($selectedColor) {
-                $variationParts[] = 'Color: ' . $selectedColor;
-            }
-            $variationInfo = implode(', ', $variationParts);
-            // Create a unique key for variations
-            $cartKey .= '_' . md5($variationInfo);
-        }
-
-        // Get current cart
-        $cart = session()->get('shopping_cart', []);
-
-        // Check if product with same variations already exists in cart
-        if (isset($cart[$cartKey])) {
-            // Update quantity
-            $newQty = $cart[$cartKey]['qty'] + $qty;
-
-            // Check stock again with new quantity
-            if ($product->is_stock == 1 && $newQty > $product->stock_qty) {
-                $res['msgType'] = 'error';
-                $res['msg'] = __('Requested quantity exceeds available stock.');
-                return response()->json($res);
-            }
-
-            $cart[$cartKey]['qty'] = $newQty;
-        } else {
-            // Get seller details
-            $seller = DB::table('users')->where('id', $product->user_id)->first();
-
-            // Add new item to cart
-            $cart[$cartKey] = [
-                'id' => $id,
-                'name' => $product->title,
-                'price' => $product->sale_price,
-                'qty' => $qty,
-                'image' => $product->f_thumbnail,
-                'thumbnail' => $product->f_thumbnail,
-                'variation_details' => $variationInfo,
-                'is_stock' => $product->is_stock,
-                'stock_qty' => $product->stock_qty,
-                'weight' => 0,
-                'unit' => '',
-                'seller_id' => $seller->id,
-                'seller_name' => $seller->name,
-                'store_name' => $seller->shop_name,
-                'store_logo' => $seller->shop_logo,
-                'store_url' => $seller->shop_url,
-                'seller_email' => $seller->email,
-                'seller_phone' => $seller->phone,
-                'seller_address' => $seller->address
-            ];
-        }
-
-        // Save cart to session
-        session()->put('shopping_cart', $cart);
-
-        $res['msgType'] = 'success';
-        $res['msg'] = __('Product added to cart successfully.');
-
-        return response()->json($res);
     }
 
     //Remove to Cart
@@ -253,54 +258,58 @@ class CartController extends Controller
 
     //Get View Cart Data
     public function getViewCartData(){
-        $res = array();
+        try {
+            $res = array();
 
-        $gtext = gtext();
-        $tax_rate = $gtext['tax_rate'];
+            $gtext = gtext();
+            $tax_rate = $gtext['tax_rate'];
 
-        $CartDataList = session()->get('shopping_cart');
+            $CartDataList = session()->get('shopping_cart');
 
-        $total_qty = 0;
-        $TotalPrice = 0;
+            $total_qty = 0;
+            $TotalPrice = 0;
 
-        if(session()->get('shopping_cart')){
-            foreach ($CartDataList as $row) {
-                $total_qty += $row['qty'];
-                $TotalPrice += $row['price']*$row['qty'];
+            if(session()->get('shopping_cart')){
+                foreach ($CartDataList as $row) {
+                    $total_qty += $row['qty'];
+                    $TotalPrice += $row['price']*$row['qty'];
+                }
             }
+
+            $TaxCal = ($TotalPrice*$tax_rate)/100;
+            $SubTotal = $TotalPrice+$TaxCal;
+
+            if($gtext['currency_position'] == 'left'){
+                $res['price_total'] = $gtext['currency_icon'].NumberFormat($TotalPrice);
+            }else{
+                $res['price_total'] = NumberFormat($TotalPrice).$gtext['currency_icon'];
+            }
+
+            if($gtext['currency_position'] == 'left'){
+                $res['tax'] = $gtext['currency_icon'].NumberFormat($TaxCal);
+            }else{
+                $res['tax'] = NumberFormat($TaxCal).$gtext['currency_icon'];
+            }
+
+            if($gtext['currency_position'] == 'left'){
+                $res['sub_total'] = $gtext['currency_icon'].NumberFormat($SubTotal);
+            }else{
+                $res['sub_total'] = NumberFormat($SubTotal).$gtext['currency_icon'];
+            }
+
+            if($gtext['currency_position'] == 'left'){
+                $res['total'] = $gtext['currency_icon'].NumberFormat($SubTotal);
+            }else{
+                $res['total'] = NumberFormat($SubTotal).$gtext['currency_icon'];
+            }
+
+            $res['total_qty'] = $total_qty;
+            $res['items'] = view('frontend.partials.cart_item', compact('gtext'))->render();
+
+            return response()->json($res);
+        } catch (\Exception $e) {
+            return response()->json(['msgType' => 'error', 'msg' => 'Error: ' . $e->getMessage() . ' Line: ' . $e->getLine() . ' File: ' . $e->getFile()]);
         }
-
-        $TaxCal = ($TotalPrice*$tax_rate)/100;
-        $SubTotal = $TotalPrice+$TaxCal;
-
-        if($gtext['currency_position'] == 'left'){
-            $res['price_total'] = $gtext['currency_icon'].NumberFormat($TotalPrice);
-        }else{
-            $res['price_total'] = NumberFormat($TotalPrice).$gtext['currency_icon'];
-        }
-
-        if($gtext['currency_position'] == 'left'){
-            $res['tax'] = $gtext['currency_icon'].NumberFormat($TaxCal);
-        }else{
-            $res['tax'] = NumberFormat($TaxCal).$gtext['currency_icon'];
-        }
-
-        if($gtext['currency_position'] == 'left'){
-            $res['sub_total'] = $gtext['currency_icon'].NumberFormat($SubTotal);
-        }else{
-            $res['sub_total'] = NumberFormat($SubTotal).$gtext['currency_icon'];
-        }
-
-        if($gtext['currency_position'] == 'left'){
-            $res['total'] = $gtext['currency_icon'].NumberFormat($SubTotal);
-        }else{
-            $res['total'] = NumberFormat($SubTotal).$gtext['currency_icon'];
-        }
-
-        $res['total_qty'] = $total_qty;
-        $res['items'] = view('frontend.partials.cart_item', compact('gtext'))->render();
-
-        return response()->json($res);
     }
 
     //Add to Wishlist
