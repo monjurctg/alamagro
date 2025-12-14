@@ -817,6 +817,7 @@
 
     // Variation Selection Logic
     // Variation Selection Logic
+    // Variation Selection Logic - Robust Version 1.1
     jQuery(document).ready(function($) {
         $(document).on("click", ".homepage-addtocart", function (event) {
             event.preventDefault();
