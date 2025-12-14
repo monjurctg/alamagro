@@ -816,131 +816,158 @@
 	});
 
     // Variation Selection Logic
-    $(document).on("click", ".homepage-addtocart", function (event) {
-        event.preventDefault();
+    (function($) {
+        $(document).on("click", ".homepage-addtocart", function (event) {
+            event.preventDefault();
 
-        var id = $(this).data('id');
-        var sizeStr = $(this).data('variation-size');
-        var colorStr = $(this).data('variation-color');
+            var id = $(this).data('id');
+            var sizeStr = $(this).attr('data-variation-size');
+            var colorStr = $(this).attr('data-variation-color');
 
-        // Handle case where data attribute might be null or undefined
-        sizeStr = sizeStr ? String(sizeStr) : "";
-        colorStr = colorStr ? String(colorStr) : "";
+            // Handle case where data attribute might be null or undefined
+            // Using attr() guarantees string or undefined, simpler than data() type inference
+            sizeStr = sizeStr ? String(sizeStr) : "";
+            colorStr = colorStr ? String(colorStr) : "";
 
-        var sizes = sizeStr.split(',').filter(s => s.trim() !== "");
-        var colors = colorStr.split(',').filter(c => c.trim() !== "");
+            var sizes = sizeStr.split(',').filter(s => s.trim() !== "");
+            var colors = colorStr.split(',').filter(c => c.trim() !== "");
 
-        // Reset modal state
-        $('#variation_product_id').val(id);
-        $('#variation_selected_size').val('');
-        $('#variation_selected_color').val('');
-        $('#variation-size-group').hide();
-        $('#variation-color-group').hide();
-        $('#variation-size-options').empty();
-        $('#variation-color-options').empty();
+            // Reset modal state
+            $('#variation_product_id').val(id);
+            $('#variation_selected_size').val('');
+            $('#variation_selected_color').val('');
+            $('#variation-size-group').hide();
+            $('#variation-color-group').hide();
+            $('#variation-size-options').empty();
+            $('#variation-color-options').empty();
 
-        // Remove active class from all options
-        $('.variation-option').removeClass('active');
+            // Remove active class from all options
+            $('.variation-option').removeClass('active');
 
-        var needsModal = false;
+            var needsModal = false;
 
-        if (sizes.length > 0) {
-            needsModal = true;
-            $('#variation-size-group').show();
-            var sizeHtml = '';
-            sizes.forEach(function(size) {
-                sizeHtml += `<div class="variation-option size-option" data-value="${size.trim()}">${size.trim()}</div>`;
-            });
-            $('#variation-size-options').html(sizeHtml);
-        }
+            if (sizes.length > 0) {
+                needsModal = true;
+                $('#variation-size-group').show();
+                var sizeHtml = '';
+                sizes.forEach(function(size) {
+                    sizeHtml += `<div class="variation-option size-option" data-value="${size.trim()}">${size.trim()}</div>`;
+                });
+                $('#variation-size-options').html(sizeHtml);
+            }
 
-        if (colors.length > 0) {
-            needsModal = true;
-            $('#variation-color-group').show();
-            var colorHtml = '';
-            colors.forEach(function(color) {
-                colorHtml += `<div class="variation-option color-option" data-value="${color.trim()}">${color.trim()}</div>`;
-            });
-            $('#variation-color-options').html(colorHtml);
-        }
+            if (colors.length > 0) {
+                needsModal = true;
+                $('#variation-color-group').show();
+                var colorHtml = '';
+                colors.forEach(function(color) {
+                    colorHtml += `<div class="variation-option color-option" data-value="${color.trim()}">${color.trim()}</div>`;
+                });
+                $('#variation-color-options').html(colorHtml);
+            }
 
-        if (needsModal) {
-            // Show Modal
-            var variationModal = new bootstrap.Modal(document.getElementById('variationModal'));
-            variationModal.show();
-        } else {
-            // No variations, proceed with standard add to cart
-            // Re-trigger the logic that handles standard add to cart, usually a direct AJAX call
-            // We can reuse the logic from cart.js by calling a function or repeating AJAX
-            addToCartDirect(id, 1);
-        }
-    });
-
-    $(document).on('click', '.variation-option.size-option', function() {
-        $('.variation-option.size-option').removeClass('active');
-        $(this).addClass('active');
-        $('#variation_selected_size').val($(this).data('value'));
-    });
-
-    $(document).on('click', '.variation-option.color-option', function() {
-        $('.variation-option.color-option').removeClass('active');
-        $(this).addClass('active');
-        $('#variation_selected_color').val($(this).data('value'));
-    });
-
-    $('#confirm-add-to-cart').on('click', function() {
-        var id = $('#variation_product_id').val();
-        var size = $('#variation_selected_size').val();
-        var color = $('#variation_selected_color').val();
-
-        // Check if visible options are selected
-        if ($('#variation-size-group').is(':visible') && size === '') {
-            onErrorMsg("Please select a size");
-            return;
-        }
-        if ($('#variation-color-group').is(':visible') && color === '') {
-            onErrorMsg("Please select a color");
-            return;
-        }
-
-        // Close modal
-        var modalEl = document.getElementById('variationModal');
-        var modal = bootstrap.Modal.getInstance(modalEl);
-        modal.hide();
-
-        // Add to Cart with selections
-        addToCartDirect(id, 1, size, color);
-    });
-
-    function addToCartDirect(id, qty, size = null, color = null) {
-        var url = "{{ url('/frontend/add_to_cart') }}/" + id + "/" + qty;
-
-        var data = {};
-        if (size) data.size = size;
-        if (color) data.color = color;
-
-        $.ajax({
-            type: 'GET',
-            url: url,
-            data: data,
-            dataType: "json",
-            success: function (response) {
-                var msgType = response.msgType;
-                var msg = response.msg;
-
-                if (msgType == "success") {
-                    onSuccessMsg(msg);
+            if (needsModal) {
+                // Show Modal
+                // Ensure bootstrap is available
+                if (typeof bootstrap !== 'undefined') {
+                    var variationModal = new bootstrap.Modal(document.getElementById('variationModal'));
+                    variationModal.show();
                 } else {
-                    onErrorMsg(msg);
+                    console.error("Bootstrap 5 is not loaded");
+                    // Fallback using jQuery if bootstrap global is missing but jQuery plugin exists
+                    $('#variationModal').modal('show');
                 }
-                onViewCart();
-            },
-            error: function(xhr, status, error) {
-                // If specific 500 error, try to parse JSON if possible, else generic error
-                onErrorMsg("Something went wrong. Please try again.");
+            } else {
+                // No variations, proceed with standard add to cart
+                addToCartDirect(id, 1);
             }
         });
-    }
+
+        $(document).on('click', '.variation-option.size-option', function() {
+            $('.variation-option.size-option').removeClass('active');
+            $(this).addClass('active');
+            $('#variation_selected_size').val($(this).data('value'));
+        });
+
+        $(document).on('click', '.variation-option.color-option', function() {
+            $('.variation-option.color-option').removeClass('active');
+            $(this).addClass('active');
+            $('#variation_selected_color').val($(this).data('value'));
+        });
+
+        $('#confirm-add-to-cart').on('click', function() {
+            var id = $('#variation_product_id').val();
+            var size = $('#variation_selected_size').val();
+            var color = $('#variation_selected_color').val();
+
+            // Check if visible options are selected
+            if ($('#variation-size-group').is(':visible') && size === '') {
+                // Check if onErrorMsg is defined, else alert
+                if(typeof onErrorMsg === 'function') {
+                    onErrorMsg("Please select a size");
+                } else {
+                    alert("Please select a size");
+                }
+                return;
+            }
+            if ($('#variation-color-group').is(':visible') && color === '') {
+                if(typeof onErrorMsg === 'function') {
+                    onErrorMsg("Please select a color");
+                } else {
+                    alert("Please select a color");
+                }
+                return;
+            }
+
+            // Close modal
+            // Try vanilla bootstrap first
+            var modalEl = document.getElementById('variationModal');
+            if (typeof bootstrap !== 'undefined') {
+                 // Check if instance exists
+                 var modal = bootstrap.Modal.getInstance(modalEl);
+                 if(!modal) modal = new bootstrap.Modal(modalEl);
+                 modal.hide();
+            } else {
+                 $('#variationModal').modal('hide');
+            }
+
+            // Add to Cart with selections
+            addToCartDirect(id, 1, size, color);
+        });
+
+        function addToCartDirect(id, qty, size = null, color = null) {
+            var url = "{{ url('/frontend/add_to_cart') }}/" + id + "/" + qty;
+
+            var data = {};
+            if (size) data.size = size;
+            if (color) data.color = color;
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data: data,
+                dataType: "json",
+                success: function (response) {
+                    var msgType = response.msgType;
+                    var msg = response.msg;
+
+                    if (msgType == "success") {
+                        if(typeof onSuccessMsg === 'function') onSuccessMsg(msg);
+                    } else {
+                        if(typeof onErrorMsg === 'function') onErrorMsg(msg);
+                    }
+                    if(typeof onViewCart === 'function') onViewCart();
+                },
+                error: function(xhr, status, error) {
+                    if(typeof onErrorMsg === 'function') {
+                        onErrorMsg("Something went wrong. Please try again.");
+                    } else {
+                        alert("Something went wrong. Please try again.");
+                    }
+                }
+            });
+        }
+    })(jQuery);
 </script>
 
 <!-- Variation Selection Modal -->
