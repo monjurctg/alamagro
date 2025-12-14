@@ -56,7 +56,7 @@
 		</div>
 	</div>
 	<!-- /Page Breadcrumb/ -->
-	
+
 	<!-- Inner Section -->
 	<section class="inner-section inner-section-bg">
 		<div class="container">
@@ -76,15 +76,15 @@
 								</tr>
 							</thead>
 							<tbody>
-								
+
 								@foreach (session('shopping_wishlist') as $row)
 								@php
 									$pro_price = $row['price'];
 
-									if($gtext['currency_position'] == 'left'){ 
-										$price = $gtext['currency_icon'].NumberFormat($pro_price); 
+									if($gtext['currency_position'] == 'left'){
+										$price = $gtext['currency_icon'].NumberFormat($pro_price);
 									}else{
-										$price = NumberFormat($pro_price).$gtext['currency_icon'];  
+										$price = NumberFormat($pro_price).$gtext['currency_icon'];
 									}
 								@endphp
 								<tr id="row_delete_{{ $row['id'] }}">
@@ -93,23 +93,23 @@
 									</td>
 									<td class="pro-image-w">
 										<div class="pro-image">
-											<a href="{{ route('frontend.product', [$row['id'], str_slug($row['name'])]) }}">
+											<a href="{{ route('frontend.product', [$row['id'], \Illuminate\Support\Str::slug($row['name'])]) }}">
 												<img src="{{ asset('public/media/'.$row['thumbnail']) }}" alt="{{ $row['name'] }}">
 											</a>
 										</div>
 									</td>
 									<td data-title="{{ __('Product') }}:">
-										<span class="pro-name"><a href="{{ route('frontend.product', [$row['id'], str_slug($row['name'])]) }}">{{ $row['name'] }}</a></span>
+										<span class="pro-name"><a href="{{ route('frontend.product', [$row['id'], \Illuminate\Support\Str::slug($row['name'])]) }}">{{ $row['name'] }}</a></span>
 									</td>
 									<td class="pro-store-w" data-title="{{ __('Sold By') }}:">
-										<a href="{{ route('frontend.stores', [$row['seller_id'], str_slug($row['store_name'])]) }}">{{ $row['store_name'] }}</a>
+										<a href="{{ route('frontend.stores', [$row['seller_id'], \Illuminate\Support\Str::slug($row['store_name'])]) }}">{{ $row['store_name'] }}</a>
 									</td>
 									<td class="text-center pro-price-w" data-title="{{ __('Price') }}:">
 										<span class="pro-price">{{ $price }}</span>
 									</td>
 									<td class="text-center pro-addtocart-w" data-title="{{ __('View') }}:">
 										<div class="pro-addtocart">
-											<a class="btn theme-btn cart" href="{{ route('frontend.product', [$row['id'], str_slug($row['name'])]) }}">{{ __('View') }}</a>
+											<a class="btn theme-btn cart" href="{{ route('frontend.product', [$row['id'], \Illuminate\Support\Str::slug($row['name'])]) }}">{{ __('View') }}</a>
 										</div>
 									</td>
 								</tr>
@@ -138,4 +138,4 @@
 
 @push('scripts')
 <script src="{{asset('public/frontend/pages/wishlist.js')}}"></script>
-@endpush	
+@endpush

@@ -56,7 +56,7 @@
 		</div>
 	</div>
 	<!-- /Page Breadcrumb/ -->
-	
+
 	<!-- Inner Section -->
 	@if($data['is_publish'] == 1)
 	@php $contact_form = $data['contact_form']; @endphp
@@ -73,14 +73,14 @@
 								<div class="col-md-12">
 									<div class="form-group">
 										@if($row->is_label == 'yes')
-										<label for="{{ str_slug($row->name) }}">{{ $row->label }} @php echo $row->mandatory == 'yes' ? '<span class="red">*</span>' : ''; @endphp</label>	
+										<label for="{{ \Illuminate\Support\Str::slug($row->name) }}">{{ $row->label }} @php echo $row->mandatory == 'yes' ? '<span class="red">*</span>' : ''; @endphp</label>
 										@endif
 										@if($row->type == 'text')
-										<input type="text" name="{{ str_slug($row->name) }}" id="{{ str_slug($row->name) }}" placeholder="{{ $row->placeholder }}"  class="form-control {{ $row->mandatory == 'yes' ? 'parsley-validated' : '' }}" {{ $row->mandatory == 'yes' ? 'data-required="true"' : '' }} >
+										<input type="text" name="{{ \Illuminate\Support\Str::slug($row->name) }}" id="{{ \Illuminate\Support\Str::slug($row->name) }}" placeholder="{{ $row->placeholder }}"  class="form-control {{ $row->mandatory == 'yes' ? 'parsley-validated' : '' }}" {{ $row->mandatory == 'yes' ? 'data-required="true"' : '' }} >
 										@elseif($row->type == 'email')
-										<input type="email" name="{{ str_slug($row->name) }}" id="{{ str_slug($row->name) }}" placeholder="{{ $row->placeholder }}" class="form-control {{ $row->mandatory == 'yes' ? 'parsley-validated' : '' }}" {{ $row->mandatory == 'yes' ? 'data-required="true"' : '' }}>
+										<input type="email" name="{{ \Illuminate\Support\Str::slug($row->name) }}" id="{{ \Illuminate\Support\Str::slug($row->name) }}" placeholder="{{ $row->placeholder }}" class="form-control {{ $row->mandatory == 'yes' ? 'parsley-validated' : '' }}" {{ $row->mandatory == 'yes' ? 'data-required="true"' : '' }}>
 										@elseif($row->type == 'dropdown')
-										<select name="{{ str_slug($row->name) }}" id="{{ str_slug($row->name) }}" class="chosen-select form-control {{ $row->mandatory == 'yes' ? 'parsley-validated' : '' }}" {{ $row->mandatory == 'yes' ? 'data-required="true"' : '' }}>
+										<select name="{{ \Illuminate\Support\Str::slug($row->name) }}" id="{{ \Illuminate\Support\Str::slug($row->name) }}" class="chosen-select form-control {{ $row->mandatory == 'yes' ? 'parsley-validated' : '' }}" {{ $row->mandatory == 'yes' ? 'data-required="true"' : '' }}>
 											@if($row->dropdown_values != '')
 											@php $dropdown_array = explode('|', $row->dropdown_values); @endphp
 											@foreach($dropdown_array as $option)
@@ -89,13 +89,13 @@
 											@endif
 										</select>
 										@elseif($row->type == 'textarea')
-										<textarea name="{{ str_slug($row->name) }}" id="{{ str_slug($row->name) }}" placeholder="{{ $row->placeholder }}" class="form-control {{ $row->mandatory == 'yes' ? 'parsley-validated' : '' }}" {{ $row->mandatory == 'yes' ? 'data-required="true"' : '' }}></textarea>
+										<textarea name="{{ \Illuminate\Support\Str::slug($row->name) }}" id="{{ \Illuminate\Support\Str::slug($row->name) }}" placeholder="{{ $row->placeholder }}" class="form-control {{ $row->mandatory == 'yes' ? 'parsley-validated' : '' }}" {{ $row->mandatory == 'yes' ? 'data-required="true"' : '' }}></textarea>
 										@endif
 									</div>
 								</div>
 							</div>
 							@endforeach
-	
+
 							@if($gtext['is_recaptcha'] == 1)
 							@if($data['is_recaptcha'] == 1)
 							<div class="row">
@@ -116,7 +116,7 @@
 					</div>
 				</div>
 				@endif
-				
+
 				<div class="col-lg-5">
 					<div class="contact-info">
 						<h3 class="heading">{{ __('Contact Info') }}</h3>
@@ -138,7 +138,7 @@
 								</div>
 							</div>
 							@endif
-							
+
 							@if($contact_info->phone != '')
 							<div class="col-12">
 								<div class="info">
@@ -152,7 +152,7 @@
 								</div>
 							</div>
 							@endif
-							
+
 							@if($contact_info->address != '')
 							<div class="col-12">
 								<div class="info">
@@ -170,7 +170,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			@php $contact_map = $data['contact_map']; @endphp
 			@if($gtext['is_googlemap'] == 1)
 			@if($contact_map->is_google_map == 1)
@@ -201,14 +201,14 @@ function initMap(){
 	var latitude = {{ $contact_map->latitude }};
 	var longitude = {{ $contact_map->longitude }};
 	var zoom = {{ $contact_map->zoom }};
-	
+
 	var email = "{{ $contact_info->email }}";
 	var EmailText = "{{ __('Email') }}";
 	var phone = "{{ $contact_info->phone }}";
 	var PhoneText = "{{ __('Phone') }}";
 	var address = "{{ $contact_info->address }}";
 	var AddressText = "{{ __('Address') }}";
-	
+
 	var latlng = {lat: latitude, lng: longitude};
 	var map = new google.maps.Map(document.getElementById('google_map'), {
 		zoom: zoom,
@@ -252,4 +252,4 @@ function initMap(){
 var isreCaptcha = "{{ $data['is_recaptcha'] }}";
 </script>
 <script src="{{asset('public/frontend/pages/contact_us.js')}}"></script>
-@endpush	
+@endpush
