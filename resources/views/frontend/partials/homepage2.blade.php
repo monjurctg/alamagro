@@ -384,7 +384,7 @@
 							</div>
 							<div class="item-sold">
 								{{ __('Sold By') }} <a
-									href="{{ route('frontend.stores', [$row->seller_id, str_slug($row->shop_url)]) }}">{{ str_limit($row->shop_name) }}</a>
+									href="{{ route('frontend.stores', [$row->seller_id, \Illuminate\Support\Str::slug($row->shop_url)]) }}">{{ str_limit($row->shop_name) }}</a>
 							</div>
 							<div class="item-pric-card">
 								@if($row->sale_price != '')
@@ -466,7 +466,7 @@
 							</div>
 							<div class="item-sold">
 								{{ __('Sold By') }} <a
-									href="{{ route('frontend.stores', [$row->seller_id, str_slug($row->shop_url)]) }}">{{ str_limit($row->shop_name) }}</a>
+									href="{{ route('frontend.stores', [$row->seller_id, \Illuminate\Support\Str::slug($row->shop_url)]) }}">{{ str_limit($row->shop_name) }}</a>
 							</div>
 							<div class="item-pric-card">
 								@if($row->sale_price != '')

@@ -74,7 +74,7 @@ $gtext = gtext();
 @endsection
 
 @push('scripts')
-<script src="{{ asset('public/frontend/pages/home_variation.js') }}?v={{ time() }}"></script>
+
 @if(Session::has('subscribePopupOff'))
 @else
 	@if($gtext['is_subscribe_popup'] == 1)
