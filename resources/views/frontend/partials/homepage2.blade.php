@@ -825,7 +825,6 @@
             var colorStr = $(this).attr('data-variation-color');
 
             // Handle case where data attribute might be null or undefined
-            // Using attr() guarantees string or undefined, simpler than data() type inference
             sizeStr = sizeStr ? String(sizeStr) : "";
             colorStr = colorStr ? String(colorStr) : "";
 
@@ -845,8 +844,11 @@
             $('.variation-option').removeClass('active');
 
             var needsModal = false;
+            var autoSize = null;
+            var autoColor = null;
 
-            if (sizes.length > 0) {
+            // Size Logic
+            if (sizes.length > 1) {
                 needsModal = true;
                 $('#variation-size-group').show();
                 var sizeHtml = '';
@@ -854,9 +856,23 @@
                     sizeHtml += `<div class="variation-option size-option" data-value="${size.trim()}">${size.trim()}</div>`;
                 });
                 $('#variation-size-options').html(sizeHtml);
+            } else if (sizes.length === 1) {
+                // Auto-select single size
+                autoSize = sizes[0].trim();
+                // Optionally visually populate the modal in case we show it for color
+                var sizeHtml = `<div class="variation-option size-option active" data-value="${autoSize}">${autoSize}</div>`;
+                $('#variation-size-options').html(sizeHtml);
+                $('#variation_selected_size').val(autoSize);
+                // Also show the group but it's single option and pre-selected
+                // User requirement: "modal not open for multize... if mult size... show modal"
+                // If single size, don't force modal just for this.
+                if(colors.length > 1) {
+                     $('#variation-size-group').show(); // Show it if we open modal for colors
+                }
             }
 
-            if (colors.length > 0) {
+            // Color Logic
+            if (colors.length > 1) {
                 needsModal = true;
                 $('#variation-color-group').show();
                 var colorHtml = '';
@@ -864,22 +880,33 @@
                     colorHtml += `<div class="variation-option color-option" data-value="${color.trim()}">${color.trim()}</div>`;
                 });
                 $('#variation-color-options').html(colorHtml);
+            } else if (colors.length === 1) {
+                // Auto-select single color
+                autoColor = colors[0].trim();
+                var colorHtml = `<div class="variation-option color-option active" data-value="${autoColor}">${autoColor}</div>`;
+                $('#variation-color-options').html(colorHtml);
+                $('#variation_selected_color').val(autoColor);
+                if(sizes.length > 1) {
+                    $('#variation-color-group').show();
+                }
             }
 
             if (needsModal) {
                 // Show Modal
                 // Ensure bootstrap is available
                 if (typeof bootstrap !== 'undefined') {
-                    var variationModal = new bootstrap.Modal(document.getElementById('variationModal'));
+                    // Dispose old instance to be clean? No, just create/get
+                    var el = document.getElementById('variationModal');
+                    var variationModal = bootstrap.Modal.getInstance(el) || new bootstrap.Modal(el);
                     variationModal.show();
                 } else {
                     console.error("Bootstrap 5 is not loaded");
-                    // Fallback using jQuery if bootstrap global is missing but jQuery plugin exists
                     $('#variationModal').modal('show');
                 }
             } else {
-                // No variations, proceed with standard add to cart
-                addToCartDirect(id, 1);
+                // Direct Add
+                // If single size/color identified, pass them.
+                addToCartDirect(id, 1, autoSize, autoColor);
             }
         });
 
