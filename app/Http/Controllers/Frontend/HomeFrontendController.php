@@ -288,7 +288,7 @@ class HomeFrontendController extends Controller
 
     $pp_sql = "SELECT a.id, a.brand_id, a.title, a.slug, a.f_thumbnail,
                       a.sale_price, a.old_price, a.end_date, a.is_discount,
-                      b.shop_name, b.id seller_id, b.shop_url,a.variation_size,a.variation_color,
+                      b.shop_name, b.id seller_id, b.shop_url,a.variation_size,a.variation_color
                FROM products a
                INNER JOIN users b ON a.user_id = b.id AND b.status_id = 1
                WHERE a.is_publish = 1
