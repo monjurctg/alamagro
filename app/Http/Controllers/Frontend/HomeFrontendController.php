@@ -216,7 +216,7 @@ class HomeFrontendController extends Controller
 
 
 			//Trending Products
-			$tp_sql = "SELECT a.id, a.brand_id, a.title, a.slug, a.f_thumbnail, a.sale_price, a.old_price, a.end_date, a.is_discount, b.shop_name, b.id seller_id, b.shop_url
+			$tp_sql = "SELECT a.id, a.brand_id, a.title, a.slug, a.f_thumbnail, a.sale_price, a.old_price, a.end_date, a.is_discount, b.shop_name, b.id seller_id, b.shop_url, a.variation_size, a.variation_color
 			FROM products a
 			INNER JOIN users b ON a.user_id = b.id AND b.status_id = 1
 			WHERE a.is_publish = 1
@@ -233,7 +233,7 @@ class HomeFrontendController extends Controller
 			}
 
 			//Top Rated
-			$tr_sql = "SELECT a.id, a.title, a.slug, a.f_thumbnail, a.sale_price, a.old_price, a.end_date, a.is_discount, b.shop_name, b.id seller_id, b.shop_url,
+			$tr_sql = "SELECT a.id, a.title, a.slug, a.f_thumbnail, a.sale_price, a.old_price, a.end_date, a.is_discount, b.shop_name, b.id seller_id, b.shop_url, a.variation_size, a.variation_color,
 			COUNT(c.id) TotalReview, SUM(IFNULL(c.rating, 0)) TotalRating, (SUM(IFNULL(c.rating, 0))/COUNT(c.id))*20 ReviewPercentage
 			FROM products a
 			INNER JOIN users b ON a.user_id = b.id AND b.status_id = 1
@@ -241,7 +241,7 @@ class HomeFrontendController extends Controller
 			WHERE a.is_publish = 1
 			AND a.lan = '".$lan."'
 			AND c.rating = 5
-			GROUP BY a.id, a.title, a.slug, a.f_thumbnail, a.sale_price, a.old_price, a.end_date, a.is_discount, b.shop_name, b.id, b.shop_url
+			GROUP BY a.id, a.title, a.slug, a.f_thumbnail, a.sale_price, a.old_price, a.end_date, a.is_discount, b.shop_name, b.id, b.shop_url, a.variation_size, a.variation_color
 			ORDER BY TotalReview DESC
 			LIMIT 15;";
 			$top_rated = DB::select($tr_sql);
@@ -315,7 +315,7 @@ public function getNewProducts(Request $request)
 {
     $lan = app()->getLocale();
 
-    $np_sql = "SELECT a.id, a.brand_id, a.title, a.slug, a.f_thumbnail, a.sale_price, a.old_price, a.end_date, a.is_discount, b.shop_name, b.id seller_id, b.shop_url
+    $np_sql = "SELECT a.id, a.brand_id, a.title, a.slug, a.f_thumbnail, a.sale_price, a.old_price, a.end_date, a.is_discount, b.shop_name, b.id seller_id, b.shop_url, a.variation_size, a.variation_color
         FROM products a
         INNER JOIN users b ON a.user_id = b.id AND b.status_id = 1
         WHERE a.is_publish = 1
@@ -342,7 +342,7 @@ public function getTopSellingProducts(Request $request)
     $lan = app()->getLocale();
 
     $top_sql = "SELECT COUNT(c.product_id) TotalSell, a.id, a.title, a.slug, a.f_thumbnail, a.sale_price, a.old_price, a.end_date, a.is_discount,
-                       b.shop_name, b.id seller_id, b.shop_url
+                       b.shop_name, b.id seller_id, b.shop_url, a.variation_size, a.variation_color
                 FROM products a
                 INNER JOIN users b ON a.user_id = b.id AND b.status_id = 1
                 INNER JOIN order_items c ON a.id = c.product_id
@@ -350,7 +350,7 @@ public function getTopSellingProducts(Request $request)
                 WHERE a.is_publish = 1
                 AND a.lan = '".$lan."'
                 AND d.order_status_id = 4
-                GROUP BY a.id, a.title, a.slug, a.f_thumbnail, a.sale_price, a.old_price, a.end_date, a.is_discount, b.shop_name, b.id, b.shop_url
+                GROUP BY a.id, a.title, a.slug, a.f_thumbnail, a.sale_price, a.old_price, a.end_date, a.is_discount, b.shop_name, b.id, b.shop_url, a.variation_size, a.variation_color
                 ORDER BY TotalSell DESC
                 LIMIT 15;";
 
