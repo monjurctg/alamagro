@@ -816,13 +816,16 @@
 	});
 
     // Variation Selection Logic
-    (function($) {
+    // Variation Selection Logic
+    jQuery(document).ready(function($) {
         $(document).on("click", ".homepage-addtocart", function (event) {
             event.preventDefault();
+            console.log("Add to cart clicked!");
 
             var id = $(this).data('id');
             var sizeStr = $(this).attr('data-variation-size');
             var colorStr = $(this).attr('data-variation-color');
+            console.log("Product ID:", id, "SizeStr:", sizeStr, "ColorStr:", colorStr);
 
             // Handle case where data attribute might be null or undefined
             sizeStr = sizeStr ? String(sizeStr) : "";
@@ -830,6 +833,7 @@
 
             var sizes = sizeStr.split(',').filter(s => s.trim() !== "");
             var colors = colorStr.split(',').filter(c => c.trim() !== "");
+            console.log("Parsed Sizes:", sizes, "Parsed Colors:", colors);
 
             // Reset modal state
             $('#variation_product_id').val(id);
@@ -857,18 +861,14 @@
                 });
                 $('#variation-size-options').html(sizeHtml);
             } else if (sizes.length === 1) {
-                // Auto-select single size
                 autoSize = sizes[0].trim();
-                // Optionally visually populate the modal in case we show it for color
+                console.log("Auto-selecting size:", autoSize);
+                // Pre-populate modal just in case
                 var sizeHtml = `<div class="variation-option size-option active" data-value="${autoSize}">${autoSize}</div>`;
                 $('#variation-size-options').html(sizeHtml);
                 $('#variation_selected_size').val(autoSize);
-                // Also show the group but it's single option and pre-selected
-                // User requirement: "modal not open for multize... if mult size... show modal"
-                // If single size, don't force modal just for this.
-                if(colors.length > 1) {
-                     $('#variation-size-group').show(); // Show it if we open modal for colors
-                }
+                // If we show modal for color, show size as well (but locked/selected)
+                if(colors.length > 1) $('#variation-size-group').show();
             }
 
             // Color Logic
@@ -881,31 +881,27 @@
                 });
                 $('#variation-color-options').html(colorHtml);
             } else if (colors.length === 1) {
-                // Auto-select single color
                 autoColor = colors[0].trim();
+                console.log("Auto-selecting color:", autoColor);
                 var colorHtml = `<div class="variation-option color-option active" data-value="${autoColor}">${autoColor}</div>`;
                 $('#variation-color-options').html(colorHtml);
                 $('#variation_selected_color').val(autoColor);
-                if(sizes.length > 1) {
-                    $('#variation-color-group').show();
-                }
+                if(sizes.length > 1) $('#variation-color-group').show();
             }
 
             if (needsModal) {
+                console.log("Showing modal...");
                 // Show Modal
-                // Ensure bootstrap is available
                 if (typeof bootstrap !== 'undefined') {
-                    // Dispose old instance to be clean? No, just create/get
                     var el = document.getElementById('variationModal');
                     var variationModal = bootstrap.Modal.getInstance(el) || new bootstrap.Modal(el);
                     variationModal.show();
                 } else {
-                    console.error("Bootstrap 5 is not loaded");
                     $('#variationModal').modal('show');
                 }
             } else {
+                console.log("Direct add to cart...");
                 // Direct Add
-                // If single size/color identified, pass them.
                 addToCartDirect(id, 1, autoSize, autoColor);
             }
         });
@@ -929,31 +925,20 @@
 
             // Check if visible options are selected
             if ($('#variation-size-group').is(':visible') && size === '') {
-                // Check if onErrorMsg is defined, else alert
-                if(typeof onErrorMsg === 'function') {
-                    onErrorMsg("Please select a size");
-                } else {
-                    alert("Please select a size");
-                }
+                showError("Please select a size");
                 return;
             }
             if ($('#variation-color-group').is(':visible') && color === '') {
-                if(typeof onErrorMsg === 'function') {
-                    onErrorMsg("Please select a color");
-                } else {
-                    alert("Please select a color");
-                }
+                showError("Please select a color");
                 return;
             }
 
             // Close modal
-            // Try vanilla bootstrap first
             var modalEl = document.getElementById('variationModal');
             if (typeof bootstrap !== 'undefined') {
-                 // Check if instance exists
                  var modal = bootstrap.Modal.getInstance(modalEl);
-                 if(!modal) modal = new bootstrap.Modal(modalEl);
-                 modal.hide();
+                 if(modal) modal.hide();
+                 else $(modalEl).modal('hide'); // Fallback
             } else {
                  $('#variationModal').modal('hide');
             }
@@ -962,6 +947,14 @@
             addToCartDirect(id, 1, size, color);
         });
 
+        function showError(msg) {
+            if(typeof onErrorMsg === 'function') {
+                onErrorMsg(msg);
+            } else {
+                alert(msg);
+            }
+        }
+
         function addToCartDirect(id, qty, size = null, color = null) {
             var url = "{{ url('/frontend/add_to_cart') }}/" + id + "/" + qty;
 
@@ -969,32 +962,33 @@
             if (size) data.size = size;
             if (color) data.color = color;
 
+            console.log("Sending AJAX to:", url, "Data:", data);
+
             $.ajax({
                 type: 'GET',
                 url: url,
                 data: data,
                 dataType: "json",
                 success: function (response) {
+                    console.log("AJAX Success:", response);
                     var msgType = response.msgType;
                     var msg = response.msg;
 
                     if (msgType == "success") {
                         if(typeof onSuccessMsg === 'function') onSuccessMsg(msg);
+                        else alert(msg);
                     } else {
-                        if(typeof onErrorMsg === 'function') onErrorMsg(msg);
+                        showError(msg);
                     }
                     if(typeof onViewCart === 'function') onViewCart();
                 },
                 error: function(xhr, status, error) {
-                    if(typeof onErrorMsg === 'function') {
-                        onErrorMsg("Something went wrong. Please try again.");
-                    } else {
-                        alert("Something went wrong. Please try again.");
-                    }
+                    console.error("AJAX Error:", error);
+                    showError("Something went wrong. Please try again.");
                 }
             });
         }
-    })(jQuery);
+    });
 </script>
 
 <!-- Variation Selection Modal -->
@@ -1049,5 +1043,4 @@
         background-color: var(--theme-color, #0d6efd);
         color: white;
     }
-</style>	});
-</script>
+</style>
