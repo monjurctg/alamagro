@@ -16,7 +16,9 @@ $(function () {
 	});
 
 	// Handle variation selection
+	// Handle variation selection
 	$(document).on('click', '.size-option, .color-option', function () {
+		console.log("Variation clicked:", $(this).text());
 		$(this).addClass('active').siblings().removeClass('active');
 
 		// Get selected size and color
@@ -29,9 +31,11 @@ $(function () {
 
 	// Auto-select if only one option exists
 	if ($('.widget-size .size-option').length === 1) {
+		console.log("Auto-selecting single size");
 		$('.widget-size .size-option').first().click();
 	}
 	if ($('.widget-color .color-option').length === 1) {
+		console.log("Auto-selecting single color");
 		$('.widget-color .color-option').first().click();
 	}
 
