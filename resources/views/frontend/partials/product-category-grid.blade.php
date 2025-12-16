@@ -48,6 +48,17 @@
 						@endif
 					@endif
 				</div>
+				@if($row->variation_size || $row->variation_color)
+					<div class="item-variations small text-muted mb-1">
+						@if($row->variation_size)
+							<span class="me-1">{{ __('Size') }}: {{ str_replace(',', ', ', $row->variation_size) }}</span>
+						@endif
+						@if($row->variation_size && $row->variation_color) | @endif
+						@if($row->variation_color)
+							<span class="ms-1">{{ __('Color') }}: {{ str_replace(',', ', ', $row->variation_color) }}</span>
+						@endif
+					</div>
+				@endif
 				<div class="item-card-bottom">
 					<a data-id="{{ $row->id }}" href="javascript:void(0);" class="btn add-to-cart addtocart">{{ __('Add To Cart') }}</a>
 					<ul class="item-cart-list">

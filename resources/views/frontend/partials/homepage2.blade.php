@@ -402,6 +402,17 @@
 									@endif
 								@endif
 							</div>
+							@if($row->variation_size || $row->variation_color)
+								<div class="item-variations small text-muted mb-1">
+									@if($row->variation_size)
+										<span class="me-1">{{ __('Size') }}: {{ str_replace(',', ', ', $row->variation_size) }}</span>
+									@endif
+									@if($row->variation_size && $row->variation_color) | @endif
+									@if($row->variation_color)
+										<span class="ms-1">{{ __('Color') }}: {{ str_replace(',', ', ', $row->variation_color) }}</span>
+									@endif
+								</div>
+							@endif
 							<div class="item-card-bottom">
 								<a data-id="{{ $row->id }}"
 									href="javascript:void(0);"
@@ -482,6 +493,17 @@
 									@endif
 								@endif
 							</div>
+							@if($row->variation_size || $row->variation_color)
+								<div class="item-variations small text-muted mb-1">
+									@if($row->variation_size)
+										<span class="me-1">{{ __('Size') }}: {{ str_replace(',', ', ', $row->variation_size) }}</span>
+									@endif
+									@if($row->variation_size && $row->variation_color) | @endif
+									@if($row->variation_color)
+										<span class="ms-1">{{ __('Color') }}: {{ str_replace(',', ', ', $row->variation_color) }}</span>
+									@endif
+								</div>
+							@endif
 							<div class="item-card-bottom">
 								<a data-id="{{ $row->id }}"
 									href="javascript:void(0);"
@@ -593,6 +615,13 @@
                                         </div>` : ""}
                                 </div>
 
+                                <!-- Variations -->
+                                <div class="item-variations small text-muted mb-2">
+                                    ${row.variation_size ? `<span class="me-1">{{ __('Size') }}: ${row.variation_size.split(',').join(', ')}</span>` : ''}
+                                    ${row.variation_size && row.variation_color ? ' | ' : ''}
+                                    ${row.variation_color ? `<span class="ms-1">{{ __('Color') }}: ${row.variation_color.split(',').join(', ')}</span>` : ''}
+                                </div>
+
                                 <!-- Buttons -->
                                 <div class="item-card-bottom d-flex justify-content-between align-items-center">
                                     <a data-id="${row.id}"
@@ -681,6 +710,13 @@
 	? $gtext['currency_icon'] : '' }}
                                             </del>
                                         </div>` : ""}
+                                </div>
+
+                                <!-- Variations -->
+                                <div class="item-variations small text-muted mb-2">
+                                    ${row.variation_size ? `<span class="me-1">{{ __('Size') }}: ${row.variation_size.split(',').join(', ')}</span>` : ''}
+                                    ${row.variation_size && row.variation_color ? ' | ' : ''}
+                                    ${row.variation_color ? `<span class="ms-1">{{ __('Color') }}: ${row.variation_color.split(',').join(', ')}</span>` : ''}
                                 </div>
 
                                 <!-- Buttons -->
@@ -772,6 +808,13 @@
 	? $gtext['currency_icon'] : '' }}
                                             </del>
                                         </div>` : ""}
+                                </div>
+
+                                <!-- Variations -->
+                                <div class="item-variations small text-muted mb-2">
+                                    ${row.variation_size ? `<span class="me-1">{{ __('Size') }}: ${row.variation_size.split(',').join(', ')}</span>` : ''}
+                                    ${row.variation_size && row.variation_color ? ' | ' : ''}
+                                    ${row.variation_color ? `<span class="ms-1">{{ __('Color') }}: ${row.variation_color.split(',').join(', ')}</span>` : ''}
                                 </div>
 
                                 <!-- Buttons -->
