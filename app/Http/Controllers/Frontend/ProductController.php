@@ -125,29 +125,4 @@ class ProductController extends Controller
 
 
 
-	//Get Quick View
-	public function getQuickView($id){
-		$data = DB::table('products')
-			->leftJoin('brands', 'products.brand_id', '=', 'brands.id')
-			->join('users', 'products.user_id', '=', 'users.id')
-			->join('pro_categories', 'products.cat_id', '=', 'pro_categories.id')
-			->select('products.*', 'brands.name as brandname', 'pro_categories.name as cat_name', 'pro_categories.slug as cat_slug', 'users.shop_name', 'users.id as seller_id', 'users.shop_url')
-			->where('products.is_publish', '=', 1)
-			->where('products.id', '=', $id)
-			->first();
-
-		if(!$data) {
-			return response()->json(['error' => 'Product not found'], 404);
-		}
-
-		$Reviews = getReviews($data->id);
-		$data->TotalReview = $Reviews[0]->TotalReview;
-		$data->TotalRating = $Reviews[0]->TotalRating;
-		$data->ReviewPercentage = number_format($Reviews[0]->ReviewPercentage);
-
-		//Product images
-		$pro_images = Pro_image::where('product_id', $id)->get();
-
-		return view('frontend.partials.quickview', compact('data', 'pro_images'))->render();
-	}
 }
