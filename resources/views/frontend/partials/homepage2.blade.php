@@ -415,6 +415,8 @@
 							@endif
 							<div class="item-card-bottom">
 								<a data-id="{{ $row->id }}"
+									data-variation-size="{{ $row->variation_size }}"
+									data-variation-color="{{ $row->variation_color }}"
 									href="javascript:void(0);"
 									class="btn add-to-cart homepage-addtocart">{{ __('Add To Cart') }}</a>
 								<ul class="item-cart-list">
@@ -506,6 +508,8 @@
 							@endif
 							<div class="item-card-bottom">
 								<a data-id="{{ $row->id }}"
+									data-variation-size="{{ $row->variation_size }}"
+									data-variation-color="{{ $row->variation_color }}"
 									href="javascript:void(0);"
 									class="btn add-to-cart homepage-addtocart">{{ __('Add To Cart') }}</a>
 								<ul class="item-cart-list">
@@ -625,6 +629,8 @@
                                 <!-- Buttons -->
                                 <div class="item-card-bottom d-flex justify-content-between align-items-center">
                                     <a data-id="${row.id}"
+                                       data-variation-size="${row.variation_size || ''}"
+                                       data-variation-color="${row.variation_color || ''}"
                                        href="javascript:void(0);"
                                        class="btn btn-sm btn-primary add-to-cart homepage-addtocart">
                                         Add To Cart
@@ -722,6 +728,8 @@
                                 <!-- Buttons -->
                                 <div class="item-card-bottom d-flex justify-content-between align-items-center">
                                     <a data-id="${row.id}"
+                                       data-variation-size="${row.variation_size || ''}"
+                                       data-variation-color="${row.variation_color || ''}"
                                        href="javascript:void(0);"
                                        class="btn btn-sm btn-primary add-to-cart homepage-addtocart">
                                         Add To Cart
@@ -820,10 +828,9 @@
                                 <!-- Buttons -->
                                 <div class="item-card-bottom d-flex justify-content-between align-items-center">
                                     <a data-id="${row.id}"
+                                       data-variation-size="${row.variation_size || ''}"
+                                       data-variation-color="${row.variation_color || ''}"
                                        href="javascript:void(0);"
-                                       class="btn btn-sm btn-primary add-to-cart homepage-addtocart">
-                                        Add To Cart
-                                    </a>
                                        class="btn btn-sm btn-primary add-to-cart homepage-addtocart">
                                         Add To Cart
                                     </a>

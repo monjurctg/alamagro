@@ -145,7 +145,7 @@ $(function () {
 		});
 	});
 
-	$(document).on("click", ".addtocart, .homepage-addtocart", function (event) {
+	$(document).on("click", ".addtocart", function (event) {
 		event.preventDefault();
 
 		var id = $(this).data('id');
