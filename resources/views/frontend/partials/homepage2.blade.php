@@ -858,39 +858,88 @@
 			});
 	});
 
-    // Variation Selection Logic - Robust Version 2.2 (Fixing Syntax)
-    jQuery(document).ready(function($) {
-        console.log("homepage2.blade.php: Variation JS Loaded v2.2");
+    // Variation Selection Logic - Robust Version 2.4
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("homepage2.blade.php: Variation JS Loaded v2.4 (Vanilla/jQuery Mix)");
 
-        $(document).on("click", ".homepage-addtocart", function (event) {
-            event.preventDefault();
-            console.log("Add to cart clicked! Version 2.3");
+        // Use 'body' for delegation as it's always present. Use jQuery if available, else Vanilla.
+        // Since we are in a Blade file that likely has jQuery loaded:
+        if (typeof jQuery !== 'undefined') {
+            jQuery('body').on('click', '.homepage-addtocart', function (event) {
+                event.preventDefault();
+                handleAddToCartClick(this);
+            });
+        } else {
+            // Vanilla fallback for delegation
+            document.body.addEventListener('click', function(e) {
+                if (e.target && e.target.closest('.homepage-addtocart')) {
+                    e.preventDefault();
+                    handleAddToCartClick(e.target.closest('.homepage-addtocart'));
+                }
+            });
+        }
 
-            var btn = $(this); // Cache selector
+        // Modal Option Click Handlers (Delegated)
+        jQuery('body').on('click', '.variation-option.size-option', function() {
+            jQuery('.variation-option.size-option').removeClass('active');
+            jQuery(this).addClass('active');
+            jQuery('#variation_selected_size').val(jQuery(this).data('value'));
+        });
+
+        jQuery('body').on('click', '.variation-option.color-option', function() {
+            jQuery('.variation-option.color-option').removeClass('active');
+            jQuery(this).addClass('active');
+            jQuery('#variation_selected_color').val(jQuery(this).data('value'));
+        });
+
+        // Confirm Add to Cart
+        jQuery('body').on('click', '#confirm-add-to-cart', function() {
+            var id = jQuery('#variation_product_id').val();
+            var size = jQuery('#variation_selected_size').val();
+            var color = jQuery('#variation_selected_color').val();
+
+            // Check if visible options are selected
+            if (jQuery('#variation-size-group').is(':visible') && size === '') {
+                showError("Please select a size");
+                return;
+            }
+            if (jQuery('#variation-color-group').is(':visible') && color === '') {
+                showError("Please select a color");
+                return;
+            }
+
+            // Close modal
+            var modalEl = document.getElementById('variationModal');
+            closeModal(modalEl);
+
+            // Add to Cart with selections
+            addToCartDirect(id, 1, size, color);
+        });
+
+        function handleAddToCartClick(element) {
+            console.log("Add to cart clicked! Version 2.4");
+            var btn = jQuery(element);
             var id = btn.attr('data-id');
             var sizeStr = btn.attr('data-variation-size');
             var colorStr = btn.attr('data-variation-color');
             console.log("Product ID:", id, "SizeStr:", sizeStr, "ColorStr:", colorStr);
 
-            // Robust null check
+             // Robust null check
             sizeStr = (sizeStr === undefined || sizeStr === null) ? "" : String(sizeStr);
             colorStr = (colorStr === undefined || colorStr === null) ? "" : String(colorStr);
 
-            // Clean parsing
             var sizes = sizeStr.split(',').map(s => s.trim()).filter(s => s !== "");
             var colors = colorStr.split(',').map(c => c.trim()).filter(c => c !== "");
-            console.log("Parsed Sizes:", sizes, "Parsed Colors:", colors);
 
             // Reset modal state
-            $('#variation_product_id').val(id);
-            $('#variation_selected_size').val('');
-            $('#variation_selected_color').val('');
-            $('#variation-size-group').hide();
-            $('#variation-color-group').hide();
-            $('#variation-size-options').empty();
-            $('#variation-color-options').empty();
-
-            $('.variation-option').removeClass('active');
+            jQuery('#variation_product_id').val(id);
+            jQuery('#variation_selected_size').val('');
+            jQuery('#variation_selected_color').val('');
+            jQuery('#variation-size-group').hide();
+            jQuery('#variation-color-group').hide();
+            jQuery('#variation-size-options').empty();
+            jQuery('#variation-color-options').empty();
+            jQuery('.variation-option').removeClass('active');
 
             var needsModal = false;
             var autoSize = null;
@@ -899,107 +948,73 @@
             // Size Logic
             if (sizes.length > 1) {
                 needsModal = true;
-                $('#variation-size-group').show();
+                jQuery('#variation-size-group').show();
                 var sizeHtml = '';
                 sizes.forEach(function(size) {
                     sizeHtml += `<div class="variation-option size-option" data-value="${size}">${size}</div>`;
                 });
-                $('#variation-size-options').html(sizeHtml);
+                jQuery('#variation-size-options').html(sizeHtml);
             } else if (sizes.length === 1) {
                 autoSize = sizes[0];
-                console.log("Auto-selecting size:", autoSize);
                 var sizeHtml = `<div class="variation-option size-option active" data-value="${autoSize}">${autoSize}</div>`;
-                $('#variation-size-options').html(sizeHtml);
-                $('#variation_selected_size').val(autoSize);
-                if(colors.length > 1) $('#variation-size-group').show();
+                jQuery('#variation-size-options').html(sizeHtml);
+                jQuery('#variation_selected_size').val(autoSize);
+                if(colors.length > 1) jQuery('#variation-size-group').show();
             }
 
             // Color Logic
             if (colors.length > 1) {
                 needsModal = true;
-                $('#variation-color-group').show();
+                jQuery('#variation-color-group').show();
                 var colorHtml = '';
                 colors.forEach(function(color) {
                     colorHtml += `<div class="variation-option color-option" data-value="${color}">${color}</div>`;
                 });
-                $('#variation-color-options').html(colorHtml);
+                jQuery('#variation-color-options').html(colorHtml);
             } else if (colors.length === 1) {
                 autoColor = colors[0];
-                console.log("Auto-selecting color:", autoColor);
                 var colorHtml = `<div class="variation-option color-option active" data-value="${autoColor}">${autoColor}</div>`;
-                $('#variation-color-options').html(colorHtml);
-                $('#variation_selected_color').val(autoColor);
-                if(sizes.length > 1) $('#variation-color-group').show();
+                jQuery('#variation-color-options').html(colorHtml);
+                jQuery('#variation_selected_color').val(autoColor);
+                if(sizes.length > 1) jQuery('#variation-color-group').show();
             }
 
             if (needsModal) {
                 console.log("Opening modal...");
                 var modalEl = document.getElementById('variationModal');
-                if(modalEl) {
-                    // Try Bootstrap 5
-                    if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
-                        var modal = bootstrap.Modal.getInstance(modalEl);
-                        if (!modal) {
-                            modal = new bootstrap.Modal(modalEl);
-                        }
-                        modal.show();
-                    }
-                    // Fallback to jQuery/Bootstrap 4
-                    else if (typeof $.fn.modal !== 'undefined') {
-                        $('#variationModal').modal('show');
-                    } else {
-                        console.error("Bootstrap Modal not found!");
-                        alert("Error: Unable to open options modal.");
-                    }
-                } else {
-                    console.error("Modal element #variationModal not found!");
-                }
+                openModal(modalEl);
             } else {
                 console.log("Direct add...");
                 addToCartDirect(id, 1, autoSize, autoColor);
             }
-        });
+        }
 
-        $(document).on('click', '.variation-option.size-option', function() {
-            $('.variation-option.size-option').removeClass('active');
-            $(this).addClass('active');
-            $('#variation_selected_size').val($(this).data('value'));
-        });
-
-        $(document).on('click', '.variation-option.color-option', function() {
-            $('.variation-option.color-option').removeClass('active');
-            $(this).addClass('active');
-            $('#variation_selected_color').val($(this).data('value'));
-        });
-
-        $('#confirm-add-to-cart').on('click', function() {
-            var id = $('#variation_product_id').val();
-            var size = $('#variation_selected_size').val();
-            var color = $('#variation_selected_color').val();
-
-            // Check if visible options are selected
-            if ($('#variation-size-group').is(':visible') && size === '') {
-                showError("Please select a size");
-                return;
+        function openModal(modalEl) {
+            if (!modalEl) return;
+            // Try window.bootstrap (BS5)
+            if (typeof window.bootstrap !== 'undefined' && window.bootstrap.Modal) {
+                var modal = window.bootstrap.Modal.getInstance(modalEl);
+                if (!modal) modal = new window.bootstrap.Modal(modalEl);
+                modal.show();
             }
-            if ($('#variation-color-group').is(':visible') && color === '') {
-                showError("Please select a color");
-                return;
-            }
-
-            // Close modal
-            var modalEl = document.getElementById('variationModal');
-            if (typeof bootstrap !== 'undefined') {
-                 var modal = bootstrap.Modal.getInstance(modalEl);
-                 if(modal) modal.hide();
-                 else $(modalEl).modal('hide'); // Fallback
+            // Fallback to jQuery (BS4)
+            else if (typeof jQuery !== 'undefined' && typeof jQuery.fn.modal !== 'undefined') {
+                jQuery(modalEl).modal('show');
             } else {
-                 $('#variationModal').modal('hide');
+                alert("Error: Bootstrap Modal not loaded properly.");
             }
+        }
 
-            // Add to Cart with selections
-            addToCartDirect(id, 1, size, color);
-        });
+         function closeModal(modalEl) {
+            if (!modalEl) return;
+            if (typeof window.bootstrap !== 'undefined' && window.bootstrap.Modal) {
+                var modal = window.bootstrap.Modal.getInstance(modalEl);
+                if (modal) modal.hide();
+            } else if (typeof jQuery !== 'undefined' && typeof jQuery.fn.modal !== 'undefined') {
+                jQuery(modalEl).modal('hide');
+            }
+        }
+
 
         function showError(msg) {
             if(typeof onErrorMsg === 'function') {
@@ -1018,7 +1033,7 @@
 
             console.log("Sending AJAX to:", url, "Data:", data);
 
-            $.ajax({
+            jQuery.ajax({
                 type: 'GET',
                 url: url,
                 data: data,
