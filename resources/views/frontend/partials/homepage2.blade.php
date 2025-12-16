@@ -1052,6 +1052,7 @@
                     if(typeof onViewCart === 'function') onViewCart();
                 },
                 error: function(xhr, status, error) {
+
                     console.error("AJAX Error:", error);
                     showError("Something went wrong. Please try again.");
                 }
