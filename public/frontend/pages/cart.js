@@ -12,43 +12,55 @@ $(function () {
 	onViewCart();
 	onWishlist();
 
+	// Handler for Product Page & Quick View Modal "Add to Cart"
 	$(document).on("click", ".product_addtocart", function (event) {
 		event.preventDefault();
-		console.log("product_addtocart clicked");
 
-		var id = $(this).data('id');
-		var qty = $("#quantity").val();
+		var btn = $(this);
+		var id = btn.data('id');
 
-		console.log("ID:", id, "Qty:", qty);
+		// Context-aware selector for interactions
+		var container = btn.closest('.product-details'); // From Modal or Product Page
+		if (container.length === 0) container = $('body'); // Fallback
 
-		// Get selected variations
-		var sizeOptionsCount = $('.widget-size .size-option').length;
-		var colorOptionsCount = $('.widget-color .color-option').length;
-		var selectedSize = $('.size-option.active').data('size');
-		var selectedColor = $('.color-option.active').data('color');
-
-		console.log("Size Count:", sizeOptionsCount, "Selected Size:", selectedSize);
-		console.log("Color Count:", colorOptionsCount, "Selected Color:", selectedColor);
-
-		// Only require selection if there are multiple options
-		if (sizeOptionsCount > 1 && !selectedSize) {
-			onErrorMsg(TEXT['Please select a size.']);
-			return;
-		}
-		if (colorOptionsCount > 1 && !selectedColor) {
-			onErrorMsg(TEXT['Please select a color.']);
-			return;
-		}
+		// Get Quantity
+		var qtyInput = container.find('.quantity');
+		var qty = qtyInput.length > 0 ? qtyInput.val() : $("#quantity").val();
 
 		if ((qty == undefined) || (qty == '') || (qty <= 0)) {
 			onErrorMsg(TEXT['Please enter quantity.']);
 			return;
 		}
-		if (is_stock == 1) {
-			var stockqty = $(this).data('stockqty');
-			if (is_stock_status == 1) {
-				if (qty > stockqty) {
-					onErrorMsg(TEXT['The value must be less than or equal to']);
+
+		// Get selected variations
+		var sizeWidget = container.find('.widget-size');
+		var colorWidget = container.find('.widget-color');
+
+		var sizeOptionsCount = sizeWidget.find('.size-option').length;
+		var colorOptionsCount = colorWidget.find('.color-option').length;
+
+		var selectedSize = sizeWidget.find('.size-option.active').data('size');
+		var selectedColor = colorWidget.find('.color-option.active').data('color');
+
+		// Retrieve global stock status from button data if available, or global variables (legacy)
+		var stockQty = btn.data('stockqty') || (typeof stockqty !== 'undefined' ? stockqty : 9999);
+		var isStock = btn.data('is_stock') || (typeof is_stock !== 'undefined' ? is_stock : 0);
+		var isStockStatus = btn.data('is_stock_status') || (typeof is_stock_status !== 'undefined' ? is_stock_status : 1);
+
+		// Validation
+		if (sizeOptionsCount > 0 && !selectedSize) {
+			onErrorMsg(TEXT['Please select a size.']);
+			return;
+		}
+		if (colorOptionsCount > 0 && !selectedColor) {
+			onErrorMsg(TEXT['Please select a color.']);
+			return;
+		}
+
+		if (isStock == 1) {
+			if (isStockStatus == 1) {
+				if (qty > stockQty) {
+					onErrorMsg(TEXT['The value must be less than or equal to'] + ' ' + stockQty);
 					return;
 				}
 			} else {
@@ -74,6 +86,13 @@ $(function () {
 
 				if (msgType == "success") {
 					onSuccessMsg(msg);
+					// Close Modal if open
+					if (btn.closest('.modal').length > 0) {
+						$('.modal').modal('hide');
+						$('#lightCustomModal').hide(); // If custom modal used
+					}
+					// Open Cart Drawer
+					$('.headerShopingCart').addClass('open');
 				} else {
 					onErrorMsg(msg);
 				}
@@ -84,14 +103,28 @@ $(function () {
 
 	$(document).on("click", ".product_buy_now", function (event) {
 		event.preventDefault();
-		var id = $(this).data('id');
-		var qty = $("#quantity").val();
+		var btn = $(this);
+		var id = btn.data('id');
+
+		var container = btn.closest('.product-details'); // From Modal or Product Page
+		if (container.length === 0) container = $('body');
+
+		var qtyInput = container.find('.quantity');
+		var qty = qtyInput.length > 0 ? qtyInput.val() : $("#quantity").val();
 
 		// Get selected variations
-		var hasSizeOptions = $('.widget-size').length > 0;
-		var hasColorOptions = $('.widget-color').length > 0;
-		var selectedSize = $('.size-option.active').data('size');
-		var selectedColor = $('.color-option.active').data('color');
+		var sizeWidget = container.find('.widget-size');
+		var colorWidget = container.find('.widget-color');
+
+		var hasSizeOptions = sizeWidget.length > 0;
+		var hasColorOptions = colorWidget.length > 0;
+
+		var selectedSize = sizeWidget.find('.size-option.active').data('size');
+		var selectedColor = colorWidget.find('.color-option.active').data('color');
+
+		var stockQty = btn.data('stockqty') || (typeof stockqty !== 'undefined' ? stockqty : 9999);
+		var isStock = btn.data('is_stock') || (typeof is_stock !== 'undefined' ? is_stock : 0);
+		var isStockStatus = btn.data('is_stock_status') || (typeof is_stock_status !== 'undefined' ? is_stock_status : 1);
 
 		if (hasSizeOptions && !selectedSize) {
 			onErrorMsg(TEXT['Please select a size.']);
@@ -106,11 +139,11 @@ $(function () {
 			onErrorMsg(TEXT['Please enter quantity.']);
 			return;
 		}
-		if (is_stock == 1) {
-			var stockqty = $(this).data('stockqty');
-			if (is_stock_status == 1) {
-				if (qty > stockqty) {
-					onErrorMsg(TEXT['The value must be less than or equal to']);
+
+		if (isStock == 1) {
+			if (isStockStatus == 1) {
+				if (qty > stockQty) {
+					onErrorMsg(TEXT['The value must be less than or equal to'] + ' ' + stockQty);
 					return;
 				}
 			} else {
@@ -135,7 +168,6 @@ $(function () {
 				var msg = response.msg;
 
 				if (msgType == "success") {
-					// onSuccessMsg(msg);
 					window.location.href = base_url + '/checkout';
 				} else {
 					onErrorMsg(msg);
@@ -145,13 +177,60 @@ $(function () {
 		});
 	});
 
-	$(document).on("click", ".addtocart", function (event) {
+	// Handler for Listing Pages (Direct Add or Open Modal)
+	$(document).on("click", ".addtocart, .homepage-addtocart", function (event) {
 		event.preventDefault();
 
-		var id = $(this).data('id');
+		var btn = $(this);
+		var id = btn.data('id');
+
+		// Check for variation data
+		var isVariation = btn.data('is_variation');
+		var varSize = btn.data('variation-size');
+		var varColor = btn.data('variation-color');
+
+		// Determine if product is variable
+		if (isVariation == 1 || (varSize && varSize != '') || (varColor && varColor != '')) {
+			// Open Quick View Modal
+			$.ajax({
+				type: 'GET',
+				url: base_url + '/frontend/quickview/' + id,
+				dataType: 'html',
+				success: function (response) {
+					// Assuming there is a generic modal container or we create one
+					// The template uses #lightCustomModal but that looks like a small popup.
+					// We'll use a standard Bootstrap modal if available, or reuse #lightCustomModal structure
+					// Let's inject into a new modal container appended to body just to be safe
+
+					var modalId = 'quickViewModal';
+					if ($('#' + modalId).length === 0) {
+						$('body').append(`
+							<div class="modal fade" id="${modalId}" tabindex="-1" role="dialog" aria-hidden="true">
+								<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">${TEXT['Quick View'] || 'Quick View'}</h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body quick-view-body">
+										</div>
+									</div>
+								</div>
+							</div>
+						`);
+					}
+
+					$('#' + modalId + ' .quick-view-body').html(response);
+					var quickViewModal = new bootstrap.Modal(document.getElementById(modalId));
+					quickViewModal.show();
+				}
+			});
+			return; // Stop here, don't auto-add
+		}
+
 		var qty = 1;
 
-		console.log("Adding to cart: ID " + id + ", Qty " + qty); // Debug
+		console.log("Adding to cart: ID " + id + ", Qty " + qty);
 
 		$.ajax({
 			type: 'GET',
@@ -163,7 +242,6 @@ $(function () {
 
 				if (msgType == "success") {
 					onSuccessMsg(msg);
-					// Open Cart Drawer
 					$('.headerShopingCart').addClass('open');
 				} else {
 					onErrorMsg(msg);
