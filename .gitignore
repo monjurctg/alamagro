@@ -30,3 +30,4 @@ npm-debug.log*
 yarn-error.log*
 # Ignore .htaccess files
 .htaccess
+.DS_Store
