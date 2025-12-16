@@ -66,7 +66,7 @@ $gtax = getTax();
 			<div class="row">
 				<div class="col-xl-12">
 					<div class="table-responsive shopping-cart">
-						<table class="table">
+						<table class="table text-nowrap">
 							<thead>
 								<tr>
 									<th>{{ __('Image') }}</th>
