@@ -92,7 +92,7 @@
 						<p>{{ $data->short_desc }}</p>
 						@endif
 						@if($data->shop_name != '')
-						<div class="pr_extra"><strong>{{ __('Sold By') }}:</strong> <a href="{{ route('frontend.stores', [$data->seller_id, str_slug($data->shop_url)]) }}">{{ $data->shop_name }}</a></div>
+						<div class="pr_extra"><strong>{{ __('Sold By') }}:</strong> <a href="{{ route('frontend.stores', [$data->seller_id, \Illuminate\Support\Str::slug($data->shop_url)]) }}">{{ $data->shop_name }}</a></div>
 						@endif
 						<div class="product_price">
 							@if($data->sale_price != '')
@@ -187,7 +187,7 @@
 							@endif
 						@endif
 						@if($data->brandname != '')
-						<div class="pr_extra"><strong>{{ __('Brand') }}: </strong><a href="{{ route('frontend.brand', [$data->brand_id, str_slug($data->brandname)]) }}"> {{ $data->brandname }}</a></div>
+						<div class="pr_extra"><strong>{{ __('Brand') }}: </strong><a href="{{ route('frontend.brand', [$data->brand_id, \Illuminate\Support\Str::slug($data->brandname)]) }}"> {{ $data->brandname }}</a></div>
 						@endif
 						<div class="pr_extra"><strong>{{ __('Category') }}: </strong> <a href="{{ route('frontend.product-category', [$data->cat_id, $data->cat_slug]) }}">{{ $data->cat_name }}</a></div>
 
@@ -320,7 +320,7 @@
 													@endif
 												</div>
 												<div class="desc">
-													<h3 class="store-name"><a href="{{ route('frontend.stores', [$data->seller_id, str_slug($data->shop_url)]) }}">{{ $seller_data->shop_name }}</a></h3>
+													<h3 class="store-name"><a href="{{ route('frontend.stores', [$data->seller_id, \Illuminate\Support\Str::slug($data->shop_url)]) }}">{{ $seller_data->shop_name }}</a></h3>
 													<h6 class="since">{{ __('Since') }} {{ date('Y', strtotime($seller_data->created_at)) }}</h6>
 													<div class="rating-wrap">
 														<div class="stars-outer">
@@ -376,7 +376,7 @@
 								<a href="{{ route('frontend.product', [$row->id, $row->slug]) }}"><img src="{{ asset('public/media/'.$row->f_thumbnail) }}" alt="{{ $row->title }}" /></a>
 							</div>
 							<div class="item-title">
-								<a href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ str_limit($row->title) }}</a>
+								<a href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ \Illuminate\Support\Str::limit($row->title) }}</a>
 							</div>
 							<div class="rating-wrap">
 								<div class="stars-outer">
@@ -385,7 +385,7 @@
 								<span class="rating-count">({{ $row->TotalReview }})</span>
 							</div>
 							<div class="item-sold">
-								{{ __('Sold By') }} <a href="{{ route('frontend.stores', [$row->seller_id, str_slug($row->shop_url)]) }}">{{ str_limit($row->shop_name) }}</a>
+								{{ __('Sold By') }} <a href="{{ route('frontend.stores', [$row->seller_id, \Illuminate\Support\Str::slug($row->shop_url)]) }}">{{ \Illuminate\Support\Str::limit($row->shop_name) }}</a>
 							</div>
 							<div class="item-pric-card">
 								@if($row->sale_price != '')
@@ -429,7 +429,7 @@
 								<a href="{{ route('frontend.product', [$row->id, $row->slug]) }}"><img src="{{ asset('public/media/'.$row->f_thumbnail) }}" alt="{{ $row->title }}" /></a>
 							</div>
 							<div class="item-title">
-								<a href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ str_limit($row->title) }}</a>
+								<a href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ \Illuminate\Support\Str::limit($row->title) }}</a>
 							</div>
 							<div class="rating-wrap">
 								<div class="stars-outer">
@@ -438,7 +438,7 @@
 								<span class="rating-count">({{ $row->TotalReview }})</span>
 							</div>
 							<div class="item-sold">
-								{{ __('Sold By') }} <a href="{{ route('frontend.stores', [$row->seller_id, str_slug($row->shop_url)]) }}">{{ str_limit($row->shop_name) }}</a>
+								{{ __('Sold By') }} <a href="{{ route('frontend.stores', [$row->seller_id, \Illuminate\Support\Str::slug($row->shop_url)]) }}">{{ \Illuminate\Support\Str::limit($row->shop_name) }}</a>
 							</div>
 							<div class="item-pric-card">
 								@if($row->sale_price != '')

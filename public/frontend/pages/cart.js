@@ -14,15 +14,21 @@ $(function () {
 
 	$(document).on("click", ".product_addtocart", function (event) {
 		event.preventDefault();
+		console.log("product_addtocart clicked");
 
 		var id = $(this).data('id');
 		var qty = $("#quantity").val();
+
+		console.log("ID:", id, "Qty:", qty);
 
 		// Get selected variations
 		var sizeOptionsCount = $('.widget-size .size-option').length;
 		var colorOptionsCount = $('.widget-color .color-option').length;
 		var selectedSize = $('.size-option.active').data('size');
 		var selectedColor = $('.color-option.active').data('color');
+
+		console.log("Size Count:", sizeOptionsCount, "Selected Size:", selectedSize);
+		console.log("Color Count:", colorOptionsCount, "Selected Color:", selectedColor);
 
 		// Only require selection if there are multiple options
 		if (sizeOptionsCount > 1 && !selectedSize) {

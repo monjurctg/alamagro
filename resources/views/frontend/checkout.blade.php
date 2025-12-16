@@ -274,13 +274,13 @@ $tax_rate = $gtax['percentage'];
 											<tr>
 												<td colspan="2" class="tp_group">
 													<div class="store_logo">
-														<a href="{{ route('frontend.stores', [$row['seller_id'], str_slug($row['store_name'])]) }}">
+														<a href="{{ route('frontend.stores', [$row['seller_id'], \Illuminate\Support\Str::slug($row['store_name'])]) }}">
 															<img src="{{ asset('public/media/'.$row['store_logo']) }}" alt="{{ $row['store_name'] }}" />
 														</a>
 													</div>
 													<div class="store_name">
 														<p><strong>{{ __('Sold By') }}</strong></p>
-														<p><a href="{{ route('frontend.stores', [$row['seller_id'], str_slug($row['store_url'])]) }}">{{ $row['store_name'] }}</a></p>
+														<p><a href="{{ route('frontend.stores', [$row['seller_id'], \Illuminate\Support\Str::slug($row['store_url'])]) }}">{{ $row['store_name'] }}</a></p>
 													</div>
 												</td>
 											</tr>
@@ -295,7 +295,7 @@ $tax_rate = $gtax['percentage'];
 											@if($gtext['currency_position'] == 'left')
 											<tr>
 												<td>
-													<p class="title"><a href="{{ route('frontend.product', [$row['id'], str_slug($row['name'])]) }}">{{ $row['name'] }}</a></p>
+													<p class="title"><a href="{{ route('frontend.product', [$row['id'], \Illuminate\Support\Str::slug($row['name'])]) }}">{{ $row['name'] }}</a></p>
 													<p class="sub-title">@php echo $unit; @endphp</p>
 												</td>
 												<td>

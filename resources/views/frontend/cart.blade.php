@@ -103,21 +103,21 @@ $gtax = getTax();
 								<tr id="row_delete_{{ $cartKey }}">
 									<td class="pro-image-w">
 										<div class="pro-image">
-											<a href="{{ route('frontend.product', [$row['id'], str_slug($row['name'])]) }}">
+											<a href="{{ route('frontend.product', [$row['id'], \Illuminate\Support\Str::slug($row['name'])]) }}">
 												<img src="{{ asset('public/media/'.($row['thumbnail'] ?? 'default.png')) }}" alt="{{ $row['name'] }}">
 											</a>
 										</div>
 									</td>
 									<td class="text-center pro-name-w" data-title="{{ __('Product') }}:">
                                         <div class="pro-name">
-                                            <a href="{{ route('frontend.product', [$row['id'], str_slug($row['name'])]) }}">{{ $row['name'] }}</a>
+											<a href="{{ route('frontend.product', [$row['id'], \Illuminate\Support\Str::slug($row['name'])]) }}">{{ $row['name'] }}</a>
                                             @if(isset($row['variation_details']) && $row['variation_details'])
                                                 <br><small>({{ $row['variation_details'] }})</small>
                                             @endif
                                         </div>
                                     </td>
 									<td class="pro-store-w" data-title="{{ __('Sold By') }}:">
-										<a href="{{ route('frontend.stores', [$row['seller_id'], str_slug($row['store_name'])]) }}">{{ $row['store_name'] }}</a>
+										<a href="{{ route('frontend.stores', [$row['seller_id'], \Illuminate\Support\Str::slug($row['store_name'])]) }}">{{ $row['store_name'] }}</a>
 									</td>
 									<td class="text-center pro-variation-w" data-title="{{ __('Unit') }}:">
 										<span class="pro-variation">{{ $row['unit'] ?? '' }}</span>

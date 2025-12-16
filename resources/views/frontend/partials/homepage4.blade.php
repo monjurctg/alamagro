@@ -60,7 +60,7 @@
 						@if($section2->desc !='')
 						<h5>{{ $section2->desc }}</h5>
 						@endif
-						
+
 						@if($section2->title !='')
 						<h2>{{ $section2->title }}</h2>
 						@endif
@@ -87,7 +87,7 @@
 	</section>
 	@endif
 	<!-- /Featured Categories/ -->
-		
+
 	<!-- Offer Section -->
 	@if($section3->is_publish == 1)
 	@if(count($offer_ad_position1)>0)
@@ -99,7 +99,7 @@
 						@if($section3->desc !='')
 						<h5>{{ $section3->desc }}</h5>
 						@endif
-						
+
 						@if($section3->title !='')
 						<h2>{{ $section3->title }}</h2>
 						@endif
@@ -139,7 +139,7 @@
 	@endif
 	@endif
 	<!-- /Offer Section/ -->
-	
+
 	<!-- Deals Section -->
 	@if($section4->is_publish == 1)
 	<section class="section deals-section">
@@ -150,7 +150,7 @@
 						@if($section4->desc !='')
 						<h5>{{ $section4->desc }}</h5>
 						@endif
-						
+
 						@if($section4->title !='')
 						<h2>{{ $section4->title }}</h2>
 						@endif
@@ -165,7 +165,7 @@
 							<div class="item-card">
 								<div class="item-image">
 									@if(($row->is_discount == 1) && ($row->old_price !=''))
-										@php 
+										@php
 											$discount = number_format((($row->old_price - $row->sale_price)*100)/$row->old_price);
 										@endphp
 									<span class="item-label">{{ $discount }}% {{ __('Off') }}</span>
@@ -180,7 +180,7 @@
 									@endif
 								</div>
 								<div class="item-title">
-									<a href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ str_limit($row->title) }}</a>
+									<a href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ \Illuminate\Support\Str::limit($row->title) }}</a>
 								</div>
 								<div class="rating-wrap">
 									<div class="stars-outer">
@@ -189,7 +189,7 @@
 									<span class="rating-count">({{ $row->TotalReview }})</span>
 								</div>
 								<div class="item-sold">
-									{{ __('Sold By') }} <a href="{{ route('frontend.stores', [$row->seller_id, str_slug($row->shop_url)]) }}">{{ str_limit($row->shop_name) }}</a>
+									{{ __('Sold By') }} <a href="{{ route('frontend.stores', [$row->seller_id, \Illuminate\Support\Str::slug($row->shop_url)]) }}">{{ \Illuminate\Support\Str::limit($row->shop_name) }}</a>
 								</div>
 								<div class="item-pric-card">
 									@if($row->sale_price != '')
@@ -235,7 +235,7 @@
 						@if($section5->desc !='')
 						<h5>{{ $section5->desc }}</h5>
 						@endif
-						
+
 						@if($section5->title !='')
 						<h2>{{ $section5->title }}</h2>
 						@endif
@@ -248,7 +248,7 @@
 					<div class="item-card">
 						<div class="item-image">
 							@if(($row->is_discount == 1) && ($row->old_price !=''))
-								@php 
+								@php
 									$discount = number_format((($row->old_price - $row->sale_price)*100)/$row->old_price);
 								@endphp
 							<span class="item-label">{{ $discount }}% {{ __('Off') }}</span>
@@ -258,7 +258,7 @@
 							</a>
 						</div>
 						<div class="item-title">
-							<a href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ str_limit($row->title) }}</a>
+							<a href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ \Illuminate\Support\Str::limit($row->title) }}</a>
 						</div>
 						<div class="rating-wrap">
 							<div class="stars-outer">
@@ -267,7 +267,7 @@
 							<span class="rating-count">({{ $row->TotalReview }})</span>
 						</div>
 						<div class="item-sold">
-							{{ __('Sold By') }} <a href="{{ route('frontend.stores', [$row->seller_id, str_slug($row->shop_url)]) }}">{{ str_limit($row->shop_name) }}</a>
+							{{ __('Sold By') }} <a href="{{ route('frontend.stores', [$row->seller_id, \Illuminate\Support\Str::slug($row->shop_url)]) }}">{{ \Illuminate\Support\Str::limit($row->shop_name) }}</a>
 						</div>
 						<div class="item-pric-card">
 							@if($row->sale_price != '')
@@ -299,8 +299,8 @@
 		</div>
 	</section>
 	@endif
-	<!-- /New Products/ -->		
-	
+	<!-- /New Products/ -->
+
 	<!-- Popular Products -->
 	@if($section6->is_publish == 1)
 	<section class="section product-section">
@@ -311,7 +311,7 @@
 						@if($section6->desc !='')
 						<h5>{{ $section6->desc }}</h5>
 						@endif
-						
+
 						@if($section6->title !='')
 						<h2>{{ $section6->title }}</h2>
 						@endif
@@ -319,13 +319,13 @@
 				</div>
 			</div>
 			<div class="row owl-carousel caro-common category-carousel">
-			
+
 				@foreach ($popular_products as $row)
 				<div class="col-lg-12">
 					<div class="item-card">
 						<div class="item-image">
 							@if(($row->is_discount == 1) && ($row->old_price !=''))
-								@php 
+								@php
 									$discount = number_format((($row->old_price - $row->sale_price)*100)/$row->old_price);
 								@endphp
 							<span class="item-label">{{ $discount }}% {{ __('Off') }}</span>
@@ -335,7 +335,7 @@
 							</a>
 						</div>
 						<div class="item-title">
-							<a href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ str_limit($row->title) }}</a>
+							<a href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ \Illuminate\Support\Str::limit($row->title) }}</a>
 						</div>
 						<div class="rating-wrap">
 							<div class="stars-outer">
@@ -344,7 +344,7 @@
 							<span class="rating-count">({{ $row->TotalReview }})</span>
 						</div>
 						<div class="item-sold">
-							{{ __('Sold By') }} <a href="{{ route('frontend.stores', [$row->seller_id, str_slug($row->shop_url)]) }}">{{ str_limit($row->shop_name) }}</a>
+							{{ __('Sold By') }} <a href="{{ route('frontend.stores', [$row->seller_id, \Illuminate\Support\Str::slug($row->shop_url)]) }}">{{ \Illuminate\Support\Str::limit($row->shop_name) }}</a>
 						</div>
 						<div class="item-pric-card">
 							@if($row->sale_price != '')
@@ -377,7 +377,7 @@
 	</section>
 	@endif
 	<!-- /Popular Products/ -->
-	
+
 	<!-- Top Selling Products -->
 	@if($section7->is_publish == 1)
 	<section class="section product-section">
@@ -388,7 +388,7 @@
 						@if($section7->desc !='')
 						<h5>{{ $section7->desc }}</h5>
 						@endif
-						
+
 						@if($section7->title !='')
 						<h2>{{ $section7->title }}</h2>
 						@endif
@@ -401,7 +401,7 @@
 					<div class="item-card">
 						<div class="item-image">
 							@if(($row->is_discount == 1) && ($row->old_price !=''))
-								@php 
+								@php
 									$discount = number_format((($row->old_price - $row->sale_price)*100)/$row->old_price);
 								@endphp
 							<span class="item-label">{{ $discount }}% {{ __('Off') }}</span>
@@ -411,7 +411,7 @@
 							</a>
 						</div>
 						<div class="item-title">
-							<a href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ str_limit($row->title) }}</a>
+							<a href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ \Illuminate\Support\Str::limit($row->title) }}</a>
 						</div>
 						<div class="rating-wrap">
 							<div class="stars-outer">
@@ -420,7 +420,7 @@
 							<span class="rating-count">({{ $row->TotalReview }})</span>
 						</div>
 						<div class="item-sold">
-							{{ __('Sold By') }} <a href="{{ route('frontend.stores', [$row->seller_id, str_slug($row->shop_url)]) }}">{{ str_limit($row->shop_name) }}</a>
+							{{ __('Sold By') }} <a href="{{ route('frontend.stores', [$row->seller_id, \Illuminate\Support\Str::slug($row->shop_url)]) }}">{{ \Illuminate\Support\Str::limit($row->shop_name) }}</a>
 						</div>
 						<div class="item-pric-card">
 							@if($row->sale_price != '')
@@ -453,7 +453,7 @@
 	</section>
 	@endif
 	<!-- /Top Selling Products/ -->
-	
+
 	<!-- Top Rated Products -->
 	@if($section8->is_publish == 1)
 	<section class="section product-section">
@@ -464,7 +464,7 @@
 						@if($section8->desc !='')
 						<h5>{{ $section8->desc }}</h5>
 						@endif
-						
+
 						@if($section8->title !='')
 						<h2>{{ $section8->title }}</h2>
 						@endif
@@ -477,7 +477,7 @@
 					<div class="item-card">
 						<div class="item-image">
 							@if(($row->is_discount == 1) && ($row->old_price !=''))
-								@php 
+								@php
 									$discount = number_format((($row->old_price - $row->sale_price)*100)/$row->old_price);
 								@endphp
 							<span class="item-label">{{ $discount }}% {{ __('Off') }}</span>
@@ -487,7 +487,7 @@
 							</a>
 						</div>
 						<div class="item-title">
-							<a href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ str_limit($row->title) }}</a>
+							<a href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ \Illuminate\Support\Str::limit($row->title) }}</a>
 						</div>
 						<div class="rating-wrap">
 							<div class="stars-outer">
@@ -496,7 +496,7 @@
 							<span class="rating-count">({{ $row->TotalReview }})</span>
 						</div>
 						<div class="item-sold">
-							{{ __('Sold By') }} <a href="{{ route('frontend.stores', [$row->seller_id, str_slug($row->shop_url)]) }}">{{ str_limit($row->shop_name) }}</a>
+							{{ __('Sold By') }} <a href="{{ route('frontend.stores', [$row->seller_id, \Illuminate\Support\Str::slug($row->shop_url)]) }}">{{ \Illuminate\Support\Str::limit($row->shop_name) }}</a>
 						</div>
 						<div class="item-pric-card">
 							@if($row->sale_price != '')
@@ -529,7 +529,7 @@
 	</section>
 	@endif
 	<!-- /Top Rated Products/ -->
-	
+
 	<!--Shop by Brands-->
 	@if($section9->is_publish == 1)
 	<div class="section product-section">
@@ -547,7 +547,7 @@
 				@foreach($brand as $row)
 				<div class="col-lg-12">
 					<div class="brand-card">
-						<a href="{{ route('frontend.brand', [$row->id, str_slug($row->name)]) }}"><img src="{{ asset('public/media/'.$row->thumbnail) }}" alt="{{ $row->name }}" /></a>
+						<a href="{{ route('frontend.brand', [$row->id, \Illuminate\Support\Str::slug($row->name)]) }}"><img src="{{ asset('public/media/'.$row->thumbnail) }}" alt="{{ $row->name }}" /></a>
 					</div>
 				</div>
 				@endforeach
@@ -556,7 +556,7 @@
 	</div>
 	@endif
 	<!--/Shop by Brands/-->
-	
+
 	<!-- Video Section -->
 	@if($home_video['is_publish'] == 1)
 	<section class="section video-section" style="background-image: url({{ asset('public/media/'.$home_video['image']) }});">
@@ -594,7 +594,7 @@
 						@if($section10->desc !='')
 						<h5>{{ $section10->desc }}</h5>
 						@endif
-						
+
 						@if($section10->title !='')
 						<h2>{{ $section10->title }}</h2>
 						@endif
@@ -607,7 +607,7 @@
 					<div class="item-card">
 						<div class="item-image">
 							@if(($row->is_discount == 1) && ($row->old_price !=''))
-								@php 
+								@php
 									$discount = number_format((($row->old_price - $row->sale_price)*100)/$row->old_price);
 								@endphp
 							<span class="item-label">{{ $discount }}% {{ __('Off') }}</span>
@@ -617,7 +617,7 @@
 							</a>
 						</div>
 						<div class="item-title">
-							<a href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ str_limit($row->title) }}</a>
+							<a href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ \Illuminate\Support\Str::limit($row->title) }}</a>
 						</div>
 						<div class="rating-wrap">
 							<div class="stars-outer">
@@ -626,7 +626,7 @@
 							<span class="rating-count">({{ $row->TotalReview }})</span>
 						</div>
 						<div class="item-sold">
-							{{ __('Sold By') }} <a href="{{ route('frontend.stores', [$row->seller_id, str_slug($row->shop_url)]) }}">{{ str_limit($row->shop_name) }}</a>
+							{{ __('Sold By') }} <a href="{{ route('frontend.stores', [$row->seller_id, \Illuminate\Support\Str::slug($row->shop_url)]) }}">{{ \Illuminate\Support\Str::limit($row->shop_name) }}</a>
 						</div>
 						<div class="item-pric-card">
 							@if($row->sale_price != '')

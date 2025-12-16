@@ -374,7 +374,7 @@
 							</div>
 							<div class="item-title">
 								<a
-									href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ str_limit($row->title) }}</a>
+									href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ \Illuminate\Support\Str::limit($row->title) }}</a>
 							</div>
 							<div class="rating-wrap">
 								<div class="stars-outer">
@@ -384,7 +384,7 @@
 							</div>
 							<div class="item-sold">
 								{{ __('Sold By') }} <a
-									href="{{ route('frontend.stores', [$row->seller_id, str_slug($row->shop_url)]) }}">{{ str_limit($row->shop_name) }}</a>
+									href="{{ route('frontend.stores', [$row->seller_id, \Illuminate\Support\Str::slug($row->shop_url)]) }}">{{ \Illuminate\Support\Str::limit($row->shop_name) }}</a>
 							</div>
 							<div class="item-pric-card">
 								@if($row->sale_price != '')
@@ -403,8 +403,11 @@
 								@endif
 							</div>
 							<div class="item-card-bottom">
-								<a data-id="{{ $row->id }}" href="javascript:void(0);"
-									class="btn add-to-cart addtocart">{{ __('Add To Cart') }}</a>
+								<a data-id="{{ $row->id }}"
+                                   data-variation-size="{{ $row->variation_size }}"
+                                   data-variation-color="{{ $row->variation_color }}"
+                                   href="javascript:void(0);"
+									class="btn add-to-cart homepage-addtocart">{{ __('Add To Cart') }}</a>
 								<ul class="item-cart-list">
 									<li><a class="addtowishlist" data-id="{{ $row->id }}" href="javascript:void(0);"><i
 												class="bi bi-heart"></i></a></li>
@@ -453,7 +456,7 @@
 							</div>
 							<div class="item-title">
 								<a
-									href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ str_limit($row->title) }}</a>
+									href="{{ route('frontend.product', [$row->id, $row->slug]) }}">{{ \Illuminate\Support\Str::limit($row->title) }}</a>
 							</div>
 							<div class="rating-wrap">
 								<div class="stars-outer">
@@ -463,7 +466,7 @@
 							</div>
 							<div class="item-sold">
 								{{ __('Sold By') }} <a
-									href="{{ route('frontend.stores', [$row->seller_id, str_slug($row->shop_url)]) }}">{{ str_limit($row->shop_name) }}</a>
+									href="{{ route('frontend.stores', [$row->seller_id, \Illuminate\Support\Str::slug($row->shop_url)]) }}">{{ \Illuminate\Support\Str::limit($row->shop_name) }}</a>
 							</div>
 							<div class="item-pric-card">
 								@if($row->sale_price != '')
@@ -482,8 +485,11 @@
 								@endif
 							</div>
 							<div class="item-card-bottom">
-								<a data-id="{{ $row->id }}" href="javascript:void(0);"
-									class="btn add-to-cart addtocart">{{ __('Add To Cart') }}</a>
+								<a data-id="{{ $row->id }}"
+                                   data-variation-size="{{ $row->variation_size }}"
+                                   data-variation-color="{{ $row->variation_color }}"
+                                   href="javascript:void(0);"
+									class="btn add-to-cart homepage-addtocart">{{ __('Add To Cart') }}</a>
 								<ul class="item-cart-list">
 									<li><a class="addtowishlist" data-id="{{ $row->id }}" href="javascript:void(0);"><i
 												class="bi bi-heart"></i></a></li>
@@ -593,8 +599,11 @@
 
                                 <!-- Buttons -->
                                 <div class="item-card-bottom d-flex justify-content-between align-items-center">
-                                    <a data-id="${row.id}" href="javascript:void(0);"
-                                       class="btn btn-sm btn-primary add-to-cart addtocart">
+                                    <a data-id="${row.id}"
+                                       data-variation-size="${row.variation_size || ''}"
+                                       data-variation-color="${row.variation_color || ''}"
+                                       href="javascript:void(0);"
+                                       class="btn btn-sm btn-primary add-to-cart homepage-addtocart">
                                         Add To Cart
                                     </a>
                                     <div class="d-flex">
@@ -682,8 +691,11 @@
 
                                 <!-- Buttons -->
                                 <div class="item-card-bottom d-flex justify-content-between align-items-center">
-                                    <a data-id="${row.id}" href="javascript:void(0);"
-                                       class="btn btn-sm btn-primary add-to-cart addtocart">
+                                    <a data-id="${row.id}"
+                                       data-variation-size="${row.variation_size || ''}"
+                                       data-variation-color="${row.variation_color || ''}"
+                                       href="javascript:void(0);"
+                                       class="btn btn-sm btn-primary add-to-cart homepage-addtocart">
                                         Add To Cart
                                     </a>
                                     <div class="d-flex">
@@ -772,8 +784,11 @@
 
                                 <!-- Buttons -->
                                 <div class="item-card-bottom d-flex justify-content-between align-items-center">
-                                    <a data-id="${row.id}" href="javascript:void(0);"
-                                       class="btn btn-sm btn-primary add-to-cart addtocart">
+                                    <a data-id="${row.id}"
+                                       data-variation-size="${row.variation_size || ''}"
+                                       data-variation-color="${row.variation_color || ''}"
+                                       href="javascript:void(0);"
+                                       class="btn btn-sm btn-primary add-to-cart homepage-addtocart">
                                         Add To Cart
                                     </a>
                                     <div class="d-flex">
@@ -799,4 +814,234 @@
 					`<div class="col-12 text-center text-danger py-5">Failed to load top selling products.</div>`;
 			});
 	});
+
+    // Variation Selection Logic - Robust Version 2.2 (Fixing Syntax)
+    jQuery(document).ready(function($) {
+        console.log("homepage2.blade.php: Variation JS Loaded v2.2");
+
+        $(document).on("click", ".homepage-addtocart", function (event) {
+            event.preventDefault();
+            console.log("Add to cart clicked!");
+
+            var id = $(this).attr('data-id');
+            var sizeStr = $(this).attr('data-variation-size');
+            var colorStr = $(this).attr('data-variation-color');
+            console.log("Product ID:", id, "SizeStr:", sizeStr, "ColorStr:", colorStr);
+
+            // Handle case where data attribute might be null or undefined
+            sizeStr = sizeStr ? String(sizeStr) : "";
+            colorStr = colorStr ? String(colorStr) : "";
+
+            var sizes = sizeStr.split(',').filter(s => s.trim() !== "");
+            var colors = colorStr.split(',').filter(c => c.trim() !== "");
+            console.log("Parsed Sizes:", sizes, "Parsed Colors:", colors);
+
+            // Reset modal state
+            $('#variation_product_id').val(id);
+            $('#variation_selected_size').val('');
+            $('#variation_selected_color').val('');
+            $('#variation-size-group').hide();
+            $('#variation-color-group').hide();
+            $('#variation-size-options').empty();
+            $('#variation-color-options').empty();
+
+            // Remove active class from all options
+            $('.variation-option').removeClass('active');
+
+            var needsModal = false;
+            var autoSize = null;
+            var autoColor = null;
+
+            // Size Logic
+            if (sizes.length > 1) {
+                needsModal = true;
+                $('#variation-size-group').show();
+                var sizeHtml = '';
+                sizes.forEach(function(size) {
+                    sizeHtml += `<div class="variation-option size-option" data-value="${size.trim()}">${size.trim()}</div>`;
+                });
+                $('#variation-size-options').html(sizeHtml);
+            } else if (sizes.length === 1) {
+                autoSize = sizes[0].trim();
+                console.log("Auto-selecting size:", autoSize);
+                // Pre-populate modal just in case
+                var sizeHtml = `<div class="variation-option size-option active" data-value="${autoSize}">${autoSize}</div>`;
+                $('#variation-size-options').html(sizeHtml);
+                $('#variation_selected_size').val(autoSize);
+                // If we show modal for color, show size as well (but locked/selected)
+                if(colors.length > 1) $('#variation-size-group').show();
+            }
+
+            // Color Logic
+            if (colors.length > 1) {
+                needsModal = true;
+                $('#variation-color-group').show();
+                var colorHtml = '';
+                colors.forEach(function(color) {
+                    colorHtml += `<div class="variation-option color-option" data-value="${color.trim()}">${color.trim()}</div>`;
+                });
+                $('#variation-color-options').html(colorHtml);
+            } else if (colors.length === 1) {
+                autoColor = colors[0].trim();
+                console.log("Auto-selecting color:", autoColor);
+                var colorHtml = `<div class="variation-option color-option active" data-value="${autoColor}">${autoColor}</div>`;
+                $('#variation-color-options').html(colorHtml);
+                $('#variation_selected_color').val(autoColor);
+                if(sizes.length > 1) $('#variation-color-group').show();
+            }
+
+            if (needsModal) {
+                console.log("Showing modal...");
+                // Show Modal
+                if (typeof bootstrap !== 'undefined') {
+                    var el = document.getElementById('variationModal');
+                    var variationModal = bootstrap.Modal.getInstance(el) || new bootstrap.Modal(el);
+                    variationModal.show();
+                } else {
+                    $('#variationModal').modal('show');
+                }
+            } else {
+                console.log("Direct add to cart...");
+                // Direct Add
+                addToCartDirect(id, 1, autoSize, autoColor);
+            }
+        });
+
+        $(document).on('click', '.variation-option.size-option', function() {
+            $('.variation-option.size-option').removeClass('active');
+            $(this).addClass('active');
+            $('#variation_selected_size').val($(this).data('value'));
+        });
+
+        $(document).on('click', '.variation-option.color-option', function() {
+            $('.variation-option.color-option').removeClass('active');
+            $(this).addClass('active');
+            $('#variation_selected_color').val($(this).data('value'));
+        });
+
+        $('#confirm-add-to-cart').on('click', function() {
+            var id = $('#variation_product_id').val();
+            var size = $('#variation_selected_size').val();
+            var color = $('#variation_selected_color').val();
+
+            // Check if visible options are selected
+            if ($('#variation-size-group').is(':visible') && size === '') {
+                showError("Please select a size");
+                return;
+            }
+            if ($('#variation-color-group').is(':visible') && color === '') {
+                showError("Please select a color");
+                return;
+            }
+
+            // Close modal
+            var modalEl = document.getElementById('variationModal');
+            if (typeof bootstrap !== 'undefined') {
+                 var modal = bootstrap.Modal.getInstance(modalEl);
+                 if(modal) modal.hide();
+                 else $(modalEl).modal('hide'); // Fallback
+            } else {
+                 $('#variationModal').modal('hide');
+            }
+
+            // Add to Cart with selections
+            addToCartDirect(id, 1, size, color);
+        });
+
+        function showError(msg) {
+            if(typeof onErrorMsg === 'function') {
+                onErrorMsg(msg);
+            } else {
+                alert(msg);
+            }
+        }
+
+        function addToCartDirect(id, qty, size = null, color = null) {
+            var url = "{{ url('/frontend/add_to_cart') }}/" + id + "/" + qty;
+
+            var data = {};
+            if (size) data.size = size;
+            if (color) data.color = color;
+
+            console.log("Sending AJAX to:", url, "Data:", data);
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data: data,
+                dataType: "json",
+                success: function (response) {
+                    console.log("AJAX Success:", response);
+                    var msgType = response.msgType;
+                    var msg = response.msg;
+
+                    if (msgType == "success") {
+                        if(typeof onSuccessMsg === 'function') onSuccessMsg(msg);
+                        else alert(msg);
+                    } else {
+                        showError(msg);
+                    }
+                    if(typeof onViewCart === 'function') onViewCart();
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error:", error);
+                    showError("Something went wrong. Please try again.");
+                }
+            });
+        }
+    });
 </script>
+
+<!-- Variation Selection Modal -->
+<div class="modal fade" id="variationModal" tabindex="-1" aria-labelledby="variationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="variationModalLabel">Select Options</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="variation_product_id">
+        <input type="hidden" id="variation_selected_size">
+        <input type="hidden" id="variation_selected_color">
+
+        <div class="mb-3" id="variation-size-group">
+            <label class="form-label fw-bold">Size:</label>
+            <div class="d-flex flex-wrap gap-2" id="variation-size-options">
+                <!-- Options injected via JS -->
+            </div>
+        </div>
+
+        <div class="mb-3" id="variation-color-group">
+            <label class="form-label fw-bold">Color:</label>
+            <div class="d-flex flex-wrap gap-2" id="variation-color-options">
+                <!-- Options injected via JS -->
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="confirm-add-to-cart">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+    .variation-option {
+        border: 1px solid #ddd;
+        padding: 5px 15px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: all 0.2s;
+    }
+    .variation-option:hover {
+        border-color: #aaa;
+        background-color: #f8f9fa;
+    }
+    .variation-option.active {
+        border-color: var(--theme-color, #0d6efd);
+        background-color: var(--theme-color, #0d6efd);
+        color: white;
+    }
+</style>

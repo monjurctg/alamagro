@@ -199,13 +199,13 @@
                                             <tr>
                                                 <td class="pro-image-w">
                                                     <div class="pro-image">
-                                                        <a href="{{ route('frontend.product', [$row->id, str_slug($row->title)]) }}">
+                                                        <a href="{{ route('frontend.product', [$row->id, \Illuminate\Support\Str::slug($row->title)]) }}">
                                                             <img src="{{ asset('public/media/'.$row->f_thumbnail) }}" alt="{{ $row->title }}" />
                                                         </a>
                                                     </div>
                                                 </td>
                                                 <td class="pro-name-w">
-                                                    <span class="pro-name"><a href="{{ route('frontend.product', [$row->id, str_slug($row->title)]) }}">{{ $row->title }}</a></span>
+                                                    <span class="pro-name"><a href="{{ route('frontend.product', [$row->id, \Illuminate\Support\Str::slug($row->title)]) }}">{{ $row->title }}</a></span>
                                                 </td>
                                                 <td class="text-left">@php echo $size; @endphp</td>
                                                 <td class="text-center">{{ $price }}</td>

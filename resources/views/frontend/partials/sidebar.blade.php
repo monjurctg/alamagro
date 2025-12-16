@@ -22,7 +22,7 @@
 			</ul>
 		</div>
 	</div>
-	
+
 	<div class="widget-card">
 		<div class="widget-title">{{ __('Filter by Price') }}</div>
 		<div class="widget-body">
@@ -46,12 +46,12 @@
 				@foreach ($BrandListForFilter as $row)
 				<li>
 					<div class="icon">
-						<a href="{{ route('frontend.brand', [$row->id, str_slug($row->name)]) }}">
+						<a href="{{ route('frontend.brand', [$row->id, \Illuminate\Support\Str::slug($row->name)]) }}">
 							<img src="{{ asset('public/media/'.$row->thumbnail) }}" alt="{{ $row->name }}" />
 						</a>
 					</div>
 					<div class="desc">
-						<a href="{{ route('frontend.brand', [$row->id, str_slug($row->name)]) }}">{{ $row->name }}</a>
+						<a href="{{ route('frontend.brand', [$row->id, \Illuminate\Support\Str::slug($row->name)]) }}">{{ $row->name }}</a>
 					</div>
 					<div class="count">{{ $row->TotalProduct }}</div>
 				</li>
