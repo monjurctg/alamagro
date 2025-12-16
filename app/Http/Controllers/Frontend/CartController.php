@@ -267,7 +267,7 @@ class CartController extends Controller
         $res = array();
 
         $gtext = gtext();
-        $tax_rate = $gtext['tax_rate'];
+        $tax_rate = isset($gtext['tax_rate']) ? $gtext['tax_rate'] : 0;
 
         $CartDataList = session()->get('shopping_cart');
 
