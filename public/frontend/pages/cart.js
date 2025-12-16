@@ -157,6 +157,8 @@ $(function () {
 
 				if (msgType == "success") {
 					onSuccessMsg(msg);
+					// Open Cart Drawer
+					$('.headerShopingCart').addClass('open');
 				} else {
 					onErrorMsg(msg);
 				}
