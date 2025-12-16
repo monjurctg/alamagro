@@ -12,7 +12,7 @@ $(function () {
 	onViewCartData();
 
 	// Handle quantity changes
-	$(document).on('click', '.qty-btn', function() {
+	$(document).on('click', '.qty-btn', function () {
 		var productKey = $(this).data('id');
 		var input = $('#quantity_' + productKey);
 		var currentValue = parseInt(input.val());
@@ -33,7 +33,7 @@ $(function () {
 	});
 
 	// Handle direct input changes
-	$(document).on('change', '.quantity', function() {
+	$(document).on('change', '.quantity', function () {
 		var productKey = $(this).data('id');
 		var newValue = parseInt($(this).val());
 		var maxValue = parseInt($(this).attr('max')) || 999;
@@ -53,10 +53,10 @@ $(function () {
 
 function onViewCartData() {
 
-    $.ajax({
-		type : 'GET',
+	$.ajax({
+		type: 'GET',
 		url: base_url + "/frontend/viewcart_data",
-		dataType:"json",
+		dataType: "json",
 		success: function (data) {
 
 			$(".viewcart_price_total").text(data.price_total);
@@ -70,9 +70,9 @@ function onViewCartData() {
 
 function onRemoveToCart(cartKey) {
 	$.ajax({
-		type : 'GET',
+		type: 'GET',
 		url: base_url + '/frontend/remove_to_cart/' + encodeURIComponent(cartKey),
-		dataType:"json",
+		dataType: "json",
 		success: function (response) {
 
 			var msgType = response.msgType;
@@ -93,22 +93,26 @@ function onRemoveToCart(cartKey) {
 
 function updateCartQuantity(productKey, quantity) {
 	$.ajax({
-		type : 'POST',
+		type: 'POST',
 		url: base_url + '/frontend/update_cart_quantity',
 		data: {
 			product_id: productKey,
 			quantity: quantity
 		},
-		dataType:"json",
+		dataType: "json",
 		success: function (response) {
 			if (response.msgType == "success") {
 				onViewCartData();
 				onViewCart();
+				// Update the specific row total
+				if (response.line_total) {
+					$('#row_delete_' + productKey + ' .pro-total-price').text(response.line_total);
+				}
 			} else {
 				onErrorMsg(response.msg);
 			}
 		},
-		error: function(xhr, status, error) {
+		error: function (xhr, status, error) {
 			onErrorMsg('Failed to update cart quantity');
 		}
 	});

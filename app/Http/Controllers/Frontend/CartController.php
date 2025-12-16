@@ -222,13 +222,26 @@ class CartController extends Controller
 
         $cart = session()->get('shopping_cart', []);
 
+        // Helper to format price
+        $gtext = gtext();
+        $formatPrice = function($price) use ($gtext) {
+            if($gtext['currency_position'] == 'left'){
+                return $gtext['currency_icon'].NumberFormat($price);
+            }else{
+                return NumberFormat($price).$gtext['currency_icon'];
+            }
+        };
+
         // First try to find by exact key (for products with variations)
         if(isset($cart[$productId])){
             $cart[$productId]['qty'] = $quantity;
             session()->put('shopping_cart', $cart);
 
+            $lineTotal = $cart[$productId]['price'] * $quantity;
+
             $res['msgType'] = 'success';
             $res['msg'] = __('Cart Updated Successfully');
+            $res['line_total'] = $formatPrice($lineTotal);
         } else {
             // If not found, try to find by product ID prefix (for products without variations)
             $found = false;
@@ -236,15 +249,18 @@ class CartController extends Controller
                 if(strpos($key, $productId . '_') === 0 || $key == $productId) {
                     $cart[$key]['qty'] = $quantity;
                     session()->put('shopping_cart', $cart);
+
+                    $lineTotal = $cart[$key]['price'] * $quantity;
+
+                    $res['msgType'] = 'success';
+                    $res['msg'] = __('Cart Updated Successfully');
+                    $res['line_total'] = $formatPrice($lineTotal);
                     $found = true;
                     break;
                 }
             }
 
-            if($found) {
-                $res['msgType'] = 'success';
-                $res['msg'] = __('Cart Updated Successfully');
-            } else {
+            if(!$found) {
                 $res['msgType'] = 'error';
                 $res['msg'] = __('Product not found in cart');
             }
