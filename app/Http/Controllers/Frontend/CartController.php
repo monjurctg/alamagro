@@ -145,14 +145,15 @@ class CartController extends Controller
             $seller = DB::table('users')->where('id', $product->user_id)->first();
 
             // Handle case where seller might not exist (prevent 500 error)
-            $sellerId = $seller ? $seller->id : null;
-            $sellerName = $seller ? $seller->name : '';
-            $storeName = $seller ? $seller->shop_name : '';
-            $storeLogo = $seller ? $seller->shop_logo : '';
-            $storeUrl = $seller ? $seller->shop_url : '';
-            $sellerEmail = $seller ? $seller->email : '';
-            $sellerPhone = $seller ? $seller->phone : '';
-            $sellerAddress = $seller ? $seller->address : '';
+            // Handle case where seller might not exist or columns missing (prevent 500 error)
+            $sellerId = isset($seller->id) ? $seller->id : null;
+            $sellerName = isset($seller->name) ? $seller->name : '';
+            $storeName = isset($seller->shop_name) ? $seller->shop_name : '';
+            $storeLogo = isset($seller->shop_logo) ? $seller->shop_logo : '';
+            $storeUrl = isset($seller->shop_url) ? $seller->shop_url : '';
+            $sellerEmail = isset($seller->email) ? $seller->email : '';
+            $sellerPhone = isset($seller->phone) ? $seller->phone : '';
+            $sellerAddress = isset($seller->address) ? $seller->address : '';
 
             // Add new item to cart
             $cart[$cartKey] = [
