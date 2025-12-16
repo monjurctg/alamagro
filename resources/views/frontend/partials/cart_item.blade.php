@@ -16,11 +16,11 @@
 	<li id="row_delete_{{ $cartKey }}">
 		<div class="cart-img">
 			<a href="{{ route('frontend.product', [$row['id'], \Illuminate\Support\Str::slug($row['name'])]) }}">
-				<img src="{{ asset('public/media/'.($row['thumbnail'] ?? 'default.png')) }}" alt="{{ $row['name'] }}">
+				<img src="{{ asset('public/media/'.($row['thumbnail'] ?? 'default.png')) }}" alt="{{ $row['name'] }}" style="max-width: 50px; height: auto;">
 			</a>
 		</div>
 		<div class="cart-info">
-			<h6 class="mb-1"><a href="{{ route('frontend.product', [$row['id'], \Illuminate\Support\Str::slug($row['name'])]) }}">{{ \Illuminate\Support\Str::limit($row['name'], 50) }}</a></h6>
+			<h6 class="mb-1"><a href="{{ route('frontend.product', [$row['id'], \Illuminate\Support\Str::slug($row['name'])]) }}">{{ \Illuminate\Support\Str::limit($row['name'], 20) }}</a></h6>
 			@if(isset($row['variation_details']) && $row['variation_details'])
 				<p class="mb-0"><small>({{ $row['variation_details'] }})</small></p>
 			@endif
