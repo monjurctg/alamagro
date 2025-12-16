@@ -864,19 +864,21 @@
 
         $(document).on("click", ".homepage-addtocart", function (event) {
             event.preventDefault();
-            console.log("Add to cart clicked!");
+            console.log("Add to cart clicked! Version 2.3");
 
-            var id = $(this).attr('data-id');
-            var sizeStr = $(this).attr('data-variation-size');
-            var colorStr = $(this).attr('data-variation-color');
+            var btn = $(this); // Cache selector
+            var id = btn.attr('data-id');
+            var sizeStr = btn.attr('data-variation-size');
+            var colorStr = btn.attr('data-variation-color');
             console.log("Product ID:", id, "SizeStr:", sizeStr, "ColorStr:", colorStr);
 
-            // Handle case where data attribute might be null or undefined
-            sizeStr = sizeStr ? String(sizeStr) : "";
-            colorStr = colorStr ? String(colorStr) : "";
+            // Robust null check
+            sizeStr = (sizeStr === undefined || sizeStr === null) ? "" : String(sizeStr);
+            colorStr = (colorStr === undefined || colorStr === null) ? "" : String(colorStr);
 
-            var sizes = sizeStr.split(',').filter(s => s.trim() !== "");
-            var colors = colorStr.split(',').filter(c => c.trim() !== "");
+            // Clean parsing
+            var sizes = sizeStr.split(',').map(s => s.trim()).filter(s => s !== "");
+            var colors = colorStr.split(',').map(c => c.trim()).filter(c => c !== "");
             console.log("Parsed Sizes:", sizes, "Parsed Colors:", colors);
 
             // Reset modal state
@@ -888,7 +890,6 @@
             $('#variation-size-options').empty();
             $('#variation-color-options').empty();
 
-            // Remove active class from all options
             $('.variation-option').removeClass('active');
 
             var needsModal = false;
@@ -901,17 +902,15 @@
                 $('#variation-size-group').show();
                 var sizeHtml = '';
                 sizes.forEach(function(size) {
-                    sizeHtml += `<div class="variation-option size-option" data-value="${size.trim()}">${size.trim()}</div>`;
+                    sizeHtml += `<div class="variation-option size-option" data-value="${size}">${size}</div>`;
                 });
                 $('#variation-size-options').html(sizeHtml);
             } else if (sizes.length === 1) {
-                autoSize = sizes[0].trim();
+                autoSize = sizes[0];
                 console.log("Auto-selecting size:", autoSize);
-                // Pre-populate modal just in case
                 var sizeHtml = `<div class="variation-option size-option active" data-value="${autoSize}">${autoSize}</div>`;
                 $('#variation-size-options').html(sizeHtml);
                 $('#variation_selected_size').val(autoSize);
-                // If we show modal for color, show size as well (but locked/selected)
                 if(colors.length > 1) $('#variation-size-group').show();
             }
 
@@ -921,11 +920,11 @@
                 $('#variation-color-group').show();
                 var colorHtml = '';
                 colors.forEach(function(color) {
-                    colorHtml += `<div class="variation-option color-option" data-value="${color.trim()}">${color.trim()}</div>`;
+                    colorHtml += `<div class="variation-option color-option" data-value="${color}">${color}</div>`;
                 });
                 $('#variation-color-options').html(colorHtml);
             } else if (colors.length === 1) {
-                autoColor = colors[0].trim();
+                autoColor = colors[0];
                 console.log("Auto-selecting color:", autoColor);
                 var colorHtml = `<div class="variation-option color-option active" data-value="${autoColor}">${autoColor}</div>`;
                 $('#variation-color-options').html(colorHtml);
@@ -934,18 +933,29 @@
             }
 
             if (needsModal) {
-                console.log("Showing modal...");
-                // Show Modal
-                if (typeof bootstrap !== 'undefined') {
-                    var el = document.getElementById('variationModal');
-                    var variationModal = bootstrap.Modal.getInstance(el) || new bootstrap.Modal(el);
-                    variationModal.show();
+                console.log("Opening modal...");
+                var modalEl = document.getElementById('variationModal');
+                if(modalEl) {
+                    // Try Bootstrap 5
+                    if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                        var modal = bootstrap.Modal.getInstance(modalEl);
+                        if (!modal) {
+                            modal = new bootstrap.Modal(modalEl);
+                        }
+                        modal.show();
+                    }
+                    // Fallback to jQuery/Bootstrap 4
+                    else if (typeof $.fn.modal !== 'undefined') {
+                        $('#variationModal').modal('show');
+                    } else {
+                        console.error("Bootstrap Modal not found!");
+                        alert("Error: Unable to open options modal.");
+                    }
                 } else {
-                    $('#variationModal').modal('show');
+                    console.error("Modal element #variationModal not found!");
                 }
             } else {
-                console.log("Direct add to cart...");
-                // Direct Add
+                console.log("Direct add...");
                 addToCartDirect(id, 1, autoSize, autoColor);
             }
         });
