@@ -144,6 +144,16 @@ class CartController extends Controller
             // Get seller details
             $seller = DB::table('users')->where('id', $product->user_id)->first();
 
+            // Handle case where seller might not exist (prevent 500 error)
+            $sellerId = $seller ? $seller->id : null;
+            $sellerName = $seller ? $seller->name : '';
+            $storeName = $seller ? $seller->shop_name : '';
+            $storeLogo = $seller ? $seller->shop_logo : '';
+            $storeUrl = $seller ? $seller->shop_url : '';
+            $sellerEmail = $seller ? $seller->email : '';
+            $sellerPhone = $seller ? $seller->phone : '';
+            $sellerAddress = $seller ? $seller->address : '';
+
             // Add new item to cart
             $cart[$cartKey] = [
                 'id' => $id,
@@ -157,14 +167,14 @@ class CartController extends Controller
                 'stock_qty' => $product->stock_qty,
                 'weight' => 0,
                 'unit' => '',
-                'seller_id' => $seller->id,
-                'seller_name' => $seller->name,
-                'store_name' => $seller->shop_name,
-                'store_logo' => $seller->shop_logo,
-                'store_url' => $seller->shop_url,
-                'seller_email' => $seller->email,
-                'seller_phone' => $seller->phone,
-                'seller_address' => $seller->address
+                'seller_id' => $sellerId,
+                'seller_name' => $sellerName,
+                'store_name' => $storeName,
+                'store_logo' => $storeLogo,
+                'store_url' => $storeUrl,
+                'seller_email' => $sellerEmail,
+                'seller_phone' => $sellerPhone,
+                'seller_address' => $sellerAddress
             ];
         }
 
