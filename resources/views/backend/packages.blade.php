@@ -114,6 +114,13 @@
 										</div>
 
 										<div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="old_price">{{ __('Old Price') }}</label>
+                                                <input type="number" step="0.01" name="old_price" id="old_price" class="form-control" placeholder="Optional">
+                                            </div>
+                                        </div>
+
+										<div class="col-md-4">
 											<div class="form-group">
 												<label for="frequency">{{ __('Frequency') }}</label>
 												<input type="text" name="frequency" id="frequency" class="form-control"
@@ -190,7 +197,7 @@
 			@endif
 		</div>
 	</div>
-	<!-- /main Section --> 
+	<!-- /main Section -->
 @endsection
 
 @push('scripts')

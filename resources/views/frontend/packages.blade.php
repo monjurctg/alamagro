@@ -300,6 +300,9 @@ $gtext = gtext();
                              <p class="{{ $package['is_popular'] ? 'text-light opacity-75' : 'text-muted' }} small mb-3">{{ $package['subtitle'] }}</p>
 
                             <div class="d-flex align-items-baseline justify-content-center mb-1">
+                                @if(isset($package['old_price']) && $package['old_price'] > 0)
+                                    <span class="text-decoration-line-through text-muted fs-6 me-2">{{ $package['old_price'] }}</span>
+                                @endif
                                 <span class="display-6 fw-bold {{ $package['is_popular'] ? 'text-white' : 'text-green-600' }}">
                                     {{ $package['price'] }}
                                 </span>
@@ -362,6 +365,9 @@ $gtext = gtext();
                              <p class="{{ $package['is_popular'] ? 'text-light opacity-75' : 'text-muted' }} small mb-3">{{ $package['subtitle'] }}</p>
 
                              <div class="d-flex align-items-baseline justify-content-center mb-1">
+                                @if(isset($package['old_price']) && $package['old_price'] > 0)
+                                    <span class="text-decoration-line-through text-muted fs-6 me-2">{{ $package['old_price'] }}</span>
+                                @endif
                                 <span class="display-6 fw-bold {{ $package['is_popular'] ? 'text-white' : 'text-green-600' }}">
                                     {{ $package['price'] }}
                                 </span>

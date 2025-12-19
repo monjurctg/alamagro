@@ -34,6 +34,7 @@ class PackageController extends Controller
             'title'     => 'required|string|max:255',
             'subtitle'  => 'nullable|string|max:255',
             'price'     => 'required|numeric',
+            'old_price' => 'nullable|numeric',
             'frequency' => 'nullable|string|max:100',
             'duration'  => 'nullable|string|max:100',
             'type'      => 'nullable|string|max:50',
@@ -45,6 +46,7 @@ class PackageController extends Controller
         $package->title      = $request->title;
         $package->subtitle   = $request->subtitle;
         $package->price      = $request->price;
+        $package->old_price  = $request->old_price;
         $package->frequency  = $request->frequency;
         $package->duration   = $request->duration;
         $package->features   = $request->features ? explode(',', $request->features) : [];
