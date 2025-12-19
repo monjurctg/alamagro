@@ -301,7 +301,7 @@ $gtext = gtext();
 
                             <div class="d-flex align-items-baseline justify-content-center mb-1">
                                 @if(isset($package['old_price']) && $package['old_price'] > 0)
-                                    <span class="text-decoration-line-through text-muted fs-6 me-2">{{ $package['old_price'] }}</span>
+                                    <span class="text-decoration-line-through text-danger fs-6 me-2">{{ $package['old_price'] }}৳</span>
                                 @endif
                                 <span class="display-6 fw-bold {{ $package['is_popular'] ? 'text-white' : 'text-green-600' }}">
                                     {{ $package['price'] }}
@@ -366,7 +366,7 @@ $gtext = gtext();
 
                              <div class="d-flex align-items-baseline justify-content-center mb-1">
                                 @if(isset($package['old_price']) && $package['old_price'] > 0)
-                                    <span class="text-decoration-line-through text-muted fs-6 me-2">{{ $package['old_price'] }}</span>
+                                    <span class="text-decoration-line-through text-danger fs-6 me-2">{{ $package['old_price'] }}৳</span>
                                 @endif
                                 <span class="display-6 fw-bold {{ $package['is_popular'] ? 'text-white' : 'text-green-600' }}">
                                     {{ $package['price'] }}
