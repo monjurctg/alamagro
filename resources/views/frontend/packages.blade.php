@@ -86,7 +86,7 @@ $gtext = gtext();
 
     /* Hero Section */
     .hero-gradient {
-        background: linear-gradient(135deg, var(--darker-green), var(--gradient-start));
+        background: linear-gradient(135deg, #ecfdf5, #d1fae5);
         padding: 120px 0;
         position: relative;
         overflow: hidden;
@@ -239,22 +239,24 @@ $gtext = gtext();
 <section class="hero-gradient">
     <div class="container py-5">
         <div class="row justify-content-center">
-            <div class="col-lg-10 text-center text-white animate-up">
+            <div class="col-lg-10 text-center animate-up">
                 <div class="mb-4">
-                    <i class="fas fa-leaf fa-3x text-light opacity-75 mb-3"></i>
+                    <div class="icon-container shadow-sm mx-auto bg-white">
+                        <i class="fas fa-leaf text-success"></i>
+                    </div>
                 </div>
-                <h1 class="display-4 fw-bold mb-4">
+                <h1 class="display-4 fw-bold mb-4 text-dark">
                     গাছের যত্ন নিতে পারছেন না?
                 </h1>
-                <p class="fs-5 mb-5 lh-lg opacity-90 mx-auto" style="max-width: 700px;">
+                <p class="fs-5 mb-5 lh-lg text-secondary mx-auto" style="max-width: 700px;">
                     বাগান আছে কিন্তু পরিচর্যার সময় নেই? চট্টগ্রাম শহরে এখন ঘরে বসেই পাচ্ছেন নির্ভরযোগ্য মালি সার্ভিস। আপনার শখের বাগানের জন্য আমরা দিচ্ছি পরিপূর্ণ যত্ন।
                 </p>
 
                 <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
-                    <a href="#packages" class="btn btn-warning btn-lg px-5 py-3 fw-bold shadow-lg hover-lift">
+                    <a href="#packages" class="btn btn-primary btn-lg px-5 py-3 fw-bold shadow-lg hover-lift">
                         <i class="fas fa-tags me-2"></i>প্যাকেজ দেখুন
                     </a>
-                    <a href="https://wa.me/8801886950681" class="btn btn-outline-light btn-lg px-5 py-3 fw-bold hover-lift">
+                    <a href="https://wa.me/8801886950681" class="btn btn-outline-success btn-lg px-5 py-3 fw-bold hover-lift">
                         <i class="fab fa-whatsapp me-2"></i>হোয়াটসঅ্যাপ
                     </a>
                 </div>
