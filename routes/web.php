@@ -112,6 +112,7 @@ Route::get('/stores/{id}/{title}', [App\Http\Controllers\Frontend\StoresControll
 Route::get('/frontend/getStoresGrid', [App\Http\Controllers\Frontend\StoresController::class, 'getStoresGrid'])->name('frontend.getStoresGrid');
 Route::get('/frontend/packages', [HomePackagesController::class, 'index'])
     ->name('frontend.index');
+Route::post('/frontend/packages/book', [App\Http\Controllers\Frontend\BookingStartController::class, 'store'])->name('frontend.package.book');
 
 Route::prefix('backend')->group(function () {
 

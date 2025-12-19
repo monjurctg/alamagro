@@ -315,9 +315,9 @@ $gtext = gtext();
                         </ul>
 
                         <div class="mt-auto">
-                            <a href="tel:01886950681" class="btn btn-primary w-100 py-3 shadow-sm">
-                                <i class="fas fa-phone-alt me-2"></i>বুক করুন
-                            </a>
+                            <button type="button" class="btn btn-primary w-100 py-3 shadow-sm" onclick="openBookingModal('{{ $package['title'] }}')">
+                                <i class="fas fa-calendar-check me-2"></i>বুক করুন
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -377,9 +377,9 @@ $gtext = gtext();
                         </ul>
 
                         <div class="mt-auto">
-                            <a href="tel:01886950681" class="btn btn-primary w-100 py-3 shadow-sm">
-                                <i class="fas fa-phone-alt me-2"></i>বুক করুন
-                            </a>
+                            <button type="button" class="btn btn-primary w-100 py-3 shadow-sm" onclick="openBookingModal('{{ $package['title'] }}')">
+                                <i class="fas fa-calendar-check me-2"></i>বুক করুন
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -576,3 +576,99 @@ $gtext = gtext();
 </button>
 
 @endsection
+
+@push('scripts')
+<!-- Booking Modal -->
+<div class="modal fade" id="packageBookingModal" tabindex="-1" aria-labelledby="packageBookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header border-0 bg-success text-white rounded-top-4">
+                <h5 class="modal-title fw-bold" id="packageBookingModalLabel">প্যাকেজ বুকিং</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form id="bookingForm">
+                    @csrf
+                    <input type="hidden" name="package_name" id="booking_package_name">
+
+                    <div class="mb-3">
+                        <label for="booking_name" class="form-label fw-bold">আপনার নাম</label>
+                        <input type="text" class="form-control rounded-3" id="booking_name" name="name" placeholder="আপনার পুরো নাম লিখুন" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="booking_phone" class="form-label fw-bold">মোবাইল নম্বর</label>
+                        <input type="tel" class="form-control rounded-3" id="booking_phone" name="phone" placeholder="আপনার মোবাইল নম্বর" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="booking_address" class="form-label fw-bold">ঠিকানা</label>
+                        <textarea class="form-control rounded-3" id="booking_address" name="address" rows="2" placeholder="আপনার ঠিকানা" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="booking_message" class="form-label fw-bold">মেসেজ (ঐচ্ছিক)</label>
+                        <textarea class="form-control rounded-3" id="booking_message" name="message" rows="2" placeholder="অন্য কোনো তথ্য থাকলে লিখুন"></textarea>
+                    </div>
+
+                    <div id="bookingResponse" class="mb-3"></div>
+
+                    <button type="submit" class="btn btn-success w-100 py-2 fw-bold rounded-3 shadow-sm" id="btnBookSubmit">
+                        বুকিং কনফার্ম করুন
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openBookingModal(packageName) {
+        document.getElementById('booking_package_name').value = packageName;
+        var myModal = new bootstrap.Modal(document.getElementById('packageBookingModal'));
+        bookingResponse.innerHTML = '';
+        bookingForm.reset();
+        document.getElementById('booking_package_name').value = packageName;
+        myModal.show();
+    }
+
+    $(document).ready(function() {
+        $('#bookingForm').on('submit', function(e) {
+            e.preventDefault();
+
+            var submitBtn = $('#btnBookSubmit');
+            var originalBtnText = submitBtn.html();
+
+            submitBtn.html('<span class="spinner-border spinner-border-sm me-2"></span>অপেক্ষা করুন...');
+            submitBtn.prop('disabled', true);
+
+            $.ajax({
+                url: "{{ route('frontend.package.book') }}",
+                method: "POST",
+                data: $(this).serialize(),
+                success: function(response) {
+                    if(response.msgType == 'success') {
+                        $('#bookingResponse').html('<div class="alert alert-success border-0 bg-success bg-opacity-10 text-success">' + response.msg + '</div>');
+                        $('#bookingForm')[0].reset();
+                        setTimeout(function() {
+                            var myModalEl = document.getElementById('packageBookingModal');
+                            var modal = bootstrap.Modal.getInstance(myModalEl);
+                            modal.hide();
+                            $('#bookingResponse').html('');
+                        }, 3000);
+                    } else {
+                        $('#bookingResponse').html('<div class="alert alert-danger border-0 bg-danger bg-opacity-10 text-danger">' + response.msg + '</div>');
+                    }
+                },
+                error: function(xhr) {
+                    $('#bookingResponse').html('<div class="alert alert-danger border-0 bg-danger bg-opacity-10 text-danger">Something went wrong! Please try again.</div>');
+                },
+                complete: function() {
+                    submitBtn.html(originalBtnText);
+                    submitBtn.prop('disabled', false);
+                }
+            });
+        });
+    });
+</script>
+@endpush
