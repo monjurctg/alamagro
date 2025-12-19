@@ -7,7 +7,7 @@
 <div class="main-body">
 	<div class="container-fluid">
 		@php $vipc = vipc(); @endphp
-		@if($vipc['bkey'] == 0) 
+		@if($vipc['bkey'] == 0)
 		@include('backend.partials.vipc')
 		@else
 		<div class="row mt-25">
@@ -30,7 +30,7 @@
 						<div class="tabs-body">
 							<!--Data Entry Form-->
 							<form novalidate="" data-validate="parsley" id="DataEntry_formId">
-								<div class="row">	
+								<div class="row">
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label for="lan">{{ __('Language') }}<span class="red">*</span></label>
@@ -53,7 +53,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="row">	
+								<div class="row">
 									<div class="col-lg-12">
 										<div class="form-group">
 											<label for="slug">{{ __('Slug') }}<span class="red">*</span></label>
@@ -61,7 +61,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="row">	
+								<div class="row">
 									<div class="col-lg-12">
 										<div class="form-group">
 											<label for="short_desc">{{ __('Short Description') }}</label>
@@ -69,7 +69,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="row">	
+								<div class="row">
 									<div class="col-lg-12">
 										<div class="form-group tpeditor">
 											<label for="description">{{ __('Product Content') }}</label>
@@ -77,7 +77,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="row">	
+								<div class="row">
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label for="brand_id">{{ __('Brand') }}<span class="red">*</span></label>
@@ -90,7 +90,7 @@
 											@endforeach
 											</select>
 										</div>
-									</div>	
+									</div>
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label for="cat_id">{{ __('Category') }}<span class="red">*</span></label>
@@ -106,7 +106,7 @@
 									</div>
 								</div>
 
-								<div class="row">	
+								<div class="row">
 									<div class="col-lg-6">
 										<div class="form-group">
 											<label for="tax_id">{{ __('Tax') }}<span class="red">*</span></label>
@@ -139,13 +139,13 @@
 											</select>
 										</div>
 									</div>
-									
+
 									<div class="col-lg-6">
 										<div class="form-group">
-											<label for="variation_size">{{ __('Unit') }}<span class="red">*</span></label>
-											<select name="variation_size" id="variation_size" class="chosen-select form-control">
+											<label for="unit">{{ __('Unit') }}<span class="red">*</span></label>
+											<select name="unit" id="unit" class="chosen-select form-control">
 											@foreach($unitlist as $row)
-												<option {{ $row->name == $datalist['variation_size'] ? "selected=selected" : '' }} value="{{ $row->name }}">
+												<option {{ $row->name == $datalist['unit'] ? "selected=selected" : '' }} value="{{ $row->name }}">
 													{{ $row->name }}
 												</option>
 											@endforeach
@@ -153,7 +153,40 @@
 										</div>
 									</div>
 								</div>
-								
+
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label for="variation_size">{{ __('Variation Size') }}</label>
+											<select name="variation_size[]" id="variation_size" class="chosen-select form-control" multiple>
+											@php
+												$sizes = explode(',', $datalist['variation_size']);
+											@endphp
+											@foreach($sizelist as $row)
+												<option {{ in_array($row->name, $sizes) ? "selected=selected" : '' }} value="{{ $row->name }}">
+													{{ $row->name }}
+												</option>
+											@endforeach
+											</select>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label for="variation_color">{{ __('Variation Color') }}</label>
+											<select name="variation_color[]" id="variation_color" class="chosen-select form-control" multiple>
+											@php
+												$colors = explode(',', $datalist['variation_color']);
+											@endphp
+											@foreach($colorlist as $row)
+												<option {{ in_array($row->name, $colors) ? "selected=selected" : '' }} value="{{ $row->name }}">
+													{{ $row->name }} - {{ $row->color }}
+												</option>
+											@endforeach
+											</select>
+										</div>
+									</div>
+								</div>
+
 								<div class="row">
 									<div class="col-lg-6">
 										<div class="form-group">
@@ -174,7 +207,7 @@
 										</div>
 									</div>
 								</div>
-								
+
 								<div class="row">
 									<div class="col-lg-6">
 										<div class="form-group">
