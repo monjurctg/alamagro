@@ -383,7 +383,6 @@ class ProductsController extends Controller
 		if(is_array($variation_color)){
 			$variation_color = implode(',', $variation_color);
 		}
-		$unit = $request->input('unit');
 		$sale_price = $request->input('sale_price');
 
 		$validator_array = array(
@@ -481,8 +480,9 @@ class ProductsController extends Controller
 			'user_id' => $user_id,
 			'variation_size' => $variation_size,
 			'variation_color' => $variation_color,
-			'unit' => $unit,
 			'sale_price' => $sale_price,
+			'sale_price' => $sale_price,
+			'lan' => $lan,
 			'lan' => $lan
 		);
 

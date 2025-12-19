@@ -47,9 +47,6 @@ $(function () {
 	$("#is_publish").chosen();
 	$("#is_publish").trigger("chosen:updated");
 
-	$("#unit").chosen();
-	$("#unit").trigger("chosen:updated");
-
 	$("#variation_size").chosen();
 	$("#variation_size").trigger("chosen:updated");
 
