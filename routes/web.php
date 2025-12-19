@@ -558,7 +558,12 @@ Route::prefix('backend')->group(function () {
 	Route::get('/packages', [App\Http\Controllers\Backend\PackageController::class, 'index'])->name('backend.packages')->middleware(['auth', 'is_admin']);
     Route::post('/packages/store', [App\Http\Controllers\Backend\PackageController::class, 'store'])->name('backend.packages.store')->middleware(['auth', 'is_admin']);
     Route::get('/packages/edit/{id}', [App\Http\Controllers\Backend\PackageController::class, 'edit'])->name('backend.packages.edit')->middleware(['auth', 'is_admin']);
-    Route::delete('/packages/delete/{id}', [App\Http\Controllers\Backend\PackageController::class, 'destroy'])->name('backend.packages.delete')->middleware(['auth', 'is_admin']);
+    	Route::delete('/packages/delete/{id}', [App\Http\Controllers\Backend\PackageController::class, 'destroy'])->name('backend.packages.delete')->middleware(['auth', 'is_admin']);
+
+	// Package Bookings (Admin)
+	Route::get('/package-bookings', [App\Http\Controllers\Backend\PackageBookingController::class, 'index'])->name('backend.package-bookings')->middleware(['auth', 'is_admin']);
+	Route::post('/package-bookings/update-status', [App\Http\Controllers\Backend\PackageBookingController::class, 'updateStatus'])->name('backend.package-bookings.update-status')->middleware(['auth', 'is_admin']);
+	Route::post('/package-bookings/delete', [App\Http\Controllers\Backend\PackageBookingController::class, 'destroy'])->name('backend.package-bookings.delete')->middleware(['auth', 'is_admin']);
 
 });
 

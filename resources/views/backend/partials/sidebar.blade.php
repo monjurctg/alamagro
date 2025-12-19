@@ -30,6 +30,7 @@
 				<li><a href="{{ route('backend.home-video') }}">{{ __('Home Video Section') }}</a></li>
 				<li><a href="{{ route('backend.countries') }}">{{ __('Countries') }}</a></li>
 				<li><a href="{{ route('backend.packages') }}">{{ __('Packages') }}</a></li>
+				<li><a href="{{ route('backend.package-bookings') }}">{{ __('Booking Requests') }}</a></li>
 			</ul>
 		</li>
 		<li class="dropdown"><a class="nav-link has-dropdown" href="#" data-toggle="dropdown"><i class="fa fa-pencil-square-o"></i>{{ __('Blog') }}</a>
