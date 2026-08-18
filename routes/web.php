@@ -46,6 +46,7 @@ Route::get('/frontend/getBrandGrid', [App\Http\Controllers\Frontend\BrandControl
 //Product
 Route::get('/product/{id}/{slug}', [App\Http\Controllers\Frontend\ProductController::class, 'getProductPage'])->name('frontend.product');
 Route::get('/frontend/getProductReviewsGrid', [App\Http\Controllers\Frontend\ProductController::class, 'getProductReviewsGrid'])->name('frontend.getProductReviewsGrid');
+Route::get('/frontend/get_product_variations/{id}', [App\Http\Controllers\Frontend\ProductController::class, 'getProductVariationsJson'])->name('frontend.get_product_variations');
 
 //Add to cart
 Route::get('/frontend/add_to_cart/{id}/{qty}', [App\Http\Controllers\Frontend\CartController::class, 'AddToCart'])->name('frontend.add_to_cart');

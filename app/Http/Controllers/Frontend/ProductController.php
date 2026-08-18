@@ -123,6 +123,49 @@ class ProductController extends Controller
 		}
 	}
 
+	// Get Product Variations JSON for Quick Selector Modal
+	public function getProductVariationsJson($id){
+		$product = DB::table('products')->where('id', $id)->where('is_publish', 1)->first();
+		if (!$product) {
+			return response()->json(['status' => 'error', 'msg' => 'Product not found']);
+		}
 
+		$variations = \App\Models\ProductVariation::where('product_id', $id)->orderBy('price', 'asc')->get();
+		$hasVariations = $variations->count() > 0;
 
+		$sizes = [];
+		$colors = [];
+
+		if ($hasVariations) {
+			$sizes = $variations->pluck('size')->filter()->unique()->values()->all();
+			$colors = $variations->pluck('color')->filter()->unique()->values()->all();
+		} else {
+			if (!empty($product->variation_size)) {
+				$sizes = array_values(array_filter(array_map('trim', explode(',', $product->variation_size))));
+			}
+			if (!empty($product->variation_color)) {
+				$colors = array_values(array_filter(array_map('trim', explode(',', $product->variation_color))));
+			}
+			$hasVariations = (count($sizes) > 0 || count($colors) > 0);
+		}
+
+		return response()->json([
+			'status' => 'success',
+			'has_variations' => $hasVariations,
+			'product' => [
+				'id' => $product->id,
+				'title' => $product->title,
+				'slug' => $product->slug,
+				'sale_price' => $product->sale_price,
+				'old_price' => $product->old_price,
+				'is_discount' => $product->is_discount,
+				'f_thumbnail' => $product->f_thumbnail,
+				'is_stock' => $product->is_stock,
+				'stock_qty' => $product->stock_qty,
+			],
+			'sizes' => $sizes,
+			'colors' => $colors,
+			'variations' => $variations
+		]);
+	}
 }

@@ -215,6 +215,91 @@
 	</script>
 	<script src="{{ asset('public/frontend/js/scripts.js')}}"></script>
 	<script src="{{asset('public/frontend/pages/cart.js')}}?v={{ time() }}"></script>
+	<!-- Universal Quick Variation Selection Modal -->
+	<div class="modal fade" id="quickVariationModal" tabindex="-1" aria-labelledby="quickVariationModalLabel" aria-hidden="true" style="z-index: 99999;">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content" style="border-radius: 12px; overflow: hidden; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+				<div class="modal-header" style="background: #f8f9fa; border-bottom: 1px solid #eee;">
+					<h5 class="modal-title font-weight-bold" id="quickVariationModalLabel" style="font-size: 16px; color: #333;">
+						{{ __('Select Options / পছন্দ করুন') }}
+					</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background: none; border: none; font-size: 20px; cursor: pointer;">&times;</button>
+				</div>
+				<div class="modal-body p-4">
+					<!-- Product Header Info -->
+					<div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+						<img id="modal_product_img" src="" alt="product" style="width: 65px; height: 65px; object-fit: cover; border-radius: 8px; margin-right: 15px; border: 1px solid #eee;" />
+						<div>
+							<h6 id="modal_product_title" class="mb-1 font-weight-bold" style="font-size: 15px; color: #222;"></h6>
+							<div class="d-flex align-items-center">
+								<span id="modal_product_price" class="text-success font-weight-bold" style="font-size: 18px;"></span>
+								<span id="modal_product_old_price" class="text-muted text-decoration-line-through ml-2 ms-2" style="font-size: 14px; display: none;"></span>
+							</div>
+						</div>
+					</div>
+
+					<input type="hidden" id="modal_product_id" value="" />
+					<input type="hidden" id="modal_selected_variant_id" value="" />
+					<input type="hidden" id="modal_selected_size" value="" />
+					<input type="hidden" id="modal_selected_color" value="" />
+
+					<!-- Size Options Group -->
+					<div class="mb-3" id="modal_size_group" style="display: none;">
+						<label class="font-weight-bold d-block mb-2" style="font-size: 13px; color: #555;">{{ __('Size / পরিমাপ:') }}</label>
+						<div class="d-flex flex-wrap gap-2" id="modal_size_container" style="gap: 8px;"></div>
+					</div>
+
+					<!-- Quality / GSM / Color Options Group -->
+					<div class="mb-3" id="modal_color_group" style="display: none;">
+						<label class="font-weight-bold d-block mb-2" style="font-size: 13px; color: #555;">{{ __('Quality / GSM / Color:') }}</label>
+						<div class="d-flex flex-wrap gap-2" id="modal_color_container" style="gap: 8px;"></div>
+					</div>
+
+					<!-- Quantity -->
+					<div class="d-flex align-items-center mt-3 pt-2">
+						<label class="font-weight-bold m-0 mr-3 me-3" style="font-size: 13px; color: #555;">{{ __('Quantity:') }}</label>
+						<div class="input-group" style="width: 120px;">
+							<button class="btn btn-outline-secondary btn-sm" type="button" id="modal_qty_minus" style="padding: 2px 10px;">-</button>
+							<input type="number" id="modal_qty" class="form-control text-center form-control-sm" value="1" min="1" readonly style="background: #fff;" />
+							<button class="btn btn-outline-secondary btn-sm" type="button" id="modal_qty_plus" style="padding: 2px 10px;">+</button>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer" style="background: #f8f9fa; border-top: 1px solid #eee;">
+					<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" id="modal_cancel_btn">{{ __('Cancel') }}</button>
+					<button type="button" class="btn theme-btn btn-sm font-weight-bold" id="modal_confirm_add_to_cart" style="background: #28a745; color: #fff; border: none; padding: 8px 20px; border-radius: 6px;">
+						<i class="bi bi-cart-plus mr-1 me-1"></i> {{ __('Add to Cart / কার্টে যোগ করুন') }}
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<style>
+		.modal_variation_pill {
+			border: 1.5px solid #d0d7de;
+			padding: 6px 14px;
+			cursor: pointer;
+			border-radius: 6px;
+			font-size: 13px;
+			font-weight: 500;
+			background: #fff;
+			color: #333;
+			transition: all 0.2s ease-in-out;
+			user-select: none;
+		}
+		.modal_variation_pill:hover {
+			border-color: #28a745;
+			background: #f4faf6;
+		}
+		.modal_variation_pill.active {
+			border-color: #28a745 !important;
+			background: #28a745 !important;
+			color: #fff !important;
+			box-shadow: 0 2px 6px rgba(40,167,69,0.3);
+		}
+	</style>
+
 	<div class="custom-popup light width-100 dnone" id="lightCustomModal">
 		<div class="padding-md">
 			<h4 class="m-top-none"></h4>
