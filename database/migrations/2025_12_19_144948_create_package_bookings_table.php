@@ -13,16 +13,18 @@ class CreatePackageBookingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('package_bookings', function (Blueprint $table) {
-            $table->id();
-            $table->string('package_name');
-            $table->string('name');
-            $table->string('phone');
-            $table->text('address')->nullable();
-            $table->text('message')->nullable();
-            $table->enum('status', ['pending', 'confirmed', 'completed'])->default('pending');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('package_bookings')) {
+            Schema::create('package_bookings', function (Blueprint $table) {
+                $table->id();
+                $table->string('package_name');
+                $table->string('name');
+                $table->string('phone');
+                $table->text('address')->nullable();
+                $table->text('message')->nullable();
+                $table->enum('status', ['pending', 'confirmed', 'completed'])->default('pending');
+                $table->timestamps();
+            });
+        }
     }
 
     /**
