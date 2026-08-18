@@ -148,8 +148,8 @@ class CartController extends Controller
             // Handle case where seller might not exist or columns missing (prevent 500 error)
             $sellerId = isset($seller->id) ? $seller->id : null;
             $sellerName = isset($seller->name) ? $seller->name : '';
-            $storeName = isset($seller->shop_name) ? $seller->shop_name : '';
-            $storeLogo = isset($seller->shop_logo) ? $seller->shop_logo : '';
+            $storeName = isset($seller->shop_name) && !empty($seller->shop_name) ? $seller->shop_name : (isset($seller->name) ? $seller->name : 'Tarulata');
+            $storeLogo = isset($seller->photo) && !empty($seller->photo) ? $seller->photo : (isset($seller->shop_logo) ? $seller->shop_logo : '');
             $storeUrl = isset($seller->shop_url) ? $seller->shop_url : '';
             $sellerEmail = isset($seller->email) ? $seller->email : '';
             $sellerPhone = isset($seller->phone) ? $seller->phone : '';

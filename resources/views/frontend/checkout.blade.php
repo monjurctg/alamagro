@@ -99,9 +99,9 @@ $tax_rate = $gtax['percentage'];
 							<div class="col-md-6">
 								<div class="mb-3">
 									<select id="country" name="country" class="form-control parsley-validated" data-required="true">
-									<option value="">{{ __('Country') }}</option>
+									<option value="">{{ __('Select Country') }}</option>
 									@foreach($country_list as $row)
-									<option value="{{ $row->country_name }}">
+									<option value="{{ $row->country_name }}" {{ (strtolower($row->country_name) == 'bangladesh' || (isset(Auth::user()->country) && Auth::user()->country == $row->country_name)) ? 'selected' : '' }}>
 										{{ $row->country_name }}
 									</option>
 									@endforeach
@@ -111,7 +111,37 @@ $tax_rate = $gtax['percentage'];
 							</div>
 							<div class="col-md-6">
 								<div class="mb-3">
-									<input id="state" name="state" type="text" placeholder="{{ __('State') }}" class="form-control parsley-validated" data-required="true">
+									<select id="state" name="state" class="form-control parsley-validated" data-required="true">
+										<option value="">{{ __('Select District / জেলা') }}</option>
+										<option value="Chittagong" {{ (isset(Auth::user()->state) && in_array(strtolower(Auth::user()->state), ['chittagong', 'chattogram'])) ? 'selected' : 'selected' }}>Chittagong (চট্টগ্রাম - ৮০৳)</option>
+										<option value="Dhaka" {{ (isset(Auth::user()->state) && strtolower(Auth::user()->state) == 'dhaka') ? 'selected' : '' }}>Dhaka (ঢাকা - ১৫০৳)</option>
+										<option value="Gazipur">Gazipur (গাজীপুর - ১৫০৳)</option>
+										<option value="Narayanganj">Narayanganj (নারায়ণগঞ্জ - ১৫০৳)</option>
+										<option value="Comilla">Cumilla (কুমিল্লা - ১৫০৳)</option>
+										<option value="Cox's Bazar">Cox's Bazar (কক্সবাজার - ১৫০৳)</option>
+										<option value="Feni">Feni (ফেনী - ১৫০৳)</option>
+										<option value="Noakhali">Noakhali (নোয়াখালী - ১৫০৳)</option>
+										<option value="Brahmanbaria">Brahmanbaria (ব্রাহ্মণবাড়িয়া - ১৫০৳)</option>
+										<option value="Chandpur">Chandpur (চাঁদপুর - ১৫০৳)</option>
+										<option value="Lakshmipur">Lakshmipur (লক্ষ্মীপুর - ১৫০৳)</option>
+										<option value="Sylhet">Sylhet (সিলেট - ১৫০৳)</option>
+										<option value="Moulvibazar">Moulvibazar (মৌলভীবাজার - ১৫০৳)</option>
+										<option value="Habiganj">Habiganj (হবিগঞ্জ - ১৫০৳)</option>
+										<option value="Sunamganj">Sunamganj (সুনামগঞ্জ - ১৫০৳)</option>
+										<option value="Rajshahi">Rajshahi (রাজশাহী - ১৫০৳)</option>
+										<option value="Bogra">Bogura (বগুড়া - ১৫০৳)</option>
+										<option value="Pabna">Pabna (পাবনা - ১৫০৳)</option>
+										<option value="Khulna">Khulna (খুলনা - ১৫০৳)</option>
+										<option value="Jashore">Jashore (যশোর - ১৫০৳)</option>
+										<option value="Kushtia">Kushtia (কুষ্টিয়া - ১৫০৳)</option>
+										<option value="Barishal">Barishal (বরিশাল - ১৫০৳)</option>
+										<option value="Rangpur">Rangpur (রংপুর - ১৫০৳)</option>
+										<option value="Dinajpur">Dinajpur (দিনাজপুর - ১৫০৳)</option>
+										<option value="Mymensingh">Mymensingh (ময়মনসিংহ - ১৫০৳)</option>
+										<option value="Tangail">Tangail (টাঙ্গাইল - ১৫০৳)</option>
+										<option value="Faridpur">Faridpur (ফরিদপুর - ১৫০৳)</option>
+										<option value="Other">Other Districts (অন্যান্য জেলা - ১৫০৳)</option>
+									</select>
 									<span class="text-danger error-text state_error"></span>
 								</div>
 							</div>
@@ -320,12 +350,18 @@ $tax_rate = $gtax['percentage'];
 												<td colspan="2" class="tp_group">
 													<div class="store_logo">
 														<a href="{{ route('frontend.stores', [$row['seller_id'], \Illuminate\Support\Str::slug($row['store_name'])]) }}">
-															<img src="{{ asset('public/media/'.$row['store_logo']) }}" alt="{{ $row['store_name'] }}" />
+															@if(!empty($row['store_logo']))
+																<img src="{{ asset('public/media/'.$row['store_logo']) }}" alt="{{ $row['store_name'] }}" />
+															@elseif(!empty($gtext['back_logo']))
+																<img src="{{ asset('public/media/'.$gtext['back_logo']) }}" alt="{{ $row['store_name'] }}" />
+															@else
+																<span class="store-letter-logo" style="display: inline-block; width: 36px; height: 36px; line-height: 36px; text-align: center; background: #28a745; color: #fff; border-radius: 50%; font-weight: bold; font-size: 16px;">{{ mb_substr($row['store_name'] ?? 'T', 0, 1) }}</span>
+															@endif
 														</a>
 													</div>
 													<div class="store_name">
 														<p><strong>{{ __('Sold By') }}</strong></p>
-														<p><a href="{{ route('frontend.stores', [$row['seller_id'], \Illuminate\Support\Str::slug($row['store_url'])]) }}">{{ $row['store_name'] }}</a></p>
+														<p><a href="{{ route('frontend.stores', [$row['seller_id'], \Illuminate\Support\Str::slug($row['store_url'] ?? $row['store_name'])]) }}">{{ $row['store_name'] }}</a></p>
 													</div>
 												</td>
 											</tr>

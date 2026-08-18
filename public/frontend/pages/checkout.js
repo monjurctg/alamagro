@@ -86,6 +86,37 @@ $(function () {
 		$(".total_amount").text(addCommas(grand_total.toFixed(2)));
     });
 
+	// Auto-select shipping fee based on selected State / District
+	function syncShippingWithState() {
+		var selectedState = ($("#state").val() || "").toLowerCase().trim();
+		if (!selectedState) return;
+
+		var isChittagong = (selectedState === 'chittagong' || selectedState === 'chattogram' || selectedState.indexOf('chittagong') !== -1 || selectedState.indexOf('চট্টগ্রাম') !== -1);
+		
+		var matchedRadio = null;
+		$(".shipping_method").each(function () {
+			var fee = parseFloat($(this).data('shippingfee')) || 0;
+			if (isChittagong && (fee === 80 || fee === 80.00)) {
+				matchedRadio = $(this);
+				return false;
+			} else if (!isChittagong && (fee === 150 || fee === 150.00)) {
+				matchedRadio = $(this);
+				return false;
+			}
+		});
+
+		if (matchedRadio && matchedRadio.length > 0) {
+			matchedRadio.prop("checked", true).trigger("change");
+		}
+	}
+
+	$(document).on("change", "#state", function () {
+		syncShippingWithState();
+	});
+
+	// Initial sync on page load
+	syncShippingWithState();
+
 	$("#checkout_submit_form").on("click", function () {
 		payment_method = $('input[name="payment_method"]:checked').val();
         $("#checkout_formid").submit();
