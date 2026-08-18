@@ -692,7 +692,7 @@ class ProductsController extends Controller
 		return response()->json($res);
 	}
 
-    //get Variations
+    //get Variations test get variations
     public function getVariationsPageData($id){
 
 		$datalist = Product::where('id', $id)->first();
