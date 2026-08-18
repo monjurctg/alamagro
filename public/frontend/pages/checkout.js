@@ -76,18 +76,14 @@ $(function () {
 		$("#pay_bank").removeClass("hideclass");
     });
 	
-    $(".shipping_method").on("click", function () {
-		var totalWithComma = $(this).data('total');
-		var shipping_fee = $(this).data('shippingfee');
-		var seller_count = $(this).data('seller_count');
-		var shippingfee = shipping_fee*seller_count;
+    $(document).on("change", ".shipping_method", function () {
+		var shipping_fee = parseFloat($(this).data('shippingfee')) || 0;
+		var base_total = parseFloat($("#base_total").val()) || 0;
 		
-		var total = removeCommas(totalWithComma);
+		var grand_total = base_total + shipping_fee;
 		
-		var TotalShippingfee = addCommas(parseFloat(total) + parseFloat(shippingfee));
-		
-		$(".shipping_fee").text(shippingfee);
-		$(".total_amount").text(TotalShippingfee);
+		$(".shipping_fee").text(addCommas(shipping_fee.toFixed(2)));
+		$(".total_amount").text(addCommas(grand_total.toFixed(2)));
     });
 
 	$("#checkout_submit_form").on("click", function () {

@@ -165,19 +165,64 @@ $tax_rate = $gtax['percentage'];
 							</div>
 						</div>
 
+						<h5 class="mt10">{{ __('Delivery Area / Shipping Option (ডেলিভারি চার্জ)') }}</h5>
+						<div class="row mb-3">
+							<div class="col-md-12">
+								<span class="text-danger error-text shipping_method_error"></span>
+								@if(isset($shipping_list) && count($shipping_list) > 0)
+									@foreach($shipping_list as $sIndex => $sRow)
+									<div class="payment_card p-3 mb-2 border rounded" style="background: #fff; cursor: pointer;">
+										<div class="checkboxlist d-flex justify-content-between align-items-center">
+											<label class="checkbox-title m-0 d-flex align-items-center w-100" style="cursor: pointer;">
+												<input class="shipping_method mr-2" id="shipping_method_{{ $sRow->id }}" name="shipping_method" type="radio" value="{{ $sRow->id }}" data-shippingfee="{{ $sRow->shipping_fee }}" {{ $sIndex == 0 ? 'checked' : '' }}>
+												<span class="font-weight-bold ml-2">{{ $sRow->title }}</span>
+												<span class="ml-auto font-weight-bold text-success" style="font-size: 15px;">
+													@if($gtext['currency_position'] == 'left')
+														{{ $gtext['currency_icon'] }}{{ NumberFormat($sRow->shipping_fee) }}
+													@else
+														{{ NumberFormat($sRow->shipping_fee) }}{{ $gtext['currency_icon'] }}
+													@endif
+												</span>
+											</label>
+										</div>
+										@if(!empty($sRow->desc))
+										<p class="text-muted mb-0 mt-1 ml-4" style="font-size: 12px;">{{ $sRow->desc }}</p>
+										@endif
+									</div>
+									@endforeach
+								@else
+									<div class="payment_card p-3 mb-2 border rounded" style="background: #fff;">
+										<div class="checkboxlist d-flex justify-content-between align-items-center">
+											<label class="checkbox-title m-0 d-flex align-items-center w-100">
+												<input class="shipping_method mr-2" id="shipping_method_1" name="shipping_method" type="radio" value="1" data-shippingfee="80" checked>
+												<span class="font-weight-bold ml-2">Inside Chittagong (চট্টগ্রামের ভেতরে)</span>
+												<span class="ml-auto font-weight-bold text-success">৳80.00</span>
+											</label>
+										</div>
+									</div>
+									<div class="payment_card p-3 mb-2 border rounded" style="background: #fff;">
+										<div class="checkboxlist d-flex justify-content-between align-items-center">
+											<label class="checkbox-title m-0 d-flex align-items-center w-100">
+												<input class="shipping_method mr-2" id="shipping_method_2" name="shipping_method" type="radio" value="2" data-shippingfee="150">
+												<span class="font-weight-bold ml-2">Outside Chittagong (চট্টগ্রামের বাইরে)</span>
+												<span class="ml-auto font-weight-bold text-success">৳150.00</span>
+											</label>
+										</div>
+									</div>
+								@endif
+							</div>
+						</div>
+
 						<h5 class="mt10">{{ __('Payment Method') }}</h5>
 						<div class="row">
 							<div class="col-md-12">
 								<span class="text-danger error-text payment_method_error"></span>
 
-
-
-
 								@if($gtext['cod_isenable'] == '1')
 								<div class="payment_card">
 									<div class="checkboxlist">
 										<label class="checkbox-title">
-											<input id="payment_method_cod" name="payment_method" type="radio" value="1"><img src="{{ asset('public/frontend/images/cash_on_delivery.png') }}" alt="Cash on Delivery" />
+											<input id="payment_method_cod" name="payment_method" type="radio" value="1" checked><img src="{{ asset('public/frontend/images/cash_on_delivery.png') }}" alt="Cash on Delivery" />
 										</label>
 									</div>
 									<p id="pay_cod" class="hideclass">{{ $gtext['cod_description'] }}</p>
@@ -318,28 +363,35 @@ $tax_rate = $gtax['percentage'];
 										@endforeach
 
 										@php
+											$defaultShippingFee = 0;
+											if(isset($shipping_list) && count($shipping_list) > 0) {
+												$defaultShippingFee = $shipping_list[0]->shipping_fee;
+											} else {
+												$defaultShippingFee = 80;
+											}
 
 											$TaxCal = ($Total_Price*$tax_rate)/100;
-											$TotalPrice = $Total_Price+$TaxCal;
+											$baseTotal = $Total_Price+$TaxCal;
+											$TotalPriceWithShipping = $baseTotal + $defaultShippingFee;
 
 											if($gtext['currency_position'] == 'left'){
-												$ShippingFee = $gtext['currency_icon'].'<span class="shipping_fee">0</span>';
+												$ShippingFee = $gtext['currency_icon'].'<span class="shipping_fee">'.NumberFormat($defaultShippingFee).'</span>';
 												$tax = $gtext['currency_icon'].NumberFormat($TaxCal);
-												$total = $gtext['currency_icon'].'<span class="total_amount">'.NumberFormat($TotalPrice).'</span>';
+												$total = $gtext['currency_icon'].'<span class="total_amount">'.NumberFormat($TotalPriceWithShipping).'</span>';
 											}else{
-												$ShippingFee = '<span class="shipping_fee">0</span>'.$gtext['currency_icon'];
+												$ShippingFee = '<span class="shipping_fee">'.NumberFormat($defaultShippingFee).'</span>'.$gtext['currency_icon'];
 												$tax = NumberFormat($TaxCal).$gtext['currency_icon'];
-												$total = '<span class="total_amount">'.NumberFormat($TotalPrice).'</span>'.$gtext['currency_icon'];
+												$total = '<span class="total_amount">'.NumberFormat($TotalPriceWithShipping).'</span>'.$gtext['currency_icon'];
 											}
 										@endphp
 
-										<tr><td colspan="2"><span class="title">{{ __('Shipping Fee') }} </span><span class="price">@php echo $ShippingFee; @endphp</span></td></tr>
+										<tr><td colspan="2"><span class="title">{{ __('Shipping Fee (ডেলিভারি চার্জ)') }} </span><span class="price">@php echo $ShippingFee; @endphp</span></td></tr>
 										<tr><td colspan="2"><span class="title">{{ __('Tax') }}</span><span class="price">{{ $tax }}</span></td></tr>
 										<tr><td colspan="2"><span class="total">{{ __('Total') }}</span><span class="total-price">@php echo $total; @endphp</span></td></tr>
 									</tbody>
 								</table>
 
-
+								<input id="base_total" type="hidden" value="{{ $baseTotal }}" />
 								<input name="customer_id" type="hidden" value="@if(isset(Auth::user()->id)) {{ Auth::user()->id }} @endif" />
 								<input name="razorpay_payment_id" id="razorpay_payment_id" type="hidden" />
 								<a id="checkout_submit_form" href="javascript:void(0);" class="btn theme-btn mt10 checkout_btn">{{ __('Checkout') }}</a>

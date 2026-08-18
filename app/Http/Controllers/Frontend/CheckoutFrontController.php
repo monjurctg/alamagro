@@ -159,8 +159,22 @@ class CheckoutFrontController extends Controller
 		}
 
 
-		$shipping_fee = NULL;
-
+		$shipping_method_id = $request->input('shipping_method');
+		$shipping_fee = 0;
+		$shipping_title = NULL;
+		if ($shipping_method_id) {
+			$shipping = Shipping::where('id', $shipping_method_id)->first();
+			if ($shipping) {
+				$shipping_fee = $shipping->shipping_fee;
+				$shipping_title = $shipping->title;
+			}
+		} else {
+			$shipping = Shipping::where('is_publish', 1)->first();
+			if ($shipping) {
+				$shipping_fee = $shipping->shipping_fee;
+				$shipping_title = $shipping->title;
+			}
+		}
 
 		$UniqueDataArray = array();
 		$key = 0;
@@ -193,6 +207,7 @@ class CheckoutFrontController extends Controller
 				'payment_status_id' => 2,
 				'order_status_id' => 1,
 
+				'shipping_title' => $shipping_title,
 				'shipping_fee' => $shipping_fee,
 				'name' => $request->input('name'),
 				'email' => $request->input('email'),
