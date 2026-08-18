@@ -99,12 +99,7 @@ $tax_rate = $gtax['percentage'];
 							<div class="col-md-6">
 								<div class="mb-3">
 									<select id="country" name="country" class="form-control parsley-validated" data-required="true">
-									<option value="">{{ __('Select Country') }}</option>
-									@foreach($country_list as $row)
-									<option value="{{ $row->country_name }}" {{ (strtolower($row->country_name) == 'bangladesh' || (isset(Auth::user()->country) && Auth::user()->country == $row->country_name)) ? 'selected' : '' }}>
-										{{ $row->country_name }}
-									</option>
-									@endforeach
+										<option value="Bangladesh" selected>Bangladesh</option>
 									</select>
 									<span class="text-danger error-text country_error"></span>
 								</div>
