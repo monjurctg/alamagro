@@ -60,7 +60,8 @@ $(function () {
 		// Prepare data with variations
 		var requestData = {
 			size: selectedSize,
-			color: selectedColor
+			color: selectedColor,
+			variant_id: $(this).data('variantid') || ''
 		};
 
 		$.ajax({
@@ -122,7 +123,8 @@ $(function () {
 		// Prepare data with variations
 		var requestData = {
 			size: selectedSize,
-			color: selectedColor
+			color: selectedColor,
+			variant_id: $(this).data('variantid') || ''
 		};
 
 		$.ajax({

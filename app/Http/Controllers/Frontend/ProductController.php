@@ -95,9 +95,9 @@ class ProductController extends Controller
 		$aReview = getReviewsBySeller($seller_id);
 		$SellerReview['TotalReview'] = $aReview[0]->TotalReview;
 		$SellerReview['TotalRating'] = $aReview[0]->TotalRating;
-		$SellerReview['ReviewPercentage'] = number_format($aReview[0]->ReviewPercentage);
+		$variations = \App\Models\ProductVariation::where('product_id', $id)->orderBy('price', 'asc')->get();
 
-        return view('frontend.product', compact('data', 'pro_images', 'related_products', 'category_products', 'pro_reviews', 'seller_data', 'SellerReview'));
+        return view('frontend.product', compact('data', 'pro_images', 'related_products', 'category_products', 'pro_reviews', 'seller_data', 'SellerReview', 'variations'));
     }
 
 	//Get data for Products Reviews Pagination

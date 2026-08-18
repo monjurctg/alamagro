@@ -231,7 +231,7 @@ class CheckoutFrontController extends Controller
 				'customer_id' => $customer_id,
 				'seller_id' => $seller_id,
 				'product_id' => $row['id'],
-				'variation_size' => $row['unit'],
+				'variation_size' => !empty($row['variation_details']) ? $row['variation_details'] : (!empty($row['unit']) ? $row['unit'] : null),
 				'quantity' => comma_remove($row['qty']),
 				'price' => comma_remove($row['price']),
 				'total_price' => comma_remove($total_price),

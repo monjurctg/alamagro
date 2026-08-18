@@ -13,6 +13,7 @@ use App\Models\Tax;
 use App\Models\Attribute;
 use App\Models\Pro_image;
 use App\Models\Related_product;
+use App\Models\ProductVariation;
 use Illuminate\Support\Facades\Auth;
 
 class ProductsController extends Controller
@@ -624,8 +625,9 @@ class ProductsController extends Controller
 		$datalist = Product::where('id', $id)->first();
 		$sizelist = Attribute::where('att_type', 'Size')->orderBy('id','asc')->get();
 		$colorlist = Attribute::where('att_type', 'Color')->orderBy('id','asc')->get();
+		$variations = ProductVariation::where('product_id', $id)->orderBy('id','asc')->get();
 
-        return view('seller.variations', compact('datalist', 'sizelist', 'colorlist'));
+        return view('seller.variations', compact('datalist', 'sizelist', 'colorlist', 'variations'));
     }
 
 	//Save data for Variations
@@ -638,7 +640,7 @@ class ProductsController extends Controller
 
 		$variation_size = NULL;
 		$i = 0;
-		if($sizes !=''){
+		if($sizes !='' && is_array($sizes)){
 			foreach ($sizes as $key => $size) {
 				if($i++){
 					$variation_size .= ',';
@@ -649,7 +651,7 @@ class ProductsController extends Controller
 
 		$variation_color = NULL;
 		$f = 0;
-		if($colors !=''){
+		if($colors !='' && is_array($colors)){
 			foreach ($colors as $key => $color) {
 				if($f++){
 					$variation_color .= ',';
@@ -662,14 +664,40 @@ class ProductsController extends Controller
 			'variation_color' => $variation_color
 		);
 
-		$response = Product::where('id', $id)->update($data);
-		if($response){
-			$res['msgType'] = 'success';
-			$res['msg'] = __('Data Updated Successfully');
-		}else{
-			$res['msgType'] = 'error';
-			$res['msg'] = __('Data update failed');
+		Product::where('id', $id)->update($data);
+
+		// Handle Price Variations Matrix
+		$variant_sizes = $request->input('variant_size', []);
+		$variant_colors = $request->input('variant_color', []);
+		$variant_prices = $request->input('variant_price', []);
+		$variant_old_prices = $request->input('variant_old_price', []);
+		$variant_stocks = $request->input('variant_stock_qty', []);
+		$variant_skus = $request->input('variant_sku', []);
+		$default_variant_index = $request->input('variant_default', null);
+
+		// Delete existing variations for this product
+		ProductVariation::where('product_id', $id)->delete();
+
+		if (!empty($variant_prices) && is_array($variant_prices)) {
+			foreach ($variant_prices as $idx => $vPrice) {
+				$cleanPrice = trim((string)$vPrice);
+				if ($cleanPrice !== '') {
+					ProductVariation::create([
+						'product_id' => $id,
+						'size' => isset($variant_sizes[$idx]) ? trim($variant_sizes[$idx]) : null,
+						'color' => isset($variant_colors[$idx]) ? trim($variant_colors[$idx]) : null,
+						'price' => (float)$cleanPrice,
+						'old_price' => (isset($variant_old_prices[$idx]) && trim((string)$variant_old_prices[$idx]) !== '') ? (float)$variant_old_prices[$idx] : null,
+						'stock_qty' => (isset($variant_stocks[$idx]) && trim((string)$variant_stocks[$idx]) !== '') ? (int)$variant_stocks[$idx] : null,
+						'sku' => isset($variant_skus[$idx]) ? trim($variant_skus[$idx]) : null,
+						'is_default' => ($default_variant_index !== null && (int)$default_variant_index === (int)$idx) ? 1 : 0,
+					]);
+				}
+			}
 		}
+
+		$res['msgType'] = 'success';
+		$res['msg'] = __('Data Updated Successfully');
 
 		return response()->json($res);
     }

@@ -94,59 +94,77 @@
 						@if($data->shop_name != '')
 						<div class="pr_extra"><strong>{{ __('Sold By') }}:</strong> <a href="{{ route('frontend.stores', [$data->seller_id, \Illuminate\Support\Str::slug($data->shop_url)]) }}">{{ $data->shop_name }}</a></div>
 						@endif
-						<div class="product_price">
-							@if($data->sale_price != '')
-								@if($gtext['currency_position'] == 'left')
-								<div class="item-price">{{ $gtext['currency_icon'] }}{{ NumberFormat($data->sale_price) }}</div>
-								@else
-								<div class="item-price">{{ NumberFormat($data->sale_price) }}{{ $gtext['currency_icon'] }}</div>
+						@php
+							$hasPriceVariations = isset($variations) && count($variations) > 0;
+							if ($hasPriceVariations) {
+								$minPrice = $variations->min('price');
+								$maxPrice = $variations->max('price');
+								$varSizes = $variations->pluck('size')->filter()->unique()->values();
+								$varColors = $variations->pluck('color')->filter()->unique()->values();
+							} else {
+								$varSizes = $data->variation_size != '' ? collect(explode(',', $data->variation_size))->map('trim')->filter()->values() : collect();
+								$varColors = $data->variation_color != '' ? collect(explode(',', $data->variation_color))->map('trim')->filter()->values() : collect();
+							}
+						@endphp
+
+						<div class="product_price" id="main-product-price-box">
+							@if($hasPriceVariations && $minPrice != $maxPrice)
+								<div class="item-price" id="display-item-price">
+									@if($gtext['currency_position'] == 'left')
+										{{ $gtext['currency_icon'] }}{{ NumberFormat($minPrice) }} - {{ $gtext['currency_icon'] }}{{ NumberFormat($maxPrice) }}
+									@else
+										{{ NumberFormat($minPrice) }}{{ $gtext['currency_icon'] }} - {{ NumberFormat($maxPrice) }}{{ $gtext['currency_icon'] }}
+									@endif
+								</div>
+								<div class="old-item-price d-none" id="display-old-price"></div>
+								<span class="discount d-none" id="display-discount"></span>
+							@else
+								@if($data->sale_price != '')
+									@if($gtext['currency_position'] == 'left')
+									<div class="item-price" id="display-item-price">{{ $gtext['currency_icon'] }}{{ NumberFormat($data->sale_price) }}</div>
+									@else
+									<div class="item-price" id="display-item-price">{{ NumberFormat($data->sale_price) }}{{ $gtext['currency_icon'] }}</div>
+									@endif
 								@endif
-							@endif
-							@if(($data->is_discount == 1) && ($data->old_price !=''))
+								@if(($data->is_discount == 1) && ($data->old_price !=''))
+									@php
+										$discount = number_format((($data->old_price - $data->sale_price)*100)/$data->old_price);
+									@endphp
 
-								@php
-									$discount = number_format((($data->old_price - $data->sale_price)*100)/$data->old_price);
-								@endphp
-
-								@if($gtext['currency_position'] == 'left')
-								<div class="old-item-price">{{ $gtext['currency_icon'] }}{{ NumberFormat($data->old_price) }}</div><span class="discount">-{{ $discount }}%</span>
+									@if($gtext['currency_position'] == 'left')
+									<div class="old-item-price" id="display-old-price">{{ $gtext['currency_icon'] }}{{ NumberFormat($data->old_price) }}</div><span class="discount" id="display-discount">-{{ $discount }}%</span>
+									@else
+									<div class="old-item-price" id="display-old-price">{{ NumberFormat($data->old_price) }}{{ $gtext['currency_icon'] }}</div><span class="discount" id="display-discount">-{{ $discount }}%</span>
+									@endif
 								@else
-								<div class="old-item-price">{{ NumberFormat($data->old_price) }}{{ $gtext['currency_icon'] }}</div><span class="discount">-{{ $discount }}%</span>
+									<div class="old-item-price d-none" id="display-old-price"></div>
+									<span class="discount d-none" id="display-discount"></span>
 								@endif
 							@endif
 						</div>
+
 						<!-- Size and Color Variations -->
-                        @if($data->variation_size != '' || $data->variation_color != '')
+                        @if(count($varSizes) > 0 || count($varColors) > 0)
                         <div id="product-variations" class="pr_widget">
                             <!-- Size Options -->
-                            @if($data->variation_size != '')
+                            @if(count($varSizes) > 0)
                             <div class="variation-section">
-                                <label class="widget-title">{{ __('Size / Unit') }}</label>
+                                <label class="widget-title">{{ __('Size / পরিমাপ') }}</label>
                                 <ul class="widget-size variation-options">
-                                    @php
-                                        $sizes = explode(',', $data->variation_size);
-                                    @endphp
-                                    @foreach($sizes as $size)
-                                        <li class="size-option" data-size="{{ trim($size) }}">{{ trim($size) }}</li>
+                                    @foreach($varSizes as $size)
+                                        <li class="size-option" data-size="{{ $size }}">{{ $size }}</li>
                                     @endforeach
                                 </ul>
                             </div>
                             @endif
 
-                            <!-- Color Options -->
-                            @if($data->variation_color != '')
+                            <!-- Quality / Color Options -->
+                            @if(count($varColors) > 0)
                             <div class="variation-section">
-                                <label class="widget-title">{{ __('Color') }}</label>
+                                <label class="widget-title">{{ __('Quality / GSM / Color') }}</label>
                                 <ul class="widget-color variation-options">
-                                    @php
-                                        $colors = explode(',', $data->variation_color);
-                                    @endphp
-                                    @foreach($colors as $color)
-                                        @php
-                                            // For colors, we'll display them as text since we don't have color values
-                                            $colorName = trim($color);
-                                        @endphp
-                                        <li class="color-option" data-color="{{ $colorName }}" title="{{ $colorName }}">{{ $colorName }}</li>
+                                    @foreach($varColors as $color)
+                                        <li class="color-option" data-color="{{ $color }}" title="{{ $color }}">{{ $color }}</li>
                                     @endforeach
                                 </ul>
                             </div>
@@ -480,13 +498,16 @@
  	var item_id = "{{ $data->id }}";
 	var is_stock = "{{ $data->is_stock }}";
 	var is_stock_status = "{{ $data->stock_status_id }}";
+	var currency_icon = "{{ $gtext['currency_icon'] }}";
+	var currency_pos = "{{ $gtext['currency_position'] }}";
+	var product_variations = @json(isset($variations) ? $variations : []);
 
 var TEXT = [];
 	TEXT['Please enter quantity.'] = "{{ __('Please enter quantity.') }}";
 	TEXT['The value must be less than or equal to'] = "{{ __('The value must be less than or equal to') }} {{ $data->is_stock == 1 ? $data->stock_qty : '' }}";
 	TEXT['This product out of stock.'] = "{{ __('This product out of stock.') }}";
 	TEXT['Please select a size.'] = "{{ __('Please select a size.') }}";
-	TEXT['Please select a color.'] = "{{ __('Please select a color.') }}";
+	TEXT['Please select a color.'] = "{{ __('Please select a color/quality.') }}";
 </script>
 <script src="{{asset('public/frontend/pages/product.js')}}"></script>
 @endpush

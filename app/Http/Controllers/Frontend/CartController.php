@@ -154,29 +154,52 @@ class CartController extends Controller
             $sellerEmail = isset($seller->email) ? $seller->email : '';
             $sellerPhone = isset($seller->phone) ? $seller->phone : '';
             $sellerAddress = isset($seller->address) ? $seller->address : '';
+        // Determine price based on selected variation or fallback to sale_price
+        $itemPrice = $product->sale_price;
+        $variantStock = $product->stock_qty;
+        
+        $variantQuery = \App\Models\ProductVariation::where('product_id', $id);
+        if ($request->filled('variant_id')) {
+            $variant = $variantQuery->where('id', $request->input('variant_id'))->first();
+        } else {
+            if ($selectedSize) {
+                $variantQuery->where('size', $selectedSize);
+            }
+            if ($selectedColor) {
+                $variantQuery->where('color', $selectedColor);
+            }
+            $variant = $variantQuery->first();
+        }
 
-            // Add new item to cart
-            $cart[$cartKey] = [
-                'id' => $id,
-                'name' => $product->title,
-                'price' => $product->sale_price,
-                'qty' => $qty,
-                'image' => $product->f_thumbnail,
-                'thumbnail' => $product->f_thumbnail,
-                'variation_details' => $variationInfo,
-                'is_stock' => $product->is_stock,
-                'stock_qty' => $product->stock_qty,
-                'weight' => 0,
-                'unit' => '',
-                'seller_id' => $sellerId,
-                'seller_name' => $sellerName,
-                'store_name' => $storeName,
-                'store_logo' => $storeLogo,
-                'store_url' => $storeUrl,
-                'seller_email' => $sellerEmail,
-                'seller_phone' => $sellerPhone,
-                'seller_address' => $sellerAddress
-            ];
+        if ($variant && $variant->price > 0) {
+            $itemPrice = $variant->price;
+            if ($variant->stock_qty !== null) {
+                $variantStock = $variant->stock_qty;
+            }
+        }
+
+        // Add new item to cart
+        $cart[$cartKey] = [
+            'id' => $id,
+            'name' => $product->title,
+            'price' => $itemPrice,
+            'qty' => $qty,
+            'image' => $product->f_thumbnail,
+            'thumbnail' => $product->f_thumbnail,
+            'variation_details' => $variationInfo,
+            'is_stock' => $product->is_stock,
+            'stock_qty' => $variantStock,
+            'weight' => 0,
+            'unit' => $variationInfo,
+            'seller_id' => $sellerId,
+            'seller_name' => $sellerName,
+            'store_name' => $storeName,
+            'store_logo' => $storeLogo,
+            'store_url' => $storeUrl,
+            'seller_email' => $sellerEmail,
+            'seller_phone' => $sellerPhone,
+            'seller_address' => $sellerAddress
+        ];
         }
 
         // Save cart to session
