@@ -6,26 +6,36 @@ if (!isset($_GET['key']) || $_GET['key'] !== $secret) {
 }
 
 $publicDir = '/home/tarumuog/public_html';
-
 $gitRepo   = 'https://github.com/monjurctg/alamagro.git';
 
 chdir($publicDir);
 
-
-function runCommand($cmd) {
+function runCommand($cmd, $ignoreError = false) {
     echo "<div style='background: #2d3748; color: #e2e8f0; padding: 10px 15px; border-radius: 5px; margin: 10px 0; font-family: monospace; white-space: pre-wrap;'>";
-    echo "<span style='color: #81e6d9'>$</span> <span style='color: #fff'>".htmlspecialchars($cmd)."</span>\n";
+    echo "<span style='color: #81e6d9'>$</span> <span style='color: #ffd700'>".htmlspecialchars($cmd)."</span>\n";
 
-    $proc = popen($cmd . ' 2>&1', 'r');
-    while (!feof($proc)) {
-        $line = fgets($proc);
-        if ($line !== false) {
-            echo htmlspecialchars($line);
-            flush();
-        }
+    $output = [];
+    $returnCode = 0;
+    exec($cmd . ' 2>&1', $output, $returnCode);
+
+    foreach ($output as $line) {
+        echo htmlspecialchars($line) . "\n";
     }
-    pclose($proc);
+
+    if ($returnCode !== 0 && !$ignoreError) {
+        echo "<span style='color:#fc8181'>⚠ Exit code: $returnCode</span>\n";
+    } elseif ($returnCode === 0) {
+        echo "<span style='color:#68d391'>✓ Done</span>\n";
+    }
+
     echo "</div>";
+    flush();
+    return $returnCode;
+}
+
+function sectionHeader($title) {
+    echo "<h2 style='border-left: 4px solid #667eea; padding-left: 10px; color: #4a5568;'>$title</h2>";
+    echo "<p style='color:#718096; font-size:13px; margin-top:-10px;'>⏰ " . date('H:i:s') . "</p>";
 }
 ?>
 <!DOCTYPE html>
@@ -33,53 +43,107 @@ function runCommand($cmd) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deployment Script</title>
+    <title>🚀 Tarulata Deployment</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; background: #f5f7fa; }
-        .header { background: #4a5568; color: white; padding: 20px; border-radius: 5px 5px 0 0; margin-bottom: 20px; }
-        .container { background: white; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 20px; }
-        .success { background: #48bb78; color: white; padding: 15px; border-radius: 5px; text-align: center; font-weight: bold; margin-top: 20px; }
+        body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 0 auto; padding: 20px; background: #f5f7fa; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0 0 5px; font-size: 26px; }
+        .header p { margin: 0; opacity: 0.85; font-size: 14px; }
+        .container { background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 25px; margin-bottom: 20px; }
+        .success { background: #48bb78; color: white; padding: 18px; border-radius: 8px; text-align: center; font-weight: bold; margin-top: 20px; font-size: 18px; }
+        .warning { background: #ed8936; color: white; padding: 12px 18px; border-radius: 5px; margin: 8px 0; }
+        .info-box { background: #ebf8ff; border: 1px solid #90cdf4; padding: 12px 18px; border-radius: 5px; margin: 12px 0; font-size: 14px; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>Laravel Git Deployment</h1>
-        <p>Deploying to: <?php echo htmlspecialchars($publicDir); ?></p>
+        <h1>🚀 Tarulata — Laravel Deployment</h1>
+        <p>Server: <?php echo htmlspecialchars($publicDir); ?> &nbsp;|&nbsp; Time: <?php echo date('d M Y, H:i:s'); ?></p>
     </div>
 
     <div class="container">
         <?php
-        // Git setup
+
+        // ============================================================
+        // STEP 1: GIT — PULL FROM REMOTE
+        // ============================================================
         if (!is_dir($publicDir . '/.git')) {
-            echo "<h2>Initializing Git Repository</h2>";
+
+            sectionHeader('① Git — Fresh Repository Setup');
             runCommand("git init");
             runCommand("git remote add origin $gitRepo");
-            runCommand("git fetch origin");
+            runCommand("git fetch origin main");
             runCommand("git reset --hard origin/main");
+
         } else {
-            echo "<h2>Updating Repository</h2>";
-            runCommand("git pull origin main");
+
+            sectionHeader('① Git — Pull Latest Changes');
+
+            // Stash any server-specific local changes (e.g. .env, storage symlinks)
+            // so git pull doesn't abort due to conflicts
+            echo "<div class='info-box'>ℹ️ Stashing local server changes before pull...</div>";
+            runCommand("git stash push -m 'deploy-auto-stash' --include-untracked", true);
+
+            // Now pull cleanly
+            $pullCode = runCommand("git pull origin main");
+
+            if ($pullCode !== 0) {
+                echo "<div class='warning'>⚠️ git pull failed. Trying fetch + reset...</div>";
+                runCommand("git fetch origin main");
+                runCommand("git reset --hard origin/main");
+            }
+
+            // Restore stashed changes (server .env, local configs, etc.)
+            echo "<div class='info-box'>ℹ️ Restoring local server configs from stash...</div>";
+            runCommand("git stash pop", true);
         }
 
-        // Laravel setup
-        echo "<h2>Installing Dependencies</h2>";
-        runCommand("composer install --no-dev --optimize-autoloader");
+        // ============================================================
+        // STEP 2: COMPOSER
+        // ============================================================
+        sectionHeader('② Composer — Install Dependencies');
+        runCommand("composer install --no-dev --optimize-autoloader --no-interaction");
 
-        echo "<h2>Clearing Cache</h2>";
+        // ============================================================
+        // STEP 3: CACHE CLEAR
+        // ============================================================
+        sectionHeader('③ Cache — Clear All');
         runCommand("php artisan config:clear");
         runCommand("php artisan cache:clear");
         runCommand("php artisan route:clear");
         runCommand("php artisan view:clear");
+        runCommand("php artisan event:clear");
 
-        echo "<h2>Database Migration</h2>";
-        runCommand("php artisan migrate --force");
+        // ============================================================
+        // STEP 4: DATABASE MIGRATION (safe — migrations have hasTable guards)
+        // ============================================================
+        sectionHeader('④ Database — Run Migrations');
+        echo "<div class='info-box'>ℹ️ All migrations use <code>hasTable()</code> guards — safe to run on existing database.</div>";
+        $migrateCode = runCommand("php artisan migrate --force");
 
-        echo "<h2>Setting Permissions</h2>";
-        runCommand("chmod -R 775 storage bootstrap/cache");
+        if ($migrateCode !== 0) {
+            echo "<div class='warning'>⚠️ Migration had issues. Check output above. Trying only new migration...</div>";
+            runCommand("php artisan migrate --path=database/migrations/2026_08_18_000000_create_product_variations_table.php --force");
+        }
+
+        // ============================================================
+        // STEP 5: OPTIMIZE
+        // ============================================================
+        sectionHeader('⑤ Optimize — Cache Routes & Config');
+        runCommand("php artisan config:cache");
+        runCommand("php artisan route:cache");
+
+        // ============================================================
+        // STEP 6: PERMISSIONS
+        // ============================================================
+        sectionHeader('⑥ Permissions');
+        runCommand("chmod -R 775 storage");
+        runCommand("chmod -R 775 bootstrap/cache");
+
         ?>
 
         <div class="success">
-            Deployment completed successfully!
+            ✅ Deployment Completed — <?php echo date('H:i:s'); ?>
         </div>
     </div>
 </body>
