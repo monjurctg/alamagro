@@ -102,7 +102,40 @@ function sectionHeader($title) {
         // STEP 2: COMPOSER
         // ============================================================
         sectionHeader('② Composer — Install Dependencies');
-        runCommand("composer install --no-dev --optimize-autoloader --no-interaction");
+
+        // cPanel-এ composer সরাসরি PATH-এ নাও থাকতে পারে। Multiple paths check করি।
+        $composerPaths = [
+            '/usr/local/bin/composer',
+            '/usr/bin/composer',
+            '/opt/cpanel/composer/bin/composer',
+            $publicDir . '/composer.phar',
+            '/home/' . get_current_user() . '/composer.phar',
+        ];
+
+        $composerCmd = null;
+        foreach ($composerPaths as $path) {
+            if (file_exists($path) && is_executable($path)) {
+                $composerCmd = $path;
+                break;
+            }
+        }
+
+        // যদি কোথাও না পাওয়া যায় — auto download করো
+        if (!$composerCmd) {
+            echo "<div class='warning'>⚠️ composer not found. Auto-downloading composer.phar...</div>";
+            runCommand("php -r \"copy('https://getcomposer.org/installer', 'composer-setup.php');\"");
+            runCommand("php composer-setup.php --quiet");
+            runCommand("rm composer-setup.php");
+            $composerCmd = 'php ' . $publicDir . '/composer.phar';
+        } else {
+            echo "<div class='info-box'>✅ Composer found at: <code>" . htmlspecialchars($composerCmd) . "</code></div>";
+            // composer.phar হলে php দিয়ে চালাতে হবে
+            if (str_ends_with($composerCmd, '.phar')) {
+                $composerCmd = 'php ' . $composerCmd;
+            }
+        }
+
+        runCommand("$composerCmd install --no-dev --optimize-autoloader --no-interaction");
 
         // ============================================================
         // STEP 3: CACHE CLEAR
