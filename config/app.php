@@ -1,6 +1,13 @@
 <?php
 
-require_once 'resources/lang/custom/locales.php';
+// Safe locale loader — provides fallback 'en' when $lan is unavailable
+// (e.g. during php artisan config:cache / route:cache)
+$lan = ['lan' => 'en'];
+$_locales_file = __DIR__ . '/../resources/lang/custom/locales.php';
+if (file_exists($_locales_file)) {
+    @include $_locales_file;
+}
+$_default_locale = (isset($lan) && is_array($lan) && !empty($lan['lan'])) ? $lan['lan'] : 'en';
 
 return [
 
@@ -83,7 +90,7 @@ return [
     */
 
     // 'locale' => 'en',
-    'locale' => $lan['lan'],
+    'locale' => $_default_locale,
 
     /*
     |--------------------------------------------------------------------------
@@ -97,7 +104,7 @@ return [
     */
 
     // 'fallback_locale' => 'en',
-    'fallback_locale' => $lan['lan'],
+    'fallback_locale' => $_default_locale,
 
     /*
     |--------------------------------------------------------------------------

@@ -115,15 +115,15 @@ function sectionHeader($title) {
         runCommand("php artisan event:clear");
 
         // ============================================================
-        // STEP 4: DATABASE MIGRATION (safe — migrations have hasTable guards)
+        // STEP 4: DATABASE MIGRATION (safe — migrations have hasTable/hasColumn guards)
         // ============================================================
         sectionHeader('④ Database — Run Migrations');
-        echo "<div class='info-box'>ℹ️ All migrations use <code>hasTable()</code> guards — safe to run on existing database.</div>";
+        echo "<div class='info-box'>ℹ️ All migrations have <code>hasTable()</code> / <code>hasColumn()</code> guards — safe on existing DB.</div>";
         $migrateCode = runCommand("php artisan migrate --force");
 
         if ($migrateCode !== 0) {
-            echo "<div class='warning'>⚠️ Migration had issues. Check output above. Trying only new migration...</div>";
-            runCommand("php artisan migrate --path=database/migrations/2026_08_18_000000_create_product_variations_table.php --force");
+            echo "<div class='warning'>⚠️ Some migrations had issues (see above). Running only new migration...</div>";
+            runCommand("php artisan migrate --path=database/migrations/2026_08_18_000000_create_product_variations_table.php --force", true);
         }
 
         // ============================================================
