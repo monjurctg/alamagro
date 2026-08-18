@@ -34,61 +34,56 @@ class CartController extends Controller
             return response()->json($res);
         }
 
-        // Get variations from request
+        // Extract any passed variation parameters from request
         $selectedSize = $request->input('size');
         $selectedColor = $request->input('color');
 
-        // Logic to handle variations
-        // If coming from listing page (usually via .addtocart class), size/color might be null
-        // We should auto-select if possible (single option) or for direct add
+        // Check if dynamic variations exist in product_variations table
+        $productVariations = \App\Models\ProductVariation::where('product_id', $id)->get();
+        $matchedVariant = null;
 
-        if ($product->variation_size) {
-            $availableSizes = explode(',', $product->variation_size);
-            $availableSizes = array_map('trim', $availableSizes);
-            $availableSizes = array_filter($availableSizes); // Remove empty values
-
-            if (!$selectedSize) {
-                // If only one size available, auto-select it
-                if(count($availableSizes) == 1) {
-                    $selectedSize = array_values($availableSizes)[0];
-                } elseif(count($availableSizes) > 1) {
-                     // For multiple sizes, if logic allows direct add (like from listing),
-                     // we can auto-select the first one.
-                     // However, the requirement says "For products with multiple... users should be required to select".
-                     // But strictly enforcing this blocks listing page "Add to cart".
-                     // Current compromise: Auto-select first option for listing page add implies "Direct Add" feature.
-                     // The Frontend JS for details page will enforce selection.
-                     // So if we reach here without selection, it's likely a Direct Add.
-                     // use array_values to ensure index 0 exists after filter
-                     $selectedSize = array_values($availableSizes)[0];
-                }
-            } else {
-                 if (!in_array($selectedSize, $availableSizes)) {
-                    $res['msgType'] = 'error';
-                    $res['msg'] = __('Selected size is not available.');
-                    return response()->json($res);
-                }
+        if ($request->filled('variant_id')) {
+            $matchedVariant = $productVariations->where('id', $request->input('variant_id'))->first();
+            if ($matchedVariant) {
+                $selectedSize = $matchedVariant->size;
+                $selectedColor = $matchedVariant->color;
+            }
+        } elseif ($selectedSize || $selectedColor) {
+            $matchedVariant = $productVariations->filter(function($v) use ($selectedSize, $selectedColor) {
+                $sizeMatch = !$selectedSize || ($v->size == $selectedSize);
+                $colorMatch = !$selectedColor || ($v->color == $selectedColor);
+                return $sizeMatch && $colorMatch;
+            })->first();
+        } elseif ($productVariations->count() > 0) {
+            // Direct Add from listing: Auto-select default or lowest priced variant
+            $matchedVariant = $productVariations->where('is_default', 1)->first();
+            if (!$matchedVariant) {
+                $matchedVariant = $productVariations->sortBy('price')->first();
+            }
+            if ($matchedVariant) {
+                $selectedSize = $matchedVariant->size;
+                $selectedColor = $matchedVariant->color;
             }
         }
 
-        if ($product->variation_color) {
+        // Logic to handle variations
+        if (!$matchedVariant && $product->variation_size) {
+            $availableSizes = explode(',', $product->variation_size);
+            $availableSizes = array_map('trim', $availableSizes);
+            $availableSizes = array_filter($availableSizes);
+
+            if (!$selectedSize && count($availableSizes) > 0) {
+                $selectedSize = array_values($availableSizes)[0];
+            }
+        }
+
+        if (!$matchedVariant && $product->variation_color) {
             $availableColors = explode(',', $product->variation_color);
             $availableColors = array_map('trim', $availableColors);
-            $availableColors = array_filter($availableColors); // Remove empty values
+            $availableColors = array_filter($availableColors);
 
-            if (!$selectedColor) {
-               if(count($availableColors) == 1) {
-                    $selectedColor = array_values($availableColors)[0];
-               } elseif(count($availableColors) > 1) {
-                    // Auto-select first color for direct add
-                    $selectedColor = array_values($availableColors)[0];
-               }
-            } else {
-                if (!in_array($selectedColor, $availableColors)) {
-                    $res['msgType'] = 'error';
-                    $res['msg'] = __('Selected color is not available.');
-                    return response()->json($res);
-                }
+            if (!$selectedColor && count($availableColors) > 0) {
+                $selectedColor = array_values($availableColors)[0];
             }
         }
 
@@ -117,7 +112,7 @@ class CartController extends Controller
                 $variationParts[] = 'Size: ' . $selectedSize;
             }
             if ($selectedColor) {
-                $variationParts[] = 'Color: ' . $selectedColor;
+                $variationParts[] = 'Quality/Color: ' . $selectedColor;
             }
             $variationInfo = implode(', ', $variationParts);
             // Create a unique key for variations
@@ -144,8 +139,6 @@ class CartController extends Controller
             // Get seller details
             $seller = DB::table('users')->where('id', $product->user_id)->first();
 
-            // Handle case where seller might not exist (prevent 500 error)
-            // Handle case where seller might not exist or columns missing (prevent 500 error)
             $sellerId = isset($seller->id) ? $seller->id : null;
             $sellerName = isset($seller->name) ? $seller->name : '';
             $storeName = isset($seller->shop_name) && !empty($seller->shop_name) ? $seller->shop_name : (isset($seller->name) ? $seller->name : 'Tarulata');
@@ -154,29 +147,17 @@ class CartController extends Controller
             $sellerEmail = isset($seller->email) ? $seller->email : '';
             $sellerPhone = isset($seller->phone) ? $seller->phone : '';
             $sellerAddress = isset($seller->address) ? $seller->address : '';
-        // Determine price based on selected variation or fallback to sale_price
-        $itemPrice = $product->sale_price;
-        $variantStock = $product->stock_qty;
-        
-        $variantQuery = \App\Models\ProductVariation::where('product_id', $id);
-        if ($request->filled('variant_id')) {
-            $variant = $variantQuery->where('id', $request->input('variant_id'))->first();
-        } else {
-            if ($selectedSize) {
-                $variantQuery->where('size', $selectedSize);
-            }
-            if ($selectedColor) {
-                $variantQuery->where('color', $selectedColor);
-            }
-            $variant = $variantQuery->first();
-        }
 
-        if ($variant && $variant->price > 0) {
-            $itemPrice = $variant->price;
-            if ($variant->stock_qty !== null) {
-                $variantStock = $variant->stock_qty;
+            // Determine price based on selected variation or fallback to sale_price
+            $itemPrice = $product->sale_price;
+            $variantStock = $product->stock_qty;
+
+            if ($matchedVariant && $matchedVariant->price > 0) {
+                $itemPrice = $matchedVariant->price;
+                if ($matchedVariant->stock_qty !== null) {
+                    $variantStock = $matchedVariant->stock_qty;
+                }
             }
-        }
 
         // Add new item to cart
         $cart[$cartKey] = [
